@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GB Hiring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --c:#00D4D8;--cl:#E3F9FA;--cm:#7DE6E8;
+  --dk:#1C1F24;--dk2:#292D32;
+  --w:#fff;--bg:#F4F6F9;--sur:#fff;
+  --b1:#E4E7EC;--b2:#C8CDD6;
+  --t1:#111827;--t2:#4B5563;--t3:#9CA3AF;
+  --g:#059669;--gl:#ECFDF5;--gb:#6EE7B7;
+  --a:#D97706;--al:#FFFBEB;--ab:#FCD34D;
+  --r:#DC2626;--rl:#FEF2F2;--rb:#FECACA;
+  --rad:8px;--rad-s:6px;
+  --sh:0 1px 2px rgba(17,24,39,.06),0 1px 3px rgba(17,24,39,.04);
+  --shm:0 4px 16px rgba(17,24,39,.10),0 2px 4px rgba(17,24,39,.05);
+}
+html{font-size:14px}
+body{font-family:'Inter Tight',sans-serif;background:var(--bg);color:var(--t1);line-height:1.5;-webkit-font-smoothing:antialiased}
+
+/* ── BAR ── */
+.bar{position:fixed;top:0;left:0;right:0;z-index:9999;height:36px;background:var(--dk);display:flex;align-items:center;gap:1px;padding:0 12px}
+.bar-lbl{font-size:9px;font-weight:600;color:rgba(255,255,255,.25);letter-spacing:.09em;text-transform:uppercase;margin-right:8px;white-space:nowrap}
+.sw{font-family:'Inter Tight',sans-serif;font-size:11px;font-weight:500;padding:3px 9px;border-radius:4px;border:none;background:none;color:rgba(255,255,255,.38);cursor:pointer;transition:all .1s;white-space:nowrap}
+.sw:hover{color:rgba(255,255,255,.7);background:rgba(255,255,255,.07)}
+.sw.on{background:var(--c);color:var(--dk)}
+
+/* ── SCREENS ── */
+.scr{display:none;padding-top:36px;min-height:100vh}
+.scr.on{display:block}
+
+/* ── ATOMS ── */
+.btn{display:inline-flex;align-items:center;gap:5px;font-family:'Inter Tight',sans-serif;font-size:13.5px;font-weight:500;padding:8px 16px;border-radius:var(--rad);border:1px solid transparent;cursor:pointer;white-space:nowrap;transition:all .12s;-webkit-font-smoothing:antialiased;text-decoration:none}
+.btn:disabled{opacity:.38;cursor:not-allowed;pointer-events:none}
+.btn-dk{background:var(--dk);color:#fff;border-color:var(--dk)}.btn-dk:hover{background:#13161a}
+.btn-c{background:var(--c);color:var(--dk);border-color:var(--c)}.btn-c:hover{background:#00bcbf}
+.btn-out{background:var(--w);color:var(--t1);border-color:var(--b2);box-shadow:var(--sh)}.btn-out:hover{background:var(--bg)}
+.btn-ghost{background:transparent;color:var(--t2);border:1px solid transparent}.btn-ghost:hover{color:var(--t1);background:var(--bg)}
+.btn-sm{font-size:12px;padding:5px 12px}
+.btn-lg{font-size:15px;padding:11px 24px;border-radius:9px}
+.btn-red{background:var(--rl);color:var(--r);border:1px solid var(--rb)}.btn-red:hover{background:#fee2e2}
+.btn-g{background:var(--gl);color:var(--g);border:1px solid var(--gb)}.btn-g:hover{background:#d1fae5}
+
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:99px}
+.bd-g{background:var(--gl);color:var(--g);border:1px solid var(--gb)}
+.bd-a{background:var(--al);color:var(--a);border:1px solid var(--ab)}
+.bd-r{background:var(--rl);color:var(--r);border:1px solid var(--rb)}
+.bd-c{background:var(--cl);color:#0097A7;border:1px solid var(--cm)}
+.bd-n{background:var(--bg);color:var(--t2);border:1px solid var(--b1)}
+.bd-dk{background:var(--dk2);color:#fff;border:1px solid var(--dk2)}
+
+.tag{display:inline-block;font-size:11.5px;padding:2px 7px;border-radius:4px;background:var(--bg);border:1px solid var(--b1);color:var(--t2)}
+.mono{font-family:'IBM Plex Mono',monospace}
+.card{background:var(--sur);border:1px solid var(--b1);border-radius:var(--rad);box-shadow:var(--sh)}
+.p{padding:20px}
+.ct{font-size:13px;font-weight:600;color:var(--t1)}
+.cs{font-size:12px;color:var(--t3);margin-top:2px}
+.div{height:1px;background:var(--b1);margin:16px 0}
+
+/* ── LOGO ── */
+.logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;letter-spacing:-.01em;color:var(--dk);text-decoration:none}
+.logo-sm{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:700;letter-spacing:-.01em;color:var(--dk);text-decoration:none}
+.logo-mark{flex-shrink:0}
+
+/* ── APP SHELL ── */
+.app{display:flex;min-height:calc(100vh - 36px)}
+.sb{width:210px;flex-shrink:0;background:var(--sur);border-right:1px solid var(--b1);display:flex;flex-direction:column;position:sticky;top:36px;height:calc(100vh - 36px);overflow-y:auto}
+.sb-top{padding:14px 14px 12px;border-bottom:1px solid var(--b1)}
+.sb-nav{padding:6px;flex:1}
+.sbs{font-size:9.5px;font-weight:600;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;padding:10px 8px 4px}
+.ni{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;font-size:13px;color:var(--t2);cursor:pointer;text-decoration:none;transition:all .1s;margin-bottom:1px}
+.ni:hover{background:var(--bg);color:var(--t1)}
+.ni.on{background:var(--cl);color:#0097A7;font-weight:500}
+.ni-i{font-size:13px;width:16px;text-align:center;opacity:.6}
+.sb-foot{padding:8px;border-top:1px solid var(--b1)}
+.sb-usr{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:6px;cursor:pointer}
+.sb-usr:hover{background:var(--bg)}
+.av{width:26px;height:26px;border-radius:50%;background:var(--c);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--dk);flex-shrink:0}
+.sb-un{font-size:12.5px;font-weight:500;color:var(--t1)}
+.sb-uo{font-size:11px;color:var(--t3)}
+.main{flex:1;overflow-y:auto;padding:28px 36px}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px}
+.pt{font-size:20px;font-weight:700;letter-spacing:-.02em;color:var(--t1)}
+.ps{font-size:13px;color:var(--t2);margin-top:3px}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(17,24,39,.48);z-index:2000;display:flex;align-items:center;justify-content:center}
+.modal{background:var(--w);border:1px solid var(--b1);border-radius:12px;padding:36px 32px;max-width:400px;width:100%;text-align:center;box-shadow:var(--shm)}
+.modal-ico{font-size:40px;margin-bottom:16px}
+.modal-t{font-size:18px;font-weight:700;letter-spacing:-.015em;margin-bottom:8px}
+.modal-s{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:24px;max-width:300px;margin-left:auto;margin-right:auto}
+.modal-r{display:flex;gap:8px;justify-content:center}
+
+/* ═══════════════════════════════
+   01 LANDING
+═══════════════════════════════ */
+#landing{background:var(--w)}
+.lnav{display:flex;align-items:center;justify-content:space-between;padding:0 52px;height:60px;border-bottom:1px solid var(--b1);position:sticky;top:36px;background:var(--w);z-index:100}
+.lnav-links{display:flex;gap:2px}
+.lnav-links a{font-size:13.5px;color:var(--t2);text-decoration:none;padding:5px 10px;border-radius:5px;transition:all .1s;cursor:pointer}
+.lnav-links a:hover{color:var(--t1);background:var(--bg)}
+.lnav-r{display:flex;gap:8px;align-items:center}
+.hero{max-width:700px;margin:0 auto;padding:72px 52px 56px;text-align:center}
+.hero-pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;color:#0097A7;padding:4px 11px;border-radius:99px;background:var(--cl);border:1px solid var(--cm);margin-bottom:20px}
+.hero-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--c)}
+.hero-h1{font-size:clamp(34px,5vw,52px);font-weight:700;line-height:1.06;letter-spacing:-.03em;color:var(--dk);margin-bottom:14px}
+.hero-h1 em{font-style:normal;color:var(--t3)}
+.hero-sub{font-size:15.5px;color:var(--t2);max-width:400px;margin:0 auto 26px;line-height:1.6}
+.hero-cta{display:flex;align-items:center;justify-content:center;gap:9px}
+.hero-proof{margin-top:24px;display:flex;align-items:center;justify-content:center;gap:16px;font-size:12px;color:var(--t3)}
+.hp-dot{width:3px;height:3px;border-radius:50%;background:var(--b2)}
+.pframe{max-width:760px;margin:0 auto 56px;padding:0 52px}
+.pf{border-radius:10px;border:1px solid var(--b1);overflow:hidden;box-shadow:0 8px 32px rgba(17,24,39,.07),0 2px 8px rgba(17,24,39,.04)}
+.pf-bar{background:var(--bg);border-bottom:1px solid var(--b1);padding:9px 14px;display:flex;align-items:center;gap:6px}
+.pf-dot{width:9px;height:9px;border-radius:50%}
+.pf-inner{padding:18px 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:var(--bg)}
+.pm{background:var(--w);border:1px solid var(--b1);border-radius:7px;padding:13px}
+.pm-l{font-size:10px;color:var(--t3);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.pm-v{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:500;color:var(--t1)}
+.pm-s{font-size:11px;color:var(--t3);margin-top:2px}
+.lsec{max-width:760px;margin:0 auto;padding:44px 52px;border-top:1px solid var(--b1)}
+.lsec-ey{font-size:10.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}
+.lsec-h2{font-size:25px;font-weight:700;letter-spacing:-.025em;line-height:1.15;color:var(--dk);margin-bottom:22px}
+.steps-g{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.step{background:var(--w);border:1px solid var(--b1);border-radius:var(--rad);padding:16px}
+.step.hi{border-color:var(--c);border-width:2px}
+.stn{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--t3);margin-bottom:8px}
+.sti{font-size:17px;margin-bottom:6px}
+.stt{font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:4px}
+.std{font-size:12.5px;color:var(--t2);line-height:1.5}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pc{background:var(--w);border:1px solid var(--b1);border-radius:var(--rad);padding:20px}
+.pc.hi{border-color:var(--c);border-width:2px}
+.pct{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:8px}
+.pcp{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:500;color:var(--t1);margin-bottom:4px}
+.pcd{font-size:12.5px;color:var(--t2);margin-bottom:12px}
+.pcl{list-style:none;display:flex;flex-direction:column;gap:5px}
+.pcl li{font-size:12.5px;color:var(--t2);display:flex;gap:6px}.pcl li::before{content:'✓';color:var(--g);font-weight:700;flex-shrink:0}
+.lfoot-cta{background:var(--dk);text-align:center;padding:56px 52px}
+.lfoot-cta h2{font-size:26px;font-weight:700;letter-spacing:-.025em;color:#fff;margin-bottom:10px}
+.lfoot-cta p{font-size:14px;color:rgba(255,255,255,.4);margin-bottom:22px}
+.lfoot{background:var(--w);border-top:1px solid var(--b1);padding:16px 52px;display:flex;justify-content:space-between}
+.lfoot p{font-size:12px;color:var(--t3)}
+
+/* ═══════════════════════════════
+   02 AUTH
+═══════════════════════════════ */
+#auth{background:var(--bg)}
+.auth-wrap{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 36px);padding:32px}
+.auth-card{background:var(--w);border:1px solid var(--b1);border-radius:12px;padding:36px 32px;width:100%;max-width:400px;box-shadow:var(--shm)}
+.auth-logo{display:flex;justify-content:center;margin-bottom:24px}
+.auth-tabs{display:flex;border:1px solid var(--b1);border-radius:8px;margin-bottom:24px;background:var(--bg);padding:3px}
+.auth-tab{flex:1;font-family:'Inter Tight',sans-serif;font-size:13px;font-weight:500;padding:7px;border-radius:6px;border:none;background:none;color:var(--t2);cursor:pointer;transition:all .1s;text-align:center}
+.auth-tab.on{background:var(--w);color:var(--t1);box-shadow:var(--sh)}
+.auth-h{font-size:20px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px;text-align:center}
+.auth-s{font-size:13px;color:var(--t2);text-align:center;margin-bottom:22px}
+.form-g{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.form-lbl{font-size:12px;font-weight:500;color:var(--t1)}
+.fi{font-family:'Inter Tight',sans-serif;font-size:13.5px;color:var(--t1);background:var(--w);border:1px solid var(--b2);border-radius:var(--rad-s);padding:9px 11px;outline:none;transition:all .12s;width:100%}
+.fi:focus{border-color:var(--c);box-shadow:0 0 0 3px var(--cl)}
+.fi::placeholder{color:var(--t3)}
+.auth-err{font-size:12px;color:var(--r);margin-bottom:10px;padding:8px 10px;background:var(--rl);border-radius:var(--rad-s);display:none}
+.auth-note{font-size:12px;color:var(--t3);text-align:center;margin-top:14px}
+
+/* ═══════════════════════════════
+   WIZARD SHARED
+═══════════════════════════════ */
+#qual,#create{background:var(--bg)}
+.wiz-wrap{max-width:600px;margin:0 auto;padding:48px 28px}
+.wiz-prog{display:flex;align-items:center;margin-bottom:30px}
+.wp{display:flex;align-items:center;gap:7px}
+.wp-n{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.wp-n.done{background:var(--c);color:var(--dk)}
+.wp-n.act{background:var(--dk);color:#fff}
+.wp-n.pend{background:var(--b1);color:var(--t3)}
+.wp-l{font-size:12.5px;font-weight:500}
+.wp-l.done{color:var(--t2)}.wp-l.act{color:var(--t1)}.wp-l.pend{color:var(--t3)}
+.wp-line{flex:1;height:1px;background:var(--b1);margin:0 10px}
+.wiz-card{background:var(--w);border:1px solid var(--b1);border-radius:var(--rad);box-shadow:var(--sh)}
+.wiz-body{padding:28px 28px 22px}
+.wiz-step-lbl{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+.wiz-q{font-size:20px;font-weight:700;letter-spacing:-.02em;color:var(--t1);margin-bottom:6px}
+.wiz-hint{font-size:13px;color:var(--t2);margin-bottom:20px;line-height:1.5}
+.wiz-foot{padding:14px 28px;border-top:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
+.fs2{font-family:'Inter Tight',sans-serif;font-size:13.5px;color:var(--t1);background:var(--w);border:1px solid var(--b2);border-radius:var(--rad-s);padding:9px 11px;outline:none;transition:all .12s;width:100%}
+.fs2:focus{border-color:var(--c);box-shadow:0 0 0 3px var(--cl)}
+.fta{font-family:'Inter Tight',sans-serif;font-size:13.5px;color:var(--t1);background:var(--w);border:1px solid var(--b2);border-radius:var(--rad-s);padding:9px 11px;outline:none;transition:all .12s;width:100%;resize:vertical;min-height:80px;line-height:1.5}
+.fta:focus{border-color:var(--c);box-shadow:0 0 0 3px var(--cl)}
+.fta::placeholder,.fi::placeholder{color:var(--t3)}
+.opt-g{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--b2);border-radius:var(--rad);cursor:pointer;transition:all .12s}
+.opt:hover{border-color:var(--c);background:var(--cl)}
+.opt.sel{border-color:var(--c);background:var(--cl)}
+.opt-ico{font-size:18px;width:26px;text-align:center;flex-shrink:0}
+.opt-t{font-size:13.5px;font-weight:500;color:var(--t1)}
+.opt-s{font-size:12px;color:var(--t2)}
+
+/* qual outcomes */
+.qual-warn{background:var(--al);border:1px solid var(--ab);border-radius:var(--rad);padding:14px 16px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start}
+.qual-warn-t{font-size:13px;font-weight:600;color:var(--a);margin-bottom:3px}
+.qual-warn-d{font-size:12.5px;color:var(--t2);line-height:1.45}
+.qual-reject{text-align:center;padding:48px 28px}
+.qr-ico{font-size:40px;margin-bottom:18px}
+.qr-t{font-size:20px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+.qr-s{font-size:14px;color:var(--t2);margin-bottom:24px;line-height:1.6;max-width:340px;margin-left:auto;margin-right:auto}
+
+/* ═══════════════════════════════
+   05 STRATEGY
+═══════════════════════════════ */
+.strat-g{display:grid;grid-template-columns:1fr 306px;gap:14px;align-items:start}
+.strat-l{display:flex;flex-direction:column;gap:12px}
+.strat-r{display:flex;flex-direction:column;gap:12px}
+.crumb{font-size:12px;color:var(--t3);margin-bottom:6px;display:flex;gap:5px}
+.crumb span{color:var(--t2);cursor:pointer}.crumb span:hover{color:var(--c)}
+.mkt-g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mi{padding:12px;background:var(--bg);border:1px solid var(--b1);border-radius:var(--rad-s)}
+.mi-l{font-size:10px;color:var(--t3);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.mi-v{font-family:'IBM Plex Mono',monospace;font-size:17px;font-weight:500;color:var(--t1)}
+.mi-s{font-size:11px;color:var(--t2);margin-top:2px}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar-r{}
+.btop{display:flex;justify-content:space-between;margin-bottom:4px}
+.bl{font-size:12.5px;color:var(--t2)}.bm{font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--t3)}
+.btr{height:3px;background:var(--b1);border-radius:99px;overflow:hidden}
+.bf{height:100%;border-radius:99px}
+.bf-r{background:var(--r)}.bf-a{background:var(--a)}.bf-g{background:var(--g)}.bf-c{background:var(--c)}
+.diff{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-radius:var(--rad-s);border:1px solid var(--ab);background:var(--al)}
+.diff-l{font-size:10px;font-weight:600;color:var(--a);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.diff-n{font-size:18px;font-weight:700;color:var(--t1)}
+.diff-w{font-size:12px;color:var(--t2);margin-top:5px;line-height:1.45;max-width:300px}
+.diff-sc{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:500;color:var(--a)}
+.out-g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.oi{padding:12px;background:var(--bg);border:1px solid var(--b1);border-radius:var(--rad-s)}
+.oi-l{font-size:10px;color:var(--t3);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.oi-v{font-family:'IBM Plex Mono',monospace;font-size:17px;font-weight:500;color:var(--t1)}
+.oi-d{font-size:11px;color:var(--t3);margin-top:2px}
+.price-box{background:var(--w);border:2px solid var(--dk);border-radius:var(--rad);padding:20px;box-shadow:var(--sh)}
+.pb-lbl{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px}
+.pb-amt{display:flex;align-items:baseline;gap:4px;margin-bottom:4px}
+.pb-amt strong{font-family:'IBM Plex Mono',monospace;font-size:34px;font-weight:500;color:var(--t1)}
+.pb-amt span{font-size:12.5px;color:var(--t3)}
+.pb-inc{display:flex;flex-direction:column;gap:5px;margin:12px 0 16px}
+.pb-row{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--t2)}.pb-row::before{content:'✓';color:var(--c);font-weight:700;flex-shrink:0}
+.pb-note{font-size:11.5px;color:var(--t3);margin-top:10px;padding-top:10px;border-top:1px solid var(--b1);line-height:1.5}
+.trust-pill{display:flex;align-items:flex-start;gap:8px;background:var(--cl);border:1px solid var(--cm);border-radius:var(--rad);padding:12px 13px;margin-bottom:4px}
+.trust-pill p{font-size:12.5px;color:#0097A7;line-height:1.45}
+.after-s{display:flex;flex-direction:column;gap:8px}
+.as{display:flex;gap:9px;align-items:flex-start}
+.as-n{width:17px;height:17px;border-radius:50%;background:var(--cl);border:1px solid var(--cm);display:flex;align-items:center;justify-content:center;font-size:9px;color:#0097A7;font-weight:700;flex-shrink:0;margin-top:2px}
+.as-t{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:1px}
+.as-d{font-size:12px;color:var(--t2)}
+
+/* ═══════════════════════════════
+   06 BILLING / PAYMENT
+═══════════════════════════════ */
+#billing{background:var(--bg)}
+.billing-wrap{max-width:920px;margin:0 auto;padding:0 28px}
+.pay-g{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
+.pay-l{display:flex;flex-direction:column;gap:14px}
+.pay-r{display:flex;flex-direction:column;gap:14px}
+.pay-method{background:var(--w);border:1px solid var(--b1);border-radius:var(--rad);padding:20px;box-shadow:var(--sh)}
+.pay-card-preview{background:var(--dk2);border-radius:10px;padding:18px 20px;margin-bottom:16px;position:relative;overflow:hidden}
+.pay-card-preview::before{content:'';position:absolute;width:180px;height:180px;background:rgba(0,212,216,.08);border-radius:50%;top:-60px;right:-40px}
+.card-chip{font-size:22px;margin-bottom:12px}
+.card-num{font-family:'IBM Plex Mono',monospace;font-size:15px;color:rgba(255,255,255,.7);letter-spacing:.1em;margin-bottom:8px}
+.card-name{font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em}
+.pay-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.bill-sum{background:var(--w);border:1px solid var(--b1);border-radius:var(--rad);padding:20px;box-shadow:var(--sh)}
+.bs-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--b1)}
+.bs-row:last-child{border-bottom:none}
+.bs-lbl{font-size:13px;color:var(--t2)}
+.bs-val{font-size:13px;font-weight:500;color:var(--t1)}
+.bs-total{display:flex;align-items:center;justify-content:space-between;padding-top:12px;margin-top:4px;border-top:2px solid var(--b1)}
+.bs-total-lbl{font-size:14px;font-weight:600;color:var(--t1)}
+.bs-total-val{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:500;color:var(--t1)}
+.bill-hist{background:var(--w);border:1px solid var(--b1);border-radius:var(--rad);padding:20px;box-shadow:var(--sh)}
+.bh-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--b1)}
+.bh-row:last-child{border-bottom:none}
+.bh-role{font-size:13px;font-weight:500;color:var(--t1)}
+.bh-meta{font-size:11.5px;color:var(--t3);margin-top:1px}
+.bh-amt{font-family:'IBM Plex Mono',monospace;font-size:13.5px;font-weight:500;color:var(--t1)}
+.bh-st{font-size:11px;margin-top:1px;text-align:right}
+
+/* ═══════════════════════════════
+   07 DASHBOARD
+═══════════════════════════════ */
+.role-switcher{display:flex;align-items:center;gap:8px;margin-bottom:20px;background:var(--w);border:1px solid var(--b1);border-radius:var(--rad);padding:10px 14px;box-shadow:var(--sh)}
+.rs-label{font-size:11.5px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-right:4px;white-space:nowrap}
+.rs-sel{font-family:'Inter Tight',sans-serif;font-size:13.5px;font-weight:500;color:var(--t1);background:transparent;border:none;outline:none;cursor:pointer;flex:1}
+.rs-badge{margin-left:auto}
+.stats-r{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
+.sc{background:var(--w);border:1px solid var(--b1);border-radius:var(--rad);padding:14px 16px;box-shadow:var(--sh)}
+.sc-l{font-size:10px;color:var(--t3);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.sc-n{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:500;color:var(--t1)}
+.sc-m{font-size:11px;color:var(--t3);margin-top:2px}
+.dash-g{display:grid;grid-template-columns:1fr 256px;gap:14px;align-items:start}
+.dash-l{display:flex;flex-direction:column;gap:14px}
+.dash-r{display:flex;flex-direction:column;gap:10px}
+.sch{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.sct{font-size:13.5px;font-weight:600;color:var(--t1)}
+.scm{font-size:12px;color:var(--t3)}
+.pipe-stages{display:flex;gap:0;margin-bottom:0}
+.pipe-stage{flex:1;text-align:center;padding:10px 8px;border:1px solid var(--b1);background:var(--w);border-radius:0;font-size:12px;color:var(--t2)}
+.pipe-stage:first-child{border-radius:var(--rad) 0 0 var(--rad)}
+.pipe-stage:last-child{border-radius:0 var(--rad) var(--rad) 0}
+.pipe-stage+.pipe-stage{border-left:none}
+.pipe-stage.act{background:var(--cl);border-color:var(--cm);color:#0097A7;font-weight:600}
+.pipe-stage.done{background:var(--gl);border-color:var(--gb);color:var(--g)}
+.pipe-n{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:500;margin-bottom:3px}
+.pipe-l{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em}
+.act-list{display:flex;flex-direction:column}
+.act-i{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--b1);align-items:flex-start}
+.act-i:last-child{border-bottom:none}
+.act-ico{width:26px;height:26px;border-radius:50%;background:var(--bg);border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.act-t{font-size:12.5px;color:var(--t2);line-height:1.5}
+.act-t strong{color:var(--t1);font-weight:500}
+.act-tm{font-size:11px;color:var(--t3);margin-top:1px}
+.cml{display:flex;flex-direction:column}
+.cm{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--b1);cursor:pointer}
+.cm:last-child{border-bottom:none;padding-bottom:0}
+.cm:hover .cmn{color:var(--c)}
+.cav2{width:26px;height:26px;border-radius:50%;background:var(--cl);border:1px solid var(--cm);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#0097A7;flex-shrink:0}
+.cmn{font-size:12.5px;font-weight:500;color:var(--t1);margin-bottom:1px;transition:color .1s}
+.cms{font-size:11px;color:var(--t3)}
+.csc{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500}
+.csc-hi{color:var(--g)}.csc-md{color:var(--a)}
+.vp-row{margin-bottom:8px}
+.vp-top{display:flex;justify-content:space-between;margin-bottom:4px}
+.vp-n{font-size:12px;color:var(--t2)}.vp-p{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--t3)}
+.vp-tr{height:3px;background:var(--b1);border-radius:99px;overflow:hidden}
+.vp-f{height:100%;border-radius:99px;background:var(--c)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:3px 8px;border-radius:99px}
+.ch-d{width:4px;height:4px;border-radius:50%;animation:blink 1.8s infinite}
+.ch-src{background:var(--cl);color:#0097A7;border:1px solid var(--cm)}.ch-src .ch-d{background:var(--c)}
+.ch-int{background:var(--al);color:var(--a);border:1px solid var(--ab)}.ch-int .ch-d{background:var(--a)}
+.ch-rdy{background:var(--gl);color:var(--g);border:1px solid var(--gb)}.ch-rdy .ch-d{background:var(--g);animation:none}
+.hint-bar{display:flex;align-items:center;gap:8px;background:var(--cl);border:1px solid var(--cm);border-radius:var(--rad);padding:9px 13px;margin-bottom:14px;font-size:12.5px;color:#0097A7}
+.hint-bar button{font-family:'Inter Tight',sans-serif;font-size:12px;font-weight:500;background:none;border:none;cursor:pointer;color:#0097A7;text-decoration:underline;margin-left:auto}
+.hint-ring{outline:2px solid var(--c);outline-offset:3px;border-radius:var(--rad)}
+.hbub{position:absolute;z-index:10;background:var(--dk);color:#fff;font-size:11.5px;font-weight:500;padding:6px 11px;border-radius:6px;white-space:nowrap;pointer-events:none;box-shadow:var(--shm)}
+.hbub::after{content:'';position:absolute;border:5px solid transparent}
+.hb-b{bottom:calc(100% + 8px);left:50%;transform:translateX(-50%)}.hb-b::after{top:100%;left:50%;transform:translateX(-50%);border-top-color:var(--dk)}
+.hb-r{top:50%;left:calc(100% + 10px);transform:translateY(-50%);right:auto}.hb-r::after{right:100%;top:50%;transform:translateY(-50%);border-right-color:var(--dk)}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:72px 32px}
+.es-ico{font-size:40px;margin-bottom:16px;opacity:.4}
+.es-t{font-size:17px;font-weight:600;margin-bottom:8px}
+.es-s{font-size:14px;color:var(--t2);margin-bottom:24px;max-width:300px;line-height:1.6}
+
+/* ═══════════════════════════════
+   08 CANDIDATES
+═══════════════════════════════ */
+.toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.sb-inp{display:flex;align-items:center;gap:7px;background:var(--w);border:1px solid var(--b2);border-radius:var(--rad);padding:7px 11px;flex:1;max-width:240px;box-shadow:var(--sh)}
+.sb-inp input{border:none;outline:none;font-family:'Inter Tight',sans-serif;font-size:13px;color:var(--t1);background:transparent;width:100%}
+.sb-inp input::placeholder{color:var(--t3)}
+.ftabs{display:flex;gap:2px;background:var(--bg);border:1px solid var(--b1);border-radius:var(--rad);padding:3px}
+.ftab{font-family:'Inter Tight',sans-serif;font-size:12px;font-weight:500;padding:3px 10px;border-radius:5px;border:none;background:none;color:var(--t2);cursor:pointer;transition:all .1s}
+.ftab.on{background:var(--w);color:var(--t1);box-shadow:var(--sh)}
+.sort-s{font-family:'Inter Tight',sans-serif;font-size:12.5px;color:var(--t2);background:var(--w);border:1px solid var(--b2);border-radius:var(--rad);padding:7px 9px;cursor:pointer;box-shadow:var(--sh)}
+.ct-wrap{background:var(--w);border:1px solid var(--b1);border-radius:var(--rad);overflow:hidden;box-shadow:var(--sh)}
+.ct-head{display:grid;grid-template-columns:2fr 64px 168px 120px 1fr;padding:9px 15px;border-bottom:1px solid var(--b1);background:var(--bg);gap:12px}
+.cth{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em}
+.ct-row{display:grid;grid-template-columns:2fr 64px 168px 120px 1fr;padding:12px 15px;border-bottom:1px solid var(--b1);gap:12px;align-items:center;cursor:pointer;transition:background .1s}
+.ct-row:last-child{border-bottom:none}
+.ct-row:hover{background:var(--cl)}
+.ct-row.sel{background:var(--cl);border-left:3px solid var(--c);padding-left:12px}
+.cc{display:flex;align-items:center;gap:8px}
+.ca{width:28px;height:28px;border-radius:50%;background:var(--cl);border:1px solid var(--cm);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#0097A7;flex-shrink:0}
+.cn{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:1px}
+.csrc{font-size:11px;color:var(--t3)}
+.sc2{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:500}
+.sc2-hi{color:var(--g)}.sc2-md{color:var(--a)}.sc2-lo{color:var(--t2)}
+.sk-col{display:flex;gap:4px;flex-wrap:wrap}
+.sum-col{font-size:12px;color:var(--t2);line-height:1.4}
+.no-res{padding:36px;text-align:center}
+.no-res-t{font-size:14px;font-weight:500;color:var(--t2);margin-bottom:5px}
+.no-res-s{font-size:13px;color:var(--t3)}
+.cands-lay{display:grid;grid-template-columns:1fr 344px;gap:0;align-items:start}
+.pp{border-left:1px solid var(--b1);background:var(--w);position:sticky;top:36px;height:calc(100vh - 36px);display:flex;flex-direction:column}
+.pp-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;color:var(--t3)}
+.pp-empty-ico{font-size:32px;margin-bottom:12px;opacity:.4}
+.pp-empty-t{font-size:13.5px;font-weight:500;color:var(--t2);margin-bottom:5px}
+.pp-empty-s{font-size:12.5px;color:var(--t3);line-height:1.5}
+.pp-head{padding:16px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:flex-start;justify-content:space-between}
+.pp-name{font-size:17px;font-weight:700;letter-spacing:-.015em;color:var(--t1);margin-bottom:3px}
+.pp-role{font-size:12.5px;color:var(--t2)}
+.pp-sc{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:500}
+.pp-body{padding:16px 18px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.pps-t{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.pps-sum{font-size:13px;color:var(--t2);line-height:1.55}
+.pps-list{display:flex;flex-direction:column;gap:4px;list-style:none}
+.pps-list li{font-size:12.5px;color:var(--t2);display:flex;gap:6px;align-items:flex-start;line-height:1.4}
+.pps-list li::before{content:'—';color:var(--t3);flex-shrink:0}
+.pps-con li::before{color:var(--a)}
+.pp-qa{background:var(--bg);border:1px solid var(--b1);border-radius:var(--rad-s);padding:10px 12px;margin-bottom:6px}
+.pp-q{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.pp-a{font-size:12.5px;color:var(--t2);line-height:1.45}
+.pp-acts{padding:12px 18px;border-top:1px solid var(--b1);display:flex;gap:6px}
+.pp-acts .btn{flex:1;justify-content:center}
+
+/* ═══════════════════════════════
+   09 SETTINGS
+═══════════════════════════════ */
+.settings-g{display:flex;flex-direction:column;gap:14px;max-width:540px}
+.set-card{background:var(--w);border:1px solid var(--b1);border-radius:var(--rad);box-shadow:var(--sh)}
+.set-head{padding:14px 18px;border-bottom:1px solid var(--b1)}
+.set-body{padding:14px 18px;display:flex;flex-direction:column;gap:12px}
+.set-row{display:flex;align-items:center;justify-content:space-between}
+.set-lbl{font-size:13.5px;font-weight:500;color:var(--t1);margin-bottom:2px}
+.set-sub{font-size:12px;color:var(--t3)}
+.set-val{font-size:13px;color:var(--t2)}
+</style>
+</head>
+<body>
+
+<!-- BAR -->
+<div class="bar">
+  <span class="bar-lbl">Flow</span>
+  <button class="sw on" onclick="go('landing',this)">01·Landing</button>
+  <button class="sw" onclick="go('auth',this)">02·Auth</button>
+  <button class="sw" onclick="go('qual',this)">03·Qualify</button>
+  <button class="sw" onclick="go('create',this)">04·Create Role</button>
+  <button class="sw" onclick="go('strategy',this)">05·Strategy</button>
+  <button class="sw" onclick="go('billing',this)">06·Billing</button>
+  <button class="sw" onclick="go('dashboard',this)">07·Dashboard</button>
+  <button class="sw" onclick="go('candidates',this)">08·Candidates</button>
+  <button class="sw" onclick="go('settings',this)">09·Settings</button>
+</div>
+
+<!-- LAUNCH SUCCESS MODAL -->
+<div class="overlay" id="launch-modal" style="display:none">
+  <div class="modal">
+    <div class="modal-ico">🚀</div>
+    <div class="modal-t">AI Recruiter launched</div>
+    <div class="modal-s">Sourcing starts now. You'll see the first candidates within 48 hours.</div>
+    <div class="modal-r">
+      <button class="btn btn-dk" onclick="closeLaunch()">Go to Dashboard →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT SUCCESS MODAL -->
+<div class="overlay" id="pay-modal" style="display:none">
+  <div class="modal">
+    <div class="modal-ico">✅</div>
+    <div class="modal-t">Payment confirmed</div>
+    <div class="modal-s">$<span id="pay-amount">100</span> charged. Your AI recruiter is now active.</div>
+    <div class="modal-r">
+      <button class="btn btn-dk" onclick="closePay()">Go to Dashboard →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 01 LANDING ══════════ -->
+<div id="landing" class="scr on">
+  <nav class="lnav">
+    <div class="logo">
+      <svg class="logo-mark" width="34" height="26" viewBox="0 0 34 26" fill="none">
+        <rect x="0" y="3" width="19" height="19" rx="6" fill="#00D4D8"/>
+        <rect x="15" y="3" width="19" height="19" rx="6" fill="#00D4D8"/>
+        <text x="5" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">G</text>
+        <text x="20" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">B</text>
+      </svg>
+      GB Hiring
+    </div>
+    <div class="lnav-links">
+      <a onclick="scrollTo('lhow')">How it works</a>
+      <a onclick="scrollTo('lpricing')">Pricing</a>
+    </div>
+    <div class="lnav-r">
+      <button class="btn btn-ghost btn-sm" onclick="go('auth',null)">Log in</button>
+      <button class="btn btn-dk btn-sm" onclick="go('auth',null)">Start hiring →</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-pill">AI-native hiring infrastructure</div>
+    <h1 class="hero-h1">Hire without<br><em>the overhead.</em></h1>
+    <p class="hero-sub">Define a role. The AI sources, outreaches, and screens. You get a ranked shortlist.</p>
+    <div class="hero-cta">
+      <button class="btn btn-dk btn-lg" onclick="go('auth',null)">Start hiring →</button>
+      <button class="btn btn-out btn-lg" onclick="scrollTo('lhow')">How it works</button>
+    </div>
+    <div class="hero-proof">
+      <span>No setup fees</span><div class="hp-dot"></div>
+      <span>Pay per role</span><div class="hp-dot"></div>
+      <span>First candidates in 48h</span>
+    </div>
+  </section>
+
+  <div class="pframe">
+    <div class="pf">
+      <div class="pf-bar">
+        <div class="pf-dot" style="background:#FF5F57"></div>
+        <div class="pf-dot" style="background:#FFBD2E"></div>
+        <div class="pf-dot" style="background:#28CA41"></div>
+      </div>
+      <div class="pf-inner">
+        <div class="pm"><div class="pm-l">Active Roles</div><div class="pm-v">3</div><div class="pm-s">2 sourcing · 1 ready</div></div>
+        <div class="pm"><div class="pm-l">Candidates Found</div><div class="pm-v">284</div><div class="pm-s">↑ 47 this week</div></div>
+        <div class="pm"><div class="pm-l">AI Interviews</div><div class="pm-v">38</div><div class="pm-s">completed</div></div>
+        <div class="pm"><div class="pm-l">Shortlisted</div><div class="pm-v" style="color:var(--g)">9</div><div class="pm-s" style="color:var(--g)">Ready</div></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="lsec" id="lhow">
+    <div class="lsec-ey">How it works</div>
+    <h2 class="lsec-h2">Four steps to your shortlist.</h2>
+    <div class="steps-g">
+      <div class="step"><div class="stn">01</div><div class="sti">📋</div><div class="stt">Define the role</div><div class="std">Title, skills, location. Under 5 min.</div></div>
+      <div class="step"><div class="stn">02</div><div class="sti">📊</div><div class="stt">Review strategy</div><div class="std">AI reads the market and sets expectations.</div></div>
+      <div class="step"><div class="stn">03</div><div class="sti">⚡</div><div class="stt">Launch the AI</div><div class="std">One payment. Sourcing and interviews run automatically.</div></div>
+      <div class="step hi"><div class="stn">04</div><div class="sti">✅</div><div class="stt">Get your shortlist</div><div class="std">Ranked candidates with scores and summaries.</div></div>
+    </div>
+  </section>
+
+  <section class="lsec" id="lpricing">
+    <div class="lsec-ey">Pricing</div>
+    <h2 class="lsec-h2">Pay per role launch.</h2>
+    <div class="pg">
+      <div class="pc"><div class="pct">Easy</div><div class="pcp">$50</div><div class="pcd">Broad pool, clear requirements</div><ul class="pcl"><li>Sourcing &amp; outreach</li><li>AI interviews</li><li>Shortlist with scores</li></ul></div>
+      <div class="pc hi"><div class="pct">Medium</div><div class="pcp">$100</div><div class="pcd">Specific skills, competitive market</div><ul class="pcl"><li>Sourcing &amp; outreach</li><li>AI interviews</li><li>Shortlist with scores</li></ul></div>
+      <div class="pc"><div class="pct">Hard</div><div class="pcp">$150</div><div class="pcd">Niche talent, scarce supply</div><ul class="pcl"><li>Sourcing &amp; outreach</li><li>AI interviews</li><li>Shortlist with scores</li></ul></div>
+    </div>
+  </section>
+
+  <div class="lfoot-cta">
+    <h2>Ready to hire smarter?</h2>
+    <p>No setup. No agents. Just results.</p>
+    <button class="btn btn-c btn-lg" onclick="go('auth',null)">Start hiring →</button>
+  </div>
+  <footer class="lfoot"><p>© 2025 GB Hiring</p><p>Privacy · Terms</p></footer>
+</div>
+
+
+<!-- ══════════ 02 AUTH ══════════ -->
+<div id="auth" class="scr">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="logo">
+          <svg class="logo-mark" width="34" height="26" viewBox="0 0 34 26" fill="none">
+            <rect x="0" y="3" width="19" height="19" rx="6" fill="#00D4D8"/>
+            <rect x="15" y="3" width="19" height="19" rx="6" fill="#00D4D8"/>
+            <text x="5" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">G</text>
+            <text x="20" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">B</text>
+          </svg>
+          GB Hiring
+        </div>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab on" id="tab-signup" onclick="switchTab('signup')">Sign up</button>
+        <button class="auth-tab" id="tab-login" onclick="switchTab('login')">Log in</button>
+      </div>
+      <div id="auth-signup">
+        <div class="auth-h">Create account</div>
+        <div class="auth-s">Start hiring with AI — free to try.</div>
+        <div id="auth-err" class="auth-err">Please fill in all fields.</div>
+        <div class="form-g"><label class="form-lbl">Work email</label><input class="fi" id="su-email" type="email" placeholder="you@company.com"></div>
+        <div class="form-g"><label class="form-lbl">Password</label><input class="fi" id="su-pass" type="password" placeholder="At least 8 characters"></div>
+        <div class="form-g" style="margin-bottom:16px"><label class="form-lbl">Company name</label><input class="fi" id="su-company" type="text" placeholder="Acme Corp"></div>
+        <button class="btn btn-dk" style="width:100%;justify-content:center;padding:11px" onclick="doSignup()">Create account →</button>
+        <div class="auth-note">By signing up you agree to our Terms of Service.</div>
+      </div>
+      <div id="auth-login" style="display:none">
+        <div class="auth-h">Welcome back</div>
+        <div class="auth-s">Log in to your account.</div>
+        <div id="auth-err2" class="auth-err">Invalid email or password.</div>
+        <div class="form-g"><label class="form-lbl">Email</label><input class="fi" id="li-email" type="email" placeholder="you@company.com"></div>
+        <div class="form-g" style="margin-bottom:16px"><label class="form-lbl">Password</label><input class="fi" id="li-pass" type="password" placeholder="Your password"></div>
+        <button class="btn btn-dk" style="width:100%;justify-content:center;padding:11px" onclick="doLogin()">Log in →</button>
+        <div class="auth-note"><span style="cursor:pointer;color:var(--c)" onclick="switchTab('signup')">Don't have an account? Sign up</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ 03 QUALIFICATION ══════════ -->
+<div id="qual" class="scr">
+  <div class="wiz-wrap">
+    <div style="margin-bottom:22px">
+      <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Qualification check</div>
+      <div style="font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:5px">Is this role a fit?</div>
+      <div style="font-size:14px;color:var(--t2)">Quick check before we run market analysis.</div>
+    </div>
+
+    <div class="wiz-prog" id="qual-prog">
+      <!-- injected by JS -->
+    </div>
+
+    <div class="wiz-card" id="qual-card">
+      <!-- injected by JS -->
+    </div>
+
+    <!-- rejection state -->
+    <div id="qual-reject" style="display:none" class="wiz-card">
+      <div class="qual-reject">
+        <div class="qr-ico">🚫</div>
+        <div class="qr-t">Not a strong fit yet</div>
+        <div class="qr-s">Based on your inputs, autonomous AI hiring may not produce strong results for this role right now. The salary range or market conditions are limiting.</div>
+        <div style="display:flex;gap:10px;justify-content:center">
+          <button class="btn btn-out" onclick="resetQual()">Adjust inputs</button>
+          <button class="btn btn-ghost" onclick="go('landing',null)">Back to landing</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- warning state -->
+    <div id="qual-warn-banner" class="qual-warn" style="display:none;margin-top:12px">
+      <span style="font-size:17px">⚠️</span>
+      <div>
+        <div class="qual-warn-t">Results may be limited</div>
+        <div class="qual-warn-d">The salary range is below market median. The AI will still run, but expect a lower response rate. You can continue or adjust.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ 04 CREATE ROLE ══════════ -->
+<div id="create" class="scr">
+  <div class="wiz-wrap">
+    <div style="margin-bottom:22px">
+      <div style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">New role</div>
+      <div style="font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:5px">Define the role</div>
+      <div style="font-size:14px;color:var(--t2)">Fill in the basics — AI handles the rest.</div>
+    </div>
+
+    <div class="wiz-prog" id="create-prog"></div>
+
+    <div class="wiz-card" id="create-card">
+      <!-- injected by JS -->
+    </div>
+
+    <div class="wiz-card" style="margin-top:10px;padding:12px 16px;background:var(--cl);border-color:var(--cm)">
+      <p style="font-size:12.5px;color:#0097A7;display:flex;align-items:center;gap:7px"><span>✦</span> We'll structure and validate this role before launch. You only need the basics.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ 05 STRATEGY ══════════ -->
+<div id="strategy" class="scr">
+<div class="app">
+  <aside class="sb">
+    <div class="sb-top"><a class="logo-sm" onclick="go('dashboard',null)">
+      <svg class="logo-mark" width="30" height="23" viewBox="0 0 34 26" fill="none"><rect x="0" y="3" width="19" height="19" rx="6" fill="#00D4D8"/><rect x="15" y="3" width="19" height="19" rx="6" fill="#00D4D8"/><text x="5" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">G</text><text x="20" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">B</text></svg>
+      GB Hiring</a></div>
+    <nav class="sb-nav">
+      <div class="sbs">Workspace</div>
+      <a class="ni" onclick="go('dashboard',null)"><span class="ni-i">◾</span>Dashboard</a>
+      <a class="ni on"><span class="ni-i">📋</span>Roles</a>
+      <a class="ni" onclick="go('candidates',null)"><span class="ni-i">👤</span>Candidates</a>
+      <div class="sbs" style="margin-top:6px">Account</div>
+      <a class="ni" onclick="go('billing',null)"><span class="ni-i">💳</span>Billing</a>
+      <a class="ni" onclick="go('settings',null)"><span class="ni-i">⚙️</span>Settings</a>
+    </nav>
+    <div class="sb-foot"><div class="sb-usr"><div class="av" id="strat-av">AC</div><div><div class="sb-un" id="strat-uname">Arman Chen</div><div class="sb-uo" id="strat-uorg">Acme Corp</div></div></div></div>
+  </aside>
+  <main class="main">
+    <div class="crumb"><span onclick="go('create',null)">New role</span> › Strategy</div>
+    <div class="ph">
+      <div><div class="pt" id="strat-title">Hiring Strategy</div><div class="ps" id="strat-sub">Ready to review</div></div>
+      <button class="btn btn-out btn-sm" onclick="go('create',null)">← Edit role</button>
+    </div>
+    <div id="strat-warn-banner" class="qual-warn" style="display:none;margin-bottom:16px">
+      <span style="font-size:17px">⚠️</span>
+      <div><div class="qual-warn-t">Low salary signal</div><div class="qual-warn-d">Salary below median. AI will still run but response rate may be lower.</div></div>
+    </div>
+    <div class="strat-g">
+      <div class="strat-l">
+        <div class="card p">
+          <div class="ct" style="margin-bottom:10px">Role</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px" id="strat-tags"></div>
+          <p style="font-size:13px;color:var(--t2);line-height:1.55" id="strat-desc">Senior designer to own design system and lead core product design. B2B SaaS background required.</p>
+        </div>
+        <div class="card p">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div class="ct">Market signals</div><span class="badge bd-n">Estimated</span>
+          </div>
+          <div class="mkt-g" style="margin-bottom:14px">
+            <div class="mi"><div class="mi-l">Candidate pool</div><div class="mi-v" id="strat-pool">1,400+</div><div class="mi-s">Active profiles</div></div>
+            <div class="mi"><div class="mi-l">Competing roles</div><div class="mi-v" id="strat-comp">320</div><div class="mi-s">Live right now</div></div>
+            <div class="mi"><div class="mi-l">Avg response rate</div><div class="mi-v" id="strat-resp">14%</div><div class="mi-s">Cold outreach</div></div>
+            <div class="mi"><div class="mi-l">Salary position</div><div class="mi-v" id="strat-sal">P55</div><div class="mi-s">vs market median</div></div>
+          </div>
+          <div class="bars">
+            <div class="bar-r"><div class="btop"><span class="bl">Demand</span><span class="bm">High</span></div><div class="btr"><div class="bf bf-r" style="width:78%"></div></div></div>
+            <div class="bar-r"><div class="btop"><span class="bl">Availability</span><span class="bm">Moderate</span></div><div class="btr"><div class="bf bf-a" style="width:48%"></div></div></div>
+            <div class="bar-r"><div class="btop"><span class="bl">Salary fit</span><span class="bm" id="strat-sal-lbl">Moderate</span></div><div class="btr"><div class="bf bf-a" id="strat-sal-bar" style="width:55%"></div></div></div>
+          </div>
+        </div>
+        <div class="card p">
+          <div class="ct" style="margin-bottom:10px">Difficulty</div>
+          <div class="diff">
+            <div>
+              <div class="diff-l">Assessment</div>
+              <div class="diff-n" id="strat-diff-name">Medium</div>
+              <div class="diff-w" id="strat-diff-why">Good pool, high competition. AI increases outreach volume to compensate for below-median salary.</div>
+            </div>
+            <div class="diff-sc" id="strat-diff-sc">6.2</div>
+          </div>
+        </div>
+        <div class="card p">
+          <div class="ct" style="margin-bottom:10px">Expected results</div>
+          <div class="out-g">
+            <div class="oi"><div class="oi-l">Sourced</div><div class="oi-v" id="strat-o1">120–180</div><div class="oi-d">Profiles found</div></div>
+            <div class="oi"><div class="oi-l">Outreach</div><div class="oi-v" id="strat-o2">120–180</div><div class="oi-d">Messages sent</div></div>
+            <div class="oi"><div class="oi-l">Responses</div><div class="oi-v" id="strat-o3">17–25</div><div class="oi-d">~14% rate</div></div>
+            <div class="oi"><div class="oi-l">Shortlist</div><div class="oi-v" id="strat-o4">5–10</div><div class="oi-d">After screening</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="strat-r">
+        <div class="trust-pill">
+          <span style="font-size:14px">✦</span>
+          <div>
+            <p>AI adjusts outreach volume automatically. Low-response roles trigger an extended sourcing pass. Pricing reflects market difficulty.</p>
+          </div>
+        </div>
+        <div class="price-box">
+          <div class="pb-lbl">Launch price</div>
+          <div class="pb-amt"><strong id="strat-price">$100</strong><span>/ role</span></div>
+          <span class="badge bd-a" id="strat-diff-badge" style="margin-bottom:4px">Medium difficulty</span>
+          <div class="pb-inc">
+            <div class="pb-row">Full sourcing</div>
+            <div class="pb-row">Personalized outreach</div>
+            <div class="pb-row">AI screening interviews</div>
+            <div class="pb-row">Scored shortlist</div>
+          </div>
+          <button class="btn btn-c" style="width:100%;justify-content:center;font-size:14px;padding:11px" onclick="go('billing',null)">Launch AI Recruiter →</button>
+          <div class="pb-note">No refunds after launch. Results depend on market conditions.</div>
+        </div>
+        <div class="card p">
+          <div class="ct" style="margin-bottom:10px">After launch</div>
+          <div class="after-s">
+            <div class="as"><div class="as-n">1</div><div><div class="as-t">Sourcing starts</div><div class="as-d">Begins immediately after payment.</div></div></div>
+            <div class="as"><div class="as-n">2</div><div><div class="as-t">Outreach runs</div><div class="as-d">Personalized messages, replies tracked.</div></div></div>
+            <div class="as"><div class="as-n">3</div><div><div class="as-t">AI interviews</div><div class="as-d">Interested candidates screened.</div></div></div>
+            <div class="as"><div class="as-n" style="background:var(--gl);border-color:var(--gb);color:var(--g)">✓</div><div><div class="as-t">Shortlist delivered</div><div class="as-d">Ranked with scores &amp; summaries.</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</div>
+
+
+<!-- ══════════ 06 BILLING ══════════ -->
+<div id="billing" class="scr">
+<div class="app">
+  <aside class="sb">
+    <div class="sb-top"><a class="logo-sm" onclick="go('dashboard',null)"><svg class="logo-mark" width="30" height="23" viewBox="0 0 34 26" fill="none"><rect x="0" y="3" width="19" height="19" rx="6" fill="#00D4D8"/><rect x="15" y="3" width="19" height="19" rx="6" fill="#00D4D8"/><text x="5" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">G</text><text x="20" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">B</text></svg>GB Hiring</a></div>
+    <nav class="sb-nav">
+      <div class="sbs">Workspace</div>
+      <a class="ni" onclick="go('dashboard',null)"><span class="ni-i">◾</span>Dashboard</a>
+      <a class="ni"><span class="ni-i">📋</span>Roles</a>
+      <a class="ni" onclick="go('candidates',null)"><span class="ni-i">👤</span>Candidates</a>
+      <div class="sbs" style="margin-top:6px">Account</div>
+      <a class="ni on"><span class="ni-i">💳</span>Billing</a>
+      <a class="ni" onclick="go('settings',null)"><span class="ni-i">⚙️</span>Settings</a>
+    </nav>
+    <div class="sb-foot"><div class="sb-usr"><div class="av">AC</div><div><div class="sb-un">Arman Chen</div><div class="sb-uo">Acme Corp</div></div></div></div>
+  </aside>
+  <main class="main">
+    <div class="ph">
+      <div><div class="pt">Billing</div><div class="ps">Payment for role launch</div></div>
+      <button class="btn btn-ghost btn-sm" onclick="go('strategy',null)">← Back to strategy</button>
+    </div>
+    <div class="billing-wrap" style="padding:0">
+      <div class="pay-g">
+        <div class="pay-l">
+          <div class="pay-method">
+            <div class="ct" style="margin-bottom:14px">Payment method</div>
+            <div class="pay-card-preview">
+              <div class="card-chip">💳</div>
+              <div class="card-num">•••• •••• •••• 4242</div>
+              <div class="card-name">Arman Chen · Visa</div>
+            </div>
+            <div class="pay-row">
+              <div class="form-g" style="margin:0"><label class="form-lbl">Card number</label><input class="fi" type="text" placeholder="4242 4242 4242 4242" value="4242 4242 4242 4242"></div>
+              <div class="form-g" style="margin:0"><label class="form-lbl">Expiry</label><input class="fi" type="text" placeholder="MM/YY" value="12/27"></div>
+            </div>
+            <div class="pay-row">
+              <div class="form-g" style="margin:0"><label class="form-lbl">Cardholder name</label><input class="fi" type="text" placeholder="Full name" value="Arman Chen"></div>
+              <div class="form-g" style="margin:0"><label class="form-lbl">CVC</label><input class="fi" type="text" placeholder="123" value="•••"></div>
+            </div>
+          </div>
+
+          <div id="pay-hist-wrap">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <div class="ct">Payment history</div>
+              <span class="scm" id="pay-hist-count">2 transactions</span>
+            </div>
+            <div class="bill-hist" id="pay-hist-list">
+              <!-- injected by JS -->
+            </div>
+          </div>
+        </div>
+        <div class="pay-r">
+          <div class="bill-sum">
+            <div class="ct" style="margin-bottom:14px">Order summary</div>
+            <div class="bs-row"><span class="bs-lbl">Role</span><span class="bs-val" id="pay-role-name">Senior Product Designer</span></div>
+            <div class="bs-row"><span class="bs-lbl">Difficulty</span><span class="bs-val"><span class="badge bd-a" id="pay-diff">Medium</span></span></div>
+            <div class="bs-row"><span class="bs-lbl">Location</span><span class="bs-val" id="pay-loc">Remote — Europe</span></div>
+            <div class="bs-row"><span class="bs-lbl">Sourcing &amp; outreach</span><span class="bs-val">✓ Included</span></div>
+            <div class="bs-row"><span class="bs-lbl">AI interviews</span><span class="bs-val">✓ Included</span></div>
+            <div class="bs-row"><span class="bs-lbl">Scored shortlist</span><span class="bs-val">✓ Included</span></div>
+            <div class="bs-total">
+              <span class="bs-total-lbl">Total</span>
+              <span class="bs-total-val" id="pay-total">$100</span>
+            </div>
+          </div>
+          <button class="btn btn-c" style="width:100%;justify-content:center;font-size:15px;padding:12px" onclick="doPay()">Pay &amp; launch →</button>
+          <p style="font-size:11.5px;color:var(--t3);text-align:center;line-height:1.5;padding:0 4px">Secure payment. By launching you agree to our refund policy. Results subject to market conditions.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</div>
+
+
+<!-- ══════════ 07 DASHBOARD ══════════ -->
+<div id="dashboard" class="scr">
+<div class="app">
+  <aside class="sb">
+    <div class="sb-top"><a class="logo-sm" onclick="go('dashboard',null)"><svg class="logo-mark" width="30" height="23" viewBox="0 0 34 26" fill="none"><rect x="0" y="3" width="19" height="19" rx="6" fill="#00D4D8"/><rect x="15" y="3" width="19" height="19" rx="6" fill="#00D4D8"/><text x="5" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">G</text><text x="20" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">B</text></svg>GB Hiring</a></div>
+    <nav class="sb-nav">
+      <div class="sbs">Workspace</div>
+      <a class="ni on"><span class="ni-i">◾</span>Dashboard</a>
+      <a class="ni" onclick="go('candidates',null)"><span class="ni-i">👤</span>Candidates</a>
+      <div class="sbs" style="margin-top:6px">Account</div>
+      <a class="ni" onclick="go('billing',null)"><span class="ni-i">💳</span>Billing</a>
+      <a class="ni" onclick="go('settings',null)"><span class="ni-i">⚙️</span>Settings</a>
+    </nav>
+    <div class="sb-foot"><div class="sb-usr"><div class="av">AC</div><div><div class="sb-un">Arman Chen</div><div class="sb-uo">Acme Corp</div></div></div></div>
+  </aside>
+  <main class="main" id="dash-main">
+    <!-- injected by JS -->
+  </main>
+</div>
+</div>
+
+
+<!-- ══════════ 08 CANDIDATES ══════════ -->
+<div id="candidates" class="scr">
+<div class="app">
+  <aside class="sb">
+    <div class="sb-top"><a class="logo-sm" onclick="go('dashboard',null)"><svg class="logo-mark" width="30" height="23" viewBox="0 0 34 26" fill="none"><rect x="0" y="3" width="19" height="19" rx="6" fill="#00D4D8"/><rect x="15" y="3" width="19" height="19" rx="6" fill="#00D4D8"/><text x="5" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">G</text><text x="20" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">B</text></svg>GB Hiring</a></div>
+    <nav class="sb-nav">
+      <div class="sbs">Workspace</div>
+      <a class="ni" onclick="go('dashboard',null)"><span class="ni-i">◾</span>Dashboard</a>
+      <a class="ni on"><span class="ni-i">👤</span>Candidates</a>
+      <div class="sbs" style="margin-top:6px">Account</div>
+      <a class="ni" onclick="go('billing',null)"><span class="ni-i">💳</span>Billing</a>
+      <a class="ni" onclick="go('settings',null)"><span class="ni-i">⚙️</span>Settings</a>
+    </nav>
+    <div class="sb-foot"><div class="sb-usr"><div class="av">AC</div><div><div class="sb-un">Arman Chen</div><div class="sb-uo">Acme Corp</div></div></div></div>
+  </aside>
+  <main class="main" style="padding-right:0;padding-bottom:0">
+    <div style="padding-right:36px">
+      <div class="ph" style="margin-bottom:12px">
+        <div><div class="pt">Candidates</div><div class="ps" id="cands-sub">Customer Success Manager · 9 interviewed</div></div>
+        <div style="display:flex;gap:7px">
+          <button class="btn btn-out btn-sm" onclick="alert('CSV exported')">Export CSV</button>
+          <button class="btn btn-c btn-sm" onclick="alert('Shortlist exported')">Export shortlist</button>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div class="sb-inp"><span style="color:var(--t3);font-size:13px">🔍</span><input type="text" placeholder="Search…" id="srch" oninput="filterC()"></div>
+        <div class="ftabs">
+          <button class="ftab on" onclick="setF('all',this)">All (9)</button>
+          <button class="ftab" onclick="setF('shortlisted',this)">Shortlisted (5)</button>
+          <button class="ftab" onclick="setF('interviewed',this)">Other (4)</button>
+        </div>
+        <select class="sort-s" onchange="sortC(this.value)">
+          <option value="score">Score ↓</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </div>
+    </div>
+    <div class="cands-lay">
+      <div style="min-width:0">
+        <div class="ct-wrap" id="ct">
+          <div class="ct-head">
+            <div class="cth">Candidate</div>
+            <div class="cth">Score</div>
+            <div class="cth">Skills</div>
+            <div class="cth">Status</div>
+            <div class="cth">Summary</div>
+          </div>
+        </div>
+      </div>
+      <div class="pp" id="pp">
+        <div class="pp-empty" id="pp-empty">
+          <div class="pp-empty-ico">👤</div>
+          <div class="pp-empty-t">No candidate selected</div>
+          <div class="pp-empty-s">Click any row to view the AI screening summary.</div>
+        </div>
+        <div id="pp-filled" style="display:none;flex-direction:column;flex:1">
+          <div class="pp-head">
+            <div><div class="pp-name" id="pp-n">—</div><div class="pp-role" id="pp-r">—</div></div>
+            <div><div class="pp-sc" id="pp-sc">—</div><div id="pp-b" style="margin-top:3px"></div></div>
+          </div>
+          <div class="pp-body">
+            <div><div class="pps-t">Summary</div><div class="pps-sum" id="pp-sum">—</div></div>
+            <div><div class="pps-t">Strengths</div><ul class="pps-list" id="pp-str"></ul></div>
+            <div><div class="pps-t">Concerns</div><ul class="pps-list pps-con" id="pp-con"></ul></div>
+            <div><div class="pps-t">Interview highlights</div><div id="pp-iv"></div></div>
+          </div>
+          <div class="pp-acts">
+            <button class="btn btn-c btn-sm" id="btn-sl" onclick="toggleSL()">Shortlist</button>
+            <button class="btn btn-out btn-sm" onclick="alert('Saved')">Save</button>
+            <button class="btn btn-ghost btn-sm" onclick="alert('Exported')">Export</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</div>
+
+
+<!-- ══════════ 09 SETTINGS ══════════ -->
+<div id="settings" class="scr">
+<div class="app">
+  <aside class="sb">
+    <div class="sb-top"><a class="logo-sm" onclick="go('dashboard',null)"><svg class="logo-mark" width="30" height="23" viewBox="0 0 34 26" fill="none"><rect x="0" y="3" width="19" height="19" rx="6" fill="#00D4D8"/><rect x="15" y="3" width="19" height="19" rx="6" fill="#00D4D8"/><text x="5" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">G</text><text x="20" y="16.5" font-family="Inter Tight,sans-serif" font-size="8.5" font-weight="700" fill="#1C1F24">B</text></svg>GB Hiring</a></div>
+    <nav class="sb-nav">
+      <div class="sbs">Workspace</div>
+      <a class="ni" onclick="go('dashboard',null)"><span class="ni-i">◾</span>Dashboard</a>
+      <a class="ni" onclick="go('candidates',null)"><span class="ni-i">👤</span>Candidates</a>
+      <div class="sbs" style="margin-top:6px">Account</div>
+      <a class="ni" onclick="go('billing',null)"><span class="ni-i">💳</span>Billing</a>
+      <a class="ni on"><span class="ni-i">⚙️</span>Settings</a>
+    </nav>
+    <div class="sb-foot"><div class="sb-usr"><div class="av">AC</div><div><div class="sb-un">Arman Chen</div><div class="sb-uo">Acme Corp</div></div></div></div>
+  </aside>
+  <main class="main">
+    <div class="ph"><div><div class="pt">Settings</div></div></div>
+    <div class="settings-g">
+      <div class="set-card">
+        <div class="set-head"><div class="ct">Account</div></div>
+        <div class="set-body">
+          <div class="set-row"><div><div class="set-lbl">Name</div></div><span class="set-val">Arman Chen</span></div>
+          <div class="set-row"><div><div class="set-lbl">Email</div></div><span class="set-val">arman@acmecorp.com</span></div>
+          <div class="set-row"><div><div class="set-lbl">Company</div></div><span class="set-val">Acme Corp</span></div>
+          <div><button class="btn btn-out btn-sm">Edit profile</button></div>
+        </div>
+      </div>
+      <div class="set-card">
+        <div class="set-head"><div class="ct">Hiring preferences</div></div>
+        <div class="set-body">
+          <div class="set-row"><div><div class="set-lbl">Primary talent type</div><div class="set-sub">Used to calibrate market data</div></div><span class="set-val">Tech / Engineering</span></div>
+          <div class="set-row"><div><div class="set-lbl">Default location</div></div><span class="set-val">Remote — Europe</span></div>
+          <div><button class="btn btn-out btn-sm">Update preferences</button></div>
+        </div>
+      </div>
+      <div class="set-card">
+        <div class="set-head"><div class="ct">Notifications</div></div>
+        <div class="set-body">
+          <div class="set-row"><div><div class="set-lbl">Shortlist ready</div></div><span class="badge bd-g">On</span></div>
+          <div class="set-row"><div><div class="set-lbl">Weekly summary</div></div><span class="badge bd-g">On</span></div>
+          <div class="set-row"><div><div class="set-lbl">Outreach updates</div></div><span class="badge bd-n">Off</span></div>
+        </div>
+      </div>
+      <div class="set-card">
+        <div class="set-head"><div class="ct">Data &amp; Privacy</div></div>
+        <div class="set-body">
+          <div class="set-row"><div><div class="set-lbl">Data processing agreement</div></div><button class="btn btn-out btn-sm">View DPA</button></div>
+          <div class="set-row"><div><div class="set-lbl">Export all data</div></div><button class="btn btn-out btn-sm">Export</button></div>
+          <div><button class="btn btn-red btn-sm">Delete account</button></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</div>
+
+
+<script>
+/* ─────────────────────────────────────
+   STATE
+───────────────────────────────────── */
+const S = {
+  user: null,
+  qual: {},
+  qualResult: null, // 'pass'|'warn'|'reject'
+  role: {},
+  selectedRoleIdx: 0,
+  hintsShown: true,
+  roles: [
+    {id:1,title:'Customer Success Manager',loc:'Remote · US',diff:'Easy',price:50,status:'ready',found:56,contacted:56,replied:9,interviewed:9,shortlisted:5,progress:100},
+    {id:2,title:'Senior Product Designer',loc:'Remote · Europe',diff:'Medium',price:100,status:'interviews',found:142,contacted:142,replied:22,interviewed:11,shortlisted:0,progress:55},
+    {id:3,title:'Backend Engineer (Go)',loc:'Hybrid · Berlin',diff:'Hard',price:150,status:'sourcing',found:86,contacted:40,replied:0,interviewed:0,shortlisted:0,progress:20},
+  ],
+  billing: [
+    {role:'Customer Success Manager',date:'Mar 10, 2025',diff:'Easy',amt:50,status:'Paid'},
+    {role:'Senior Product Designer',date:'Mar 14, 2025',diff:'Medium',amt:100,status:'Paid'},
+    {role:'Backend Engineer (Go)',date:'Mar 16, 2025',diff:'Hard',amt:150,status:'Paid'},
+  ],
+  slIds: new Set([1,2,3,4,5]),
+  selCandId: null,
+  curFilter: 'all',
+  curSearch: '',
+};
+
+/* ─────────────────────────────────────
+   NAV
+───────────────────────────────────── */
+function go(id, btn) {
+  document.querySelectorAll('.scr').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.sw').forEach(b => b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  const map = {landing:'01',auth:'02',qual:'03',create:'04',strategy:'05',billing:'06',dashboard:'07',candidates:'08',settings:'09'};
+  if (btn) btn.classList.add('on');
+  else document.querySelectorAll('.sw').forEach(b => { if (b.textContent.includes(map[id])) b.classList.add('on'); });
+  window.scrollTo(0,0);
+  if (id==='dashboard') renderDash();
+  if (id==='billing') renderBilling();
+  if (id==='candidates') renderTable(getCandidates());
+  if (id==='strategy') renderStrategy();
+  if (id==='qual') startQual();
+  if (id==='create') startCreate();
+}
+function scrollTo(id) { const el = document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth'}); }
+
+/* ─────────────────────────────────────
+   AUTH
+───────────────────────────────────── */
+function switchTab(t) {
+  document.getElementById('auth-signup').style.display = t==='signup'?'block':'none';
+  document.getElementById('auth-login').style.display = t==='login'?'block':'none';
+  document.getElementById('tab-signup').className = 'auth-tab'+(t==='signup'?' on':'');
+  document.getElementById('tab-login').className = 'auth-tab'+(t==='login'?' on':'');
+}
+function doSignup() {
+  const e = document.getElementById('su-email').value;
+  const p = document.getElementById('su-pass').value;
+  const c = document.getElementById('su-company').value;
+  const err = document.getElementById('auth-err');
+  if (!e||!p||!c) { err.style.display='block'; return; }
+  err.style.display='none';
+  S.user = {email:e, company:c, name: e.split('@')[0].replace('.',' ').replace(/\b\w/g,l=>l.toUpperCase())};
+  updateUserInSidebars();
+  go('qual',null);
+}
+function doLogin() {
+  const e = document.getElementById('li-email').value;
+  const p = document.getElementById('li-pass').value;
+  const err = document.getElementById('auth-err2');
+  if (!e||!p) { err.style.display='block'; return; }
+  err.style.display='none';
+  S.user = {email:e, company:'Acme Corp', name: e.split('@')[0].replace('.',' ').replace(/\b\w/g,l=>l.toUpperCase())};
+  updateUserInSidebars();
+  go('dashboard',null);
+}
+function updateUserInSidebars() {
+  if (!S.user) return;
+  document.querySelectorAll('.sb-un').forEach(el => el.textContent = S.user.name||'User');
+  document.querySelectorAll('.sb-uo').forEach(el => el.textContent = S.user.company||'');
+  document.querySelectorAll('.av').forEach(el => el.textContent = (S.user.name||'U').substring(0,2).toUpperCase());
+}
+
+/* ─────────────────────────────────────
+   QUALIFICATION WIZARD
+───────────────────────────────────── */
+const QUAL_STEPS = [
+  {key:'role',q:'What role are you hiring for?',hint:'Enter the job title.',type:'text',ph:'e.g. Senior Product Designer',required:true},
+  {key:'loc',q:'Where is the role based?',hint:'',type:'select',opts:['Remote — Worldwide','Remote — Europe','Remote — US','Hybrid','On-site'],required:true},
+  {key:'level',q:'What level is this role?',hint:'',type:'opts',opts:[{ico:'🌱',t:'Junior',s:'0–2 years'},{ico:'⚡',t:'Mid-level',s:'2–5 years'},{ico:'🎯',t:'Senior',s:'5+ years'},{ico:'🏆',t:'Lead / Staff',s:'8+ years'}],required:true},
+  {key:'salary',q:'What salary range are you offering?',hint:'We use this to assess market fit.',type:'text',ph:'e.g. $80,000 – $120,000',required:false},
+  {key:'urgency',q:'How urgent is this hire?',hint:'',type:'opts',opts:[{ico:'🔥',t:'ASAP',s:'Need someone now'},{ico:'📅',t:'Within a month',s:'Normal pace'},{ico:'🌿',t:'No rush',s:'Pipeline building'}],required:true},
+];
+let qualStep = 0;
+function startQual() {
+  qualStep = 0;
+  S.qual = {};
+  S.qualResult = null;
+  document.getElementById('qual-reject').style.display='none';
+  document.getElementById('qual-warn-banner').style.display='none';
+  renderQualStep();
+}
+function renderQualStep() {
+  const s = QUAL_STEPS[qualStep];
+  const total = QUAL_STEPS.length;
+  renderProg('qual-prog', qualStep, total, QUAL_STEPS.map(s=>s.key.charAt(0).toUpperCase()+s.key.slice(1)));
+  const card = document.getElementById('qual-card');
+  card.style.display='block';
+  let input = '';
+  if (s.type==='text') {
+    input = `<input class="fi" id="q-input" type="text" placeholder="${s.ph||''}" value="${S.qual[s.key]||''}" style="font-size:15px;padding:11px 13px">`;
+  } else if (s.type==='select') {
+    input = `<select class="fs2" id="q-input" style="font-size:15px;padding:11px 13px"><option value="">Select…</option>${s.opts.map(o=>`<option${S.qual[s.key]===o?' selected':''}>${o}</option>`).join('')}</select>`;
+  } else if (s.type==='opts') {
+    input = `<div class="opt-g">${s.opts.map((o,i)=>`<div class="opt${S.qual[s.key]===o.t?' sel':''}" onclick="selectOpt('${o.t}')"><span class="opt-ico">${o.ico}</span><div><div class="opt-t">${o.t}</div><div class="opt-s">${o.s}</div></div></div>`).join('')}</div>`;
+  }
+  card.innerHTML = `<div class="wiz-body">
+    <div class="wiz-step-lbl">Step ${qualStep+1} of ${total}</div>
+    <div class="wiz-q">${s.q}</div>
+    ${s.hint?`<div class="wiz-hint">${s.hint}</div>`:''}
+    ${input}
+  </div>
+  <div class="wiz-foot">
+    <button class="btn btn-ghost btn-sm" onclick="${qualStep===0?"go('landing',null)":"prevQual()"}">${qualStep===0?'← Back to landing':'← Back'}</button>
+    <button class="btn btn-dk" id="q-cont" onclick="nextQual()">Continue →</button>
+  </div>`;
+}
+function selectOpt(val) { S.qual[QUAL_STEPS[qualStep].key]=val; renderQualStep(); }
+function prevQual() { if(qualStep>0){qualStep--;renderQualStep();} }
+function nextQual() {
+  const s = QUAL_STEPS[qualStep];
+  let val = S.qual[s.key];
+  if (s.type==='text'||s.type==='select') { const inp = document.getElementById('q-input'); val = inp?.value||''; }
+  if (s.required && !val) { document.getElementById('q-input')?.classList.add('err'); return; }
+  S.qual[s.key] = val;
+  if (qualStep === QUAL_STEPS.length-1) {
+    evaluateQual(); return;
+  }
+  qualStep++;
+  renderQualStep();
+}
+function evaluateQual() {
+  const sal = (S.qual.salary||'').toLowerCase();
+  const isReject = sal.includes('10,000')||sal.includes('15,000')||sal.includes('20,000')||sal.includes('25,000');
+  const isWarn = sal.includes('40,000')||sal.includes('45,000')||sal.includes('50,000')||sal.includes('55,000');
+  document.getElementById('qual-card').style.display='none';
+  if (isReject) {
+    S.qualResult = 'reject';
+    document.getElementById('qual-reject').style.display='block';
+  } else {
+    S.qualResult = isWarn ? 'warn' : 'pass';
+    if (isWarn) document.getElementById('qual-warn-banner').style.display='flex';
+    setTimeout(()=>go('create',null),isWarn?1800:400);
+  }
+}
+function resetQual() { document.getElementById('qual-reject').style.display='none'; document.getElementById('qual-card').style.display='block'; qualStep=0; startQual(); }
+
+/* ─────────────────────────────────────
+   CREATE ROLE WIZARD
+───────────────────────────────────── */
+const CR_STEPS = [
+  {key:'title',q:'Role title',hint:'What is the job title?',type:'text',ph:'e.g. Senior Product Designer',required:true},
+  {key:'seniority',q:'Seniority level',hint:'',type:'opts',opts:[{ico:'🌱',t:'Junior',s:'0–2 yrs'},{ico:'⚡',t:'Mid-level',s:'2–5 yrs'},{ico:'🎯',t:'Senior',s:'5+ yrs'},{ico:'🏆',t:'Lead/Staff',s:'8+ yrs'}],required:true},
+  {key:'skills',q:'Key skills &amp; stack',hint:'List the most important skills. Separate with commas.',type:'text',ph:'e.g. Figma, Design Systems, B2B SaaS',required:true},
+  {key:'loc',q:'Location',hint:'',type:'select',opts:['Remote — Worldwide','Remote — Europe','Remote — US','Hybrid','On-site'],required:true},
+  {key:'salary',q:'Salary range',hint:'Optional — helps calibrate market data.',type:'text',ph:'e.g. $80k – $120k',required:false},
+  {key:'desc',q:'Short description',hint:'Optional — any extra context.',type:'textarea',ph:'Team size, key projects, expectations…',required:false},
+];
+let crStep = 0;
+function startCreate() {
+  crStep = 0;
+  if (Object.keys(S.role).length===0) S.role={};
+  renderCrStep();
+}
+function renderCrStep() {
+  const s = CR_STEPS[crStep];
+  const total = CR_STEPS.length;
+  renderProg('create-prog', crStep, total, ['Title','Seniority','Skills','Location','Salary','Description']);
+  const card = document.getElementById('create-card');
+  let input = '';
+  if (s.type==='text') {
+    input = `<input class="fi" id="cr-input" type="text" placeholder="${s.ph||''}" value="${S.role[s.key]||''}" style="font-size:15px;padding:11px 13px" oninput="checkCrCont()">`;
+  } else if (s.type==='textarea') {
+    input = `<textarea class="fta" id="cr-input" placeholder="${s.ph||''}" style="font-size:13.5px;min-height:100px">${S.role[s.key]||''}</textarea>`;
+  } else if (s.type==='select') {
+    input = `<select class="fs2" id="cr-input" style="font-size:15px;padding:11px 13px" onchange="checkCrCont()"><option value="">Select…</option>${s.opts.map(o=>`<option${S.role[s.key]===o?' selected':''}>${o}</option>`).join('')}</select>`;
+  } else if (s.type==='opts') {
+    input = `<div class="opt-g">${s.opts.map(o=>`<div class="opt${S.role[s.key]===o.t?' sel':''}" onclick="selectCrOpt('${o.t}')"><span class="opt-ico">${o.ico}</span><div><div class="opt-t">${o.t}</div><div class="opt-s">${o.s}</div></div></div>`).join('')}</div>`;
+  }
+  const isLast = crStep===CR_STEPS.length-1;
+  const canSkip = !s.required;
+  card.innerHTML = `<div class="wiz-body">
+    <div class="wiz-step-lbl">Step ${crStep+1} of ${total}</div>
+    <div class="wiz-q">${s.q}</div>
+    ${s.hint?`<div class="wiz-hint">${s.hint}</div>`:''}
+    ${input}
+  </div>
+  <div class="wiz-foot">
+    <button class="btn btn-ghost btn-sm" onclick="${crStep===0?"go('qual',null)":"prevCr()"}">${crStep===0?'← Back':'← Back'}</button>
+    <div style="display:flex;gap:8px">
+      ${canSkip?`<button class="btn btn-ghost btn-sm" onclick="nextCr(true)">Skip</button>`:''}
+      <button class="btn btn-dk" id="cr-cont" onclick="nextCr(false)" ${s.required&&s.type!=='opts'&&!S.role[s.key]?'disabled':''}>${isLast?'Review strategy →':'Continue →'}</button>
+    </div>
+  </div>`;
+}
+function selectCrOpt(val) { S.role[CR_STEPS[crStep].key]=val; renderCrStep(); }
+function checkCrCont() {
+  const s = CR_STEPS[crStep];
+  const inp = document.getElementById('cr-input');
+  const btn = document.getElementById('cr-cont');
+  if (!btn||!inp) return;
+  btn.disabled = s.required && !inp.value.trim();
+  if (inp.value) S.role[s.key]=inp.value;
+}
+function prevCr() { if(crStep>0){crStep--;renderCrStep();} }
+function nextCr(skip) {
+  const s = CR_STEPS[crStep];
+  if (!skip && (s.type==='text'||s.type==='textarea'||s.type==='select')) {
+    const inp = document.getElementById('cr-input');
+    if (inp?.value) S.role[s.key]=inp.value;
+  }
+  if (crStep===CR_STEPS.length-1) { go('strategy',null); return; }
+  crStep++;
+  renderCrStep();
+}
+function renderProg(id, step, total, labels) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let html = '';
+  for (let i=0;i<total;i++) {
+    const cl = i<step?'done':i===step?'act':'pend';
+    if (i>0) html+=`<div class="wp-line"></div>`;
+    html+=`<div class="wp"><div class="wp-n ${cl}">${i<step?'✓':i+1}</div><div class="wp-l ${cl}">${labels[i]}</div></div>`;
+  }
+  el.innerHTML = html;
+}
+
+/* ─────────────────────────────────────
+   STRATEGY
+───────────────────────────────────── */
+function renderStrategy() {
+  const r = S.role;
+  const title = r.title || 'Senior Product Designer';
+  const loc = r.loc || 'Remote — Europe';
+  const seniority = r.seniority || 'Senior';
+  const skills = r.skills || 'Figma, Design Systems, B2B SaaS';
+  const salary = r.salary || '$90k – $120k';
+  const diff = r.diff || 'Medium';
+  const isWarn = S.qualResult==='warn';
+  document.getElementById('strat-title').textContent = `Hiring Strategy — ${title}`;
+  document.getElementById('strat-sub').textContent = 'Ready to review';
+  const tags = [seniority, ...(skills||'').split(',').slice(0,3).map(s=>s.trim()), loc, salary].filter(Boolean);
+  document.getElementById('strat-tags').innerHTML = tags.map(t=>`<span class="tag">${t}</span>`).join('');
+  document.getElementById('strat-desc').textContent = r.desc || `${seniority} ${title} role. ${skills||''}. Location: ${loc}.`;
+  const diffMap={Easy:{score:'3.4',price:'$50',o1:'60–90',o2:'60–90',o3:'12–18',o4:'3–6',badge:'bd-g',name:'Easy',why:'Broad candidate pool, clear requirements, competitive salary.',sal:'P70',salLbl:'Good',salBar:'72%',salBarCl:'bf-g'},Medium:{score:'6.2',price:'$100',o1:'120–180',o2:'120–180',o3:'17–25',o4:'5–10',badge:'bd-a',name:'Medium',why:'Good pool, high competition. AI increases outreach volume.',sal:'P55',salLbl:'Moderate',salBar:'55%',salBarCl:'bf-a'},Hard:{score:'8.9',price:'$150',o1:'200–300',o2:'200–300',o3:'20–30',o4:'4–8',badge:'bd-r',name:'Hard',why:'Niche skills, scarce supply. Extended sourcing pass required.',sal:'P45',salLbl:'Moderate',salBar:'45%',salBarCl:'bf-a'}};
+  const d = diffMap[diff]||diffMap.Medium;
+  document.getElementById('strat-diff-name').textContent = d.name;
+  document.getElementById('strat-diff-why').textContent = d.why;
+  document.getElementById('strat-diff-sc').textContent = d.score;
+  document.getElementById('strat-diff-badge').className = `badge ${d.badge}`;
+  document.getElementById('strat-diff-badge').textContent = d.name+' difficulty';
+  document.getElementById('strat-price').textContent = d.price;
+  document.getElementById('strat-o1').textContent = d.o1;
+  document.getElementById('strat-o2').textContent = d.o2;
+  document.getElementById('strat-o3').textContent = d.o3;
+  document.getElementById('strat-o4').textContent = d.o4;
+  document.getElementById('strat-sal').textContent = d.sal;
+  document.getElementById('strat-sal-lbl').textContent = d.salLbl;
+  document.getElementById('strat-sal-bar').style.width = d.salBar;
+  document.getElementById('strat-sal-bar').className = `bf ${d.salBarCl}`;
+  document.getElementById('strat-warn-banner').style.display = isWarn?'flex':'none';
+}
+
+/* ─────────────────────────────────────
+   BILLING
+───────────────────────────────────── */
+function renderBilling() {
+  const r = S.role;
+  const diff = r.diff||S.roles[1].diff;
+  const priceMap = {Easy:'$50',Medium:'$100',Hard:'$150'};
+  const price = priceMap[diff]||'$100';
+  document.getElementById('pay-role-name').textContent = r.title||S.roles[1].title;
+  document.getElementById('pay-diff').textContent = diff;
+  document.getElementById('pay-diff').className = `badge ${diff==='Easy'?'bd-g':diff==='Hard'?'bd-r':'bd-a'}`;
+  document.getElementById('pay-loc').textContent = r.loc||'Remote — Europe';
+  document.getElementById('pay-total').textContent = price;
+  document.getElementById('pay-amount').textContent = price.replace('$','');
+  const histEl = document.getElementById('pay-hist-list');
+  histEl.innerHTML = S.billing.map(b=>`<div class="bh-row"><div><div class="bh-role">${b.role}</div><div class="bh-meta">${b.date} · ${b.diff}</div></div><div><div class="bh-amt">$${b.amt}</div><div class="bh-st" style="color:var(--g)">${b.status}</div></div></div>`).join('');
+  document.getElementById('pay-hist-count').textContent = S.billing.length+' transactions';
+}
+function doPay() {
+  const r = S.role;
+  const diff = r.diff||'Medium';
+  const priceMap={Easy:50,Medium:100,Hard:150};
+  const amt = priceMap[diff]||100;
+  S.billing.unshift({role:r.title||'New Role',date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),diff,amt,status:'Paid'});
+  S.roles.unshift({id:Date.now(),title:r.title||'New Role',loc:r.loc||'Remote',diff,price:amt,status:'sourcing',found:0,contacted:0,replied:0,interviewed:0,shortlisted:0,progress:0});
+  S.selectedRoleIdx = 0;
+  document.getElementById('pay-modal').style.display='flex';
+}
+function closePay() { document.getElementById('pay-modal').style.display='none'; go('dashboard',null); }
+function closeLaunch() { document.getElementById('launch-modal').style.display='none'; go('dashboard',null); }
+
+/* ─────────────────────────────────────
+   DASHBOARD
+───────────────────────────────────── */
+function renderDash() {
+  const main = document.getElementById('dash-main');
+  if (S.roles.length===0) {
+    main.innerHTML=`<div class="empty-state"><div class="es-ico">🚀</div><div class="es-t">No active roles yet</div><div class="es-s">Launch your first AI recruiter to start sourcing candidates automatically.</div><button class="btn btn-dk btn-lg" onclick="go('qual',null)">Launch your first role →</button></div>`;
+    return;
+  }
+  const role = S.roles[S.selectedRoleIdx];
+  const statusMap={sourcing:{chip:'ch-src',label:'Sourcing',pipeAct:[0]},outreach:{chip:'ch-src',label:'Outreach active',pipeAct:[0,1]},interviews:{chip:'ch-int',label:'Interviews running',pipeAct:[0,1,2]},ready:{chip:'ch-rdy',label:'Shortlist ready',pipeAct:[0,1,2,3]}};
+  const st = statusMap[role.status]||statusMap.sourcing;
+  const pipeStages=[{n:role.found,l:'Sourced'},{n:role.contacted,l:'Contacted'},{n:role.replied,l:'Replied'},{n:role.interviewed,l:'Interviewed'},{n:role.shortlisted,l:'Shortlisted'}];
+  const diffBadge={Easy:'bd-g',Medium:'bd-a',Hard:'bd-r'}[role.diff]||'bd-a';
+  const shortlistCands = CAND_DATA.slice(0,4);
+  main.innerHTML=`
+    ${S.hintsShown?`<div class="hint-bar" id="hint-bar"><span>✦</span><span style="font-weight:500">Quick tour</span><span style="color:var(--t2)">Key areas are highlighted below.</span><button onclick="dismissHints()">Dismiss</button></div>`:''}
+    <div class="ph">
+      <div><div class="pt">Dashboard</div><div class="ps">AI system status</div></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div style="position:relative">
+          <button class="btn btn-dk ${S.hintsShown?'hint-ring':''}" id="hint-launch" onclick="go('qual',null)">+ Launch new role</button>
+          ${S.hintsShown?`<div class="hbub hb-b" style="white-space:nowrap">Launch another role here</div>`:''}
+        </div>
+      </div>
+    </div>
+    <div class="role-switcher">
+      <span class="rs-label">Role</span>
+      <select class="rs-sel" onchange="switchRole(this.value)">
+        ${S.roles.map((r,i)=>`<option value="${i}"${i===S.selectedRoleIdx?' selected':''}>${r.title}</option>`).join('')}
+      </select>
+      <span class="badge ${diffBadge} rs-badge">${role.diff}</span>
+      <div class="chip ${st.chip}" style="margin-left:8px"><div class="ch-d"></div>${st.label}</div>
+    </div>
+    <div class="stats-r">
+      ${pipeStages.map(p=>`<div class="sc"><div class="sc-l">${p.l}</div><div class="sc-n">${p.n}</div></div>`).join('')}
+    </div>
+    <div style="margin-bottom:18px">
+      <div class="sch"><div class="sct">Pipeline</div></div>
+      <div class="pipe-stages">
+        ${pipeStages.map((p,i)=>{
+          const done=i<st.pipeAct[st.pipeAct.length-1];
+          const act=st.pipeAct.includes(i);
+          return`<div class="pipe-stage${act?' act':done?' done':''}"><div class="pipe-n">${p.n}</div><div class="pipe-l">${p.l}</div></div>`;
+        }).join('')}
+      </div>
+    </div>
+    <div class="dash-g">
+      <div class="dash-l">
+        <div>
+          <div class="sch"><div class="sct">All roles</div><span class="scm">${S.roles.length} active</span></div>
+          ${S.roles.map((r,i)=>{
+            const st2=statusMap[r.status]||statusMap.sourcing;
+            const db={Easy:'bd-g',Medium:'bd-a',Hard:'bd-r'}[r.diff]||'bd-a';
+            return`<div class="card" style="padding:12px 15px;margin-bottom:6px;cursor:pointer;display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center" onclick="switchRole(${i})" onmouseover="this.style.borderColor='var(--c)'" onmouseout="this.style.borderColor='var(--b1)'">
+              <div><div style="font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:2px">${r.title}</div><div style="font-size:11.5px;color:var(--t3)">${r.loc}</div></div>
+              <div><div class="chip ${st2.chip}"><div class="ch-d"></div>${st2.label}</div></div>
+              <div><span class="badge ${db}">${r.diff}</span></div>
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="card p">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><div class="ct">AI activity</div><span class="scm">Live</span></div>
+          <div class="act-list">
+            <div class="act-i"><div class="act-ico">✅</div><div><div class="act-t"><strong>Maya Reinholt</strong> completed AI interview — Customer Success Manager</div><div class="act-tm">2h ago</div></div></div>
+            <div class="act-i"><div class="act-ico">✉️</div><div><div class="act-t"><strong>3 new replies</strong> — Senior Product Designer outreach</div><div class="act-tm">5h ago</div></div></div>
+            <div class="act-i"><div class="act-ico">👤</div><div><div class="act-t"><strong>+34 profiles sourced</strong> — Backend Engineer (Go)</div><div class="act-tm">9h ago</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="dash-r">
+        <div style="position:relative">
+          <div class="card p ${S.hintsShown?'hint-ring':''}" id="hint-shortlist" style="border-color:var(--gb)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <div><div class="ct" style="color:var(--g)">Shortlist Ready</div><div class="cs">Customer Success Manager</div></div>
+              <button class="btn btn-out btn-sm" onclick="go('candidates',null)">View all</button>
+            </div>
+            <div class="cml">
+              ${shortlistCands.map(c=>`<div class="cm" onclick="go('candidates',null)"><div class="cav2">${c.ini}</div><div style="flex:1"><div class="cmn">${c.name}</div><div class="cms">${c.exp} · ${c.loc}</div></div><div class="csc ${c.score>=80?'csc-hi':'csc-md'}">${c.score}</div></div>`).join('')}
+            </div>
+          </div>
+          ${S.hintsShown?`<div class="hbub hb-b">Review shortlist here</div>`:''}
+        </div>
+        <div class="card p">
+          <div class="ct" style="margin-bottom:8px">Progress</div>
+          ${S.roles.map(r=>`<div class="vp-row"><div class="vp-top"><span class="vp-n">${r.title.split(' ').slice(0,2).join(' ')}</span><span class="vp-p">${r.progress}%</span></div><div class="vp-tr"><div class="vp-f" style="width:${r.progress}%;${r.progress===100?'background:var(--g)':''}"></div></div></div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+function switchRole(idx) {
+  S.selectedRoleIdx = parseInt(idx);
+  renderDash();
+}
+function dismissHints() {
+  S.hintsShown = false;
+  renderDash();
+}
+
+/* ─────────────────────────────────────
+   CANDIDATES
+───────────────────────────────────── */
+const CAND_DATA=[
+  {id:1,ini:'MR',name:'Maya Reinholt',exp:'5 yrs',loc:'Zurich',src:'LinkedIn',score:92,skills:['CS','Churn','SaaS'],status:'shortlisted',sum:'Strong track record reducing churn at Series B SaaS. Process-driven.',str:['5 yrs CS at B2B SaaS','Reduced churn 22%','Excellent async comms'],con:['No enterprise accounts'],iv:[{q:'How do you handle an at-risk account?',a:'3-step playbook: detect early, escalate, joint QBR.'},{q:'Metrics you own?',a:'NRR, GRR, time-to-value.'}]},
+  {id:2,ini:'JT',name:'Jake Torres',exp:'3 yrs',loc:'Remote',src:'LinkedIn',score:88,skills:['Onboarding','NRR','HubSpot'],status:'shortlisted',sum:'Built CS from 0 at 20-person startup. Strong onboarding.',str:['Built onboarding 0→1','High NRR ownership'],con:['Limited scale >$5M ARR'],iv:[{q:'Onboarding structure?',a:'7-step template, automated follow-ups. TTV -30%.'}]},
+  {id:3,ini:'LK',name:'Lena Koval',exp:'4 yrs',loc:'Amsterdam',src:'Outreach',score:74,skills:['Renewals','QBR','Salesforce'],status:'shortlisted',sum:'Solid renewal track. Strong QBR prep. Reactive risk detection.',str:['$4M renewal book','Strong QBR facilitation'],con:['Reactive vs proactive'],iv:[{q:'Difficult renewal?',a:'Process-heavy escalation. Good outcome, slow detection.'}]},
+  {id:4,ini:'PD',name:'Priya Das',exp:'6 yrs',loc:'London',src:'LinkedIn',score:71,skills:['CS Leadership','Playbooks','Gainsight'],status:'shortlisted',sum:'Managed CS team. May be overqualified for IC.',str:['Built CS playbook 6-person team'],con:['Expects leadership role','Comp above range'],iv:[{q:'Why IC again?',a:'New industry transition. Plausible.'}]},
+  {id:5,ini:'RA',name:'Reza Ahmadi',exp:'2 yrs',loc:'Berlin',src:'Outreach',score:65,skills:['Onboarding','Intercom','NPS'],status:'shortlisted',sum:'Junior but high potential. Needs ramp time.',str:['Strong comms','Fast learner'],con:['2 yrs only','Book <$500k'],iv:[{q:'2-year goal?',a:'Own a book, lead a CS pod.'}]},
+  {id:6,ini:'TF',name:'Tom Fischer',exp:'4 yrs',loc:'Munich',src:'LinkedIn',score:58,skills:['B2B SaaS','Renewals','ZenDesk'],status:'interviewed',sum:'Generic answers. Lacks metric specificity.',str:['Stable tenure'],con:['Vague on metrics','No ownership signals'],iv:[{q:'Current NRR?',a:'"Around 100-110%" — no confidence. Red flag.'}]},
+  {id:7,ini:'AL',name:'Anna Lee',exp:'3 yrs',loc:'Dublin',src:'Outreach',score:55,skills:['Onboarding','HubSpot','Slack'],status:'interviewed',sum:'Motivated but in support role. Scope mismatch.',str:['Genuine enthusiasm'],con:['Support background','No renewal ownership'],iv:[{q:'Owned a renewal?',a:'No direct ownership.'}]},
+  {id:8,ini:'LP',name:'Leo Park',exp:'5 yrs',loc:'Remote',src:'LinkedIn',score:52,skills:['CS','Churn','Salesforce'],status:'interviewed',sum:'Long tenure but reactive. No proactive strategies.',str:['5 years stable tenure'],con:['Highly reactive','Avoided metrics'],iv:[{q:'Churn you could not prevent?',a:'Vague, no learnings.'}]},
+  {id:9,ini:'SM',name:'Sara Müller',exp:'3 yrs',loc:'Hamburg',src:'Outreach',score:48,skills:['SMB','Onboarding','NPS'],status:'interviewed',sum:'SMB only. Below bar for mid-market.',str:['High vol onboarding'],con:['SMB only','$5k ACV too small'],iv:[{q:'Avg book size?',a:'$5k ACV, 150 accounts.'}]},
+];
+function getCandidates() { return CAND_DATA; }
+function filterC() {
+  S.curSearch = document.getElementById('srch').value.toLowerCase();
+  renderTable(getCandidates());
+}
+function setF(f,btn) {
+  S.curFilter=f;
+  document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderTable(getCandidates());
+}
+function sortC(v) { renderTable(getCandidates(),v); }
+function getFiltered(list) {
+  return list.filter(c=>{
+    const mf = S.curFilter==='all'||(S.curFilter==='shortlisted'&&S.slIds.has(c.id))||(S.curFilter==='interviewed'&&!S.slIds.has(c.id));
+    const ms = !S.curSearch||c.name.toLowerCase().includes(S.curSearch)||c.sum.toLowerCase().includes(S.curSearch);
+    return mf&&ms;
+  });
+}
+function renderTable(list,sort) {
+  const s=sort||'score';
+  const sorted=[...getFiltered(list)].sort((a,b)=>s==='score'?b.score-a.score:a.name.localeCompare(b.name));
+  const wrap=document.getElementById('ct');
+  if(!wrap)return;
+  const head=wrap.querySelector('.ct-head');
+  wrap.innerHTML=''; wrap.appendChild(head);
+  if(sorted.length===0){const d=document.createElement('div');d.className='no-res';d.innerHTML='<div class="no-res-t">No results</div><div class="no-res-s">Adjust search or filter.</div>';wrap.appendChild(d);return;}
+  sorted.forEach(c=>{
+    const isSL=S.slIds.has(c.id);
+    const sc=c.score>=80?'sc2-hi':c.score>=65?'sc2-md':'sc2-lo';
+    const stB=isSL?'<span class="badge bd-g">Shortlisted</span>':'<span class="badge bd-n">Interviewed</span>';
+    const row=document.createElement('div');
+    row.className='ct-row'+(c.id===S.selCandId?' sel':'');
+    row.innerHTML=`<div class="cc"><div class="ca">${c.ini}</div><div><div class="cn">${c.name}</div><div class="csrc">${c.exp}·${c.loc}</div></div></div><div class="sc2 ${sc}">${c.score}</div><div class="sk-col">${c.skills.map(sk=>`<span class="tag">${sk}</span>`).join('')}</div><div>${stB}</div><div class="sum-col">${c.sum.substring(0,68)}…</div>`;
+    row.onclick=()=>openCand(c);
+    wrap.appendChild(row);
+  });
+}
+function openCand(c) {
+  S.selCandId=c.id;
+  renderTable(getCandidates());
+  const isSL=S.slIds.has(c.id);
+  document.getElementById('pp-empty').style.display='none';
+  const pf=document.getElementById('pp-filled');
+  pf.style.display='flex';
+  document.getElementById('pp-n').textContent=c.name;
+  document.getElementById('pp-r').textContent=`${c.exp}·${c.loc}·${c.src}`;
+  const sc=document.getElementById('pp-sc');
+  sc.textContent=c.score;
+  sc.className='pp-sc '+(c.score>=80?'sc2-hi':c.score>=65?'sc2-md':'sc2-lo');
+  document.getElementById('pp-b').innerHTML=isSL?'<span class="badge bd-g">Shortlisted</span>':'<span class="badge bd-n">Interviewed</span>';
+  document.getElementById('pp-sum').textContent=c.sum;
+  document.getElementById('pp-str').innerHTML=c.str.map(s=>`<li>${s}</li>`).join('');
+  document.getElementById('pp-con').innerHTML=c.con.map(s=>`<li>${s}</li>`).join('');
+  document.getElementById('pp-iv').innerHTML=c.iv.map(i=>`<div class="pp-qa"><div class="pp-q">${i.q}</div><div class="pp-a">${i.a}</div></div>`).join('');
+  updateSLBtn();
+}
+function updateSLBtn() {
+  if(!S.selCandId)return;
+  const isSL=S.slIds.has(S.selCandId);
+  const btn=document.getElementById('btn-sl');
+  if(!btn)return;
+  btn.textContent=isSL?'✓ Shortlisted':'Shortlist';
+  btn.className='btn btn-sm '+(isSL?'btn-g':'btn-c');
+}
+function toggleSL() {
+  if(!S.selCandId)return;
+  if(S.slIds.has(S.selCandId))S.slIds.delete(S.selCandId);
+  else S.slIds.add(S.selCandId);
+  renderTable(getCandidates());
+  openCand(CAND_DATA.find(c=>c.id===S.selCandId));
+}
+
+/* ── INIT ── */
+renderTable(getCandidates());
+</script>
+</body>
+</html>
