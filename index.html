@@ -1180,13 +1180,14 @@ footer{
 }
 
 /* Step 1: Hero — no video, show gradient */
-.is-mobile .hero-bg-video {
-  display: none !important;
+/* Hero video starts hidden — JS shows it once loaded */
+.hero-bg-video {
+  opacity: 0;
+  transition: opacity 1.2s ease;
 }
-.is-mobile .hero {
-  background: linear-gradient(165deg, #3A1C0A 0%, #5C2E1A 25%, #8B4A24 55%, #2C1408 100%) !important;
-  min-height: 100svh !important;
-  min-height: 100vh !important;
+/* Hero always has gradient fallback visible underneath */
+.hero {
+  background: linear-gradient(165deg, #3A1C0A 0%, #5C2E1A 25%, #8B4A24 55%, #2C1408 100%);
 }
 
 /* Step 2: Kill ALL sticky positioning — main source of white screens */
@@ -1594,16 +1595,17 @@ footer{
 
 <!-- HERO — video background -->
 <section class="hero" id="top">
- <video
-  id="heroVideo"
-  class="hero-bg-video"
-  muted
-  playsinline
-  controls
-  preload="metadata"
-  style="background:transparent">
-  <source src="hero.mp4?v=2" type="video/mp4">
-</video>
+  <video
+    id="heroVideo"
+    class="hero-bg-video"
+    autoplay muted loop playsinline
+    webkit-playsinline
+    x-webkit-airplay="deny"
+    disableRemotePlayback
+    preload="metadata"
+    style="background:transparent">
+    <source src="hero-final.mp4" type="video/mp4">
+  </video>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <h1 class="hero-h1">Быть на чеку<br><em>просто.</em></h1>
@@ -2564,11 +2566,10 @@ footer{
    ЧЕКАПИ — main.js
 ═══════════════════════════════════════════════════ */
 
-/* ── VIDEO FALLBACK — skip on mobile, show gradient ── */
+/* ── VIDEO — работает на всех устройствах ── */
 (function(){
   const v = document.getElementById('heroVideo');
   if(!v) return;
-
   v.style.opacity = '0';
   v.style.transition = 'opacity 1.2s ease';
 
@@ -2576,32 +2577,28 @@ footer{
     v.style.display = 'block';
     v.style.opacity = '1';
   };
-
   const hideVideo = () => {
     v.style.display = 'none';
   };
 
-  // Показываем видео, когда оно реально готово
+  // Показываем видео когда оно реально готово
   v.addEventListener('loadeddata', showVideo);
   v.addEventListener('canplay', showVideo);
-
-  // Прячем только если сам файл битый/не загрузился
+  // Прячем только если файл битый/не загрузился
   v.addEventListener('error', hideVideo);
 
-  // Не скрываем видео, если autoplay просто заблокирован
+  // Пробуем запустить autoplay
   const tryPlay = () => {
     const p = v.play();
-    if (p && typeof p.catch === 'function') {
-      p.catch(() => {
-        // Ничего не делаем: на мобильных autoplay может быть заблокирован
-        // Видео остаётся на месте и сможет стартовать после взаимодействия
+    if(p && typeof p.catch === 'function'){
+      p.catch(()=>{
+        // Autoplay заблокирован — видео остаётся, запустится после касания
       });
     }
   };
-
   tryPlay();
 
-  // После первого касания пробуем ещё раз
+  // После первого касания пробуем ещё раз (iOS требует user gesture)
   document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
   document.addEventListener('click', tryPlay, { once: true });
 })();
@@ -2718,32 +2715,26 @@ function fadeUp(el, delayMs, durMs){
   }));
 }
 
-/* ── SCROLL-REVEAL — skip on mobile (CSS handles it) ── */
-if(window.__isMobile) {
-  // On mobile: everything already visible via CSS is-mobile rules
-  // Nothing to do — CSS .is-mobile .r { opacity:1 } handles it
-} else {
-  const revealObs = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add('vis'); revealObs.unobserve(e.target); }
-    });
-  },{threshold:0, rootMargin:'0px 0px -20px 0px'});
-  document.querySelectorAll('.r').forEach(el=>revealObs.observe(el));
-  // Reveal elements in viewport on load
-  function revealVisible(){
-    document.querySelectorAll('.r:not(.vis)').forEach(el=>{
-      const rect = el.getBoundingClientRect();
-      if(rect.top < window.innerHeight + 50) el.classList.add('vis');
-    });
-  }
-  revealVisible();
-  setTimeout(revealVisible, 100);
-  setTimeout(revealVisible, 400);
+/* ── SCROLL-REVEAL — работает на всех устройствах ── */
+const revealObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('vis'); revealObs.unobserve(e.target); }
+  });
+},{threshold:0, rootMargin:'0px 0px -10px 0px'});
+document.querySelectorAll('.r').forEach(el=>revealObs.observe(el));
+
+// Сразу показываем всё что в viewport
+function revealVisible(){
+  document.querySelectorAll('.r:not(.vis)').forEach(el=>{
+    if(el.getBoundingClientRect().top < window.innerHeight + 50)
+      el.classList.add('vis');
+  });
 }
-// Hard fallback regardless
-setTimeout(()=>{
-  document.querySelectorAll('.r:not(.vis)').forEach(el=>el.classList.add('vis'));
-}, 1200);
+revealVisible();
+setTimeout(revealVisible, 150);
+// Жёсткий fallback — всё видимо через 1с
+setTimeout(()=>{ document.querySelectorAll('.r:not(.vis)').forEach(el=>el.classList.add('vis')); }, 1000);
+
 
 
 
@@ -2828,9 +2819,9 @@ window.addEventListener('scroll', updateHiwNav, {passive:true});
 })();
 
 /* ════════════════════════════════════════
-   EASY CARD 1 — calendar sequence (desktop only)
+   EASY CARD 1 — calendar sequence
 ════════════════════════════════════════ */
-if(!window.__isMobile) (function(){
+(function(){
   let done=false;
   const obs = new IntersectionObserver(entries=>{
     if(!entries[0].isIntersecting||done) return;
@@ -2869,9 +2860,9 @@ if(!window.__isMobile) (function(){
 })();
 
 /* ════════════════════════════════════════
-   EASY CARD 2 — chart dots (desktop only)
+   EASY CARD 2 — chart dots
 ════════════════════════════════════════ */
-if(!window.__isMobile) (function(){
+(function(){
   let done=false;
   const obs = new IntersectionObserver(entries=>{
     if(!entries[0].isIntersecting||done) return;
@@ -2905,9 +2896,9 @@ if(!window.__isMobile) (function(){
 })();
 
 /* ════════════════════════════════════════
-   EASY CARD 3 — protocol items (desktop only)
+   EASY CARD 3 — protocol items
 ════════════════════════════════════════ */
-if(!window.__isMobile) (function(){
+(function(){
   let done=false;
   const obs = new IntersectionObserver(entries=>{
     if(!entries[0].isIntersecting||done) return;
@@ -2929,9 +2920,9 @@ if(!window.__isMobile) (function(){
 })();
 
 /* ════════════════════════════════════════
-   HIW STEP 2 (desktop only)
+   HIW STEP 2
 ════════════════════════════════════════ */
-if(!window.__isMobile) (function(){
+(function(){
   let done=false;
   const obs = new IntersectionObserver(entries=>{
     if(!entries[0].isIntersecting||done) return;
@@ -2952,9 +2943,9 @@ if(!window.__isMobile) (function(){
 })();
 
 /* ════════════════════════════════════════
-   DATA SECTION (desktop only)
+   DATA SECTION
 ════════════════════════════════════════ */
-if(!window.__isMobile) (function(){
+(function(){
   let done=false;
   const obs = new IntersectionObserver(entries=>{
     if(!entries[0].isIntersecting||done) return;
@@ -2998,9 +2989,9 @@ if(!window.__isMobile) (function(){
 })();
 
 /* ════════════════════════════════════════
-   WEARABLES (desktop only)
+   WEARABLES
 ════════════════════════════════════════ */
-if(!window.__isMobile) (function(){
+(function(){
   let done=false;
   function build(){
     if(done) return; done=true;
