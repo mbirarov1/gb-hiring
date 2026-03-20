@@ -1,0 +1,3020 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Чекапи — Быть на чеку просто</title>
+<!-- Mobile detection — runs BEFORE render to prevent flash -->
+<script>
+(function(){
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    || ('ontouchstart' in window)
+    || window.innerWidth <= 768;
+  if(isMobile) {
+    document.documentElement.classList.add('is-mobile');
+    // Also store for JS use
+    window.__isMobile = true;
+  }
+})();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   DESIGN TOKENS — Function Health exact
+══════════════════════════════════════════ */
+:root {
+  --cream: #F8F3EB;
+  --cream-d: #F0E9DC;
+  --card:   #EDE5D8;
+  --rust:   #C4622D;
+  --rust-d: #A04E22;
+  --rust-l: #EDCFBC;
+  --rust-ll:#F5E6DC;
+  --dark:   #1C0D06;
+  --text:   #2C1A10;
+  --mid:    #7A5C48;
+  --light:  #B8997E;
+  --border: #DDD4C8;
+  --white:  #FFFFFF;
+  --ann-h: 40px;
+}
+@media(max-width:599px){:root{--ann-h:36px}}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ══════════════════════════════════════════
+   ANN BAR
+══════════════════════════════════════════ */
+.ann{
+  background:var(--rust);color:#fff;
+  height:40px;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:500;gap:6px;
+  position:fixed;top:0;left:0;right:0;z-index:400;
+}
+.ann a{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+
+/* ══════════════════════════════════════════
+   NAV — floating pill
+══════════════════════════════════════════ */
+.nav-outer{
+  position:fixed;top:var(--ann-h);left:0;right:0;z-index:300;
+  padding:8px 16px;transition:padding .3s;
+}
+@media(min-width:768px){.nav-outer{padding:12px 40px}}
+.nav-inner{
+  background:rgba(255,255,255,.94);backdrop-filter:blur(14px);
+  border-radius:100px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 10px 10px 24px;
+  box-shadow:0 2px 20px rgba(0,0,0,.08);
+  transition:all .3s;
+  max-width:1200px;margin:0 auto;
+}
+.nav-logo{
+  display:flex;align-items:center;gap:8px;text-decoration:none;
+  font-family:'DM Sans',sans-serif;font-size:19px;color:var(--text);font-weight:700;
+  letter-spacing:-0.4px;
+}
+.nav-logo-icon{
+  width:28px;height:28px;flex-shrink:0;
+}
+.nav-links{display:none;list-style:none;gap:0}
+@media(min-width:900px){
+  .nav-links{display:flex;gap:0}
+  .nav-links a{
+    text-decoration:none;color:var(--mid);font-size:14px;font-weight:400;
+    padding:8px 16px;border-radius:100px;transition:all .2s;
+  }
+  .nav-links a:hover{color:var(--text);background:rgba(0,0,0,.04)}
+}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-login{
+  font-size:14px;font-weight:500;color:var(--rust);text-decoration:none;
+  padding:8px 16px;display:none;transition:color .2s;
+}
+.nav-login:hover{color:var(--rust-d)}
+@media(min-width:600px){.nav-login{display:block}}
+.nav-cta{
+  background:var(--rust);color:#fff;
+  padding:10px 22px;border-radius:100px;
+  font-size:14px;font-weight:500;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:all .2s;
+  text-decoration:none;display:inline-block;touch-action:manipulation;
+}
+.nav-cta:hover{background:var(--rust-d);transform:translateY(-1px)}
+
+/* ══════════════════════════════════════════
+   HERO — full screen video
+══════════════════════════════════════════ */
+.hero{
+  height:100vh;
+  height:100svh;
+  min-height:600px;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  /* Strong fallback bg for when video hasn't loaded */
+  background:linear-gradient(160deg,#3A1C0A 0%,#5C2E1A 30%,#8B4A24 60%,#2C1408 100%);
+}
+.hero-bg-video{
+  position:absolute;inset:0;z-index:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:center;
+}
+.hero-overlay{
+  position:absolute;inset:0;z-index:2;
+  background:linear-gradient(to top,rgba(28,13,6,.85) 0%,rgba(28,13,6,.3) 50%,rgba(28,13,6,.1) 100%);
+}
+.hero-content{
+  position:relative;z-index:3;
+  padding:0 20px 40px;
+  max-width:1200px;width:100%;margin:0 auto;
+  padding-top:calc(var(--ann-h) + 60px + 24px);
+}
+@media(min-width:768px){.hero-content{padding:0 48px 64px;padding-top:calc(var(--ann-h) + 72px + 32px)}}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.15);backdrop-filter:blur(8px);
+  color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);
+  font-size:12px;font-weight:500;padding:5px 14px;border-radius:100px;
+  margin-bottom:20px;
+  animation:fadeUp .8s .3s both;
+}
+.hero-h1{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(48px,9vw,96px);
+  line-height:1;letter-spacing:-.02em;
+  color:#fff;margin-bottom:16px;
+  animation:fadeUp .8s .45s both;
+}
+.hero-h1 em{font-style:italic}
+.hero-sub{
+  font-size:clamp(15px,2vw,17px);
+  color:rgba(255,255,255,.8);
+  max-width:440px;line-height:1.6;margin-bottom:32px;
+  animation:fadeUp .8s .6s both;
+}
+.hero-cta{
+  background:#fff;color:var(--text);
+  padding:13px 28px;border-radius:100px;
+  font-size:15px;font-weight:500;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:all .25s;
+  display:inline-block;touch-action:manipulation;text-decoration:none;
+  animation:fadeUp .8s .7s both;
+}
+.hero-cta:hover{background:var(--cream);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.hero-stats{
+  display:flex;gap:0;margin-top:48px;
+  border-top:1px solid rgba(255,255,255,.15);
+  padding-top:24px;
+  animation:fadeUp .8s .85s both;
+}
+.hero-stat{
+  padding-right:32px;margin-right:32px;
+  border-right:1px solid rgba(255,255,255,.15);
+}
+.hero-stat:last-child{border-right:none}
+.hero-stat-n{font-size:clamp(18px,2vw,22px);font-weight:600;color:#fff;line-height:1.2}
+.hero-stat-l{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
+
+/* Pause button on video */
+.hero-pause{
+  position:absolute;bottom:24px;right:24px;z-index:4;
+  background:rgba(0,0,0,.4);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;cursor:pointer;transition:all .2s;
+}
+.hero-pause:hover{background:rgba(0,0,0,.6)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+/* ════════════════════════════════════
+   MOBILE — COMPREHENSIVE
+════════════════════════════════════ */
+html,body{overflow-x:hidden;width:100%}
+img,video{max-width:100%}
+.bento-card img{width:100%;height:100%;object-fit:cover}
+
+/* FAQ & Final CTA — prevent inline padding lock */
+.faq-sec{background:var(--cream);border-top:1px solid var(--border);padding:80px 24px}
+@media(min-width:768px){.faq-sec{padding:100px 48px}}
+.final-cta-sec{background:var(--cream);border-top:1px solid var(--border);padding:96px 24px;text-align:center}
+@media(min-width:768px){.final-cta-sec{padding:120px 48px}}
+/* Ticker chart card — hide on very small screens */
+@media(max-width:420px){.ticker-chart-card{display:none}}
+
+
+@media(max-width:599px){
+  .ann{font-size:11px;padding:0 10px;height:36px;gap:4px}
+  .ann span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55vw}
+  .nav-outer{top:36px;padding:7px 10px}
+  .nav-inner{padding:7px 7px 7px 14px}
+  .nav-logo{font-size:16px}
+  .nav-cta{padding:8px 12px;font-size:12px}
+  .hero{height:100vh;height:100svh;min-height:560px}
+  .hero-content{padding:0 18px 32px;padding-top:calc(var(--ann-h) + 56px + 20px)}
+  .hero-h1{font-size:clamp(36px,10vw,52px);margin-bottom:10px}
+  .hero-sub{font-size:14px;max-width:100%;margin-bottom:20px}
+  .hero-cta{padding:12px 20px;font-size:14px}
+  .hero-stats{gap:0;flex-wrap:nowrap;margin-top:20px;overflow:hidden}
+  .hero-stat{padding-right:12px;margin-right:12px;min-width:0;flex-shrink:1}
+  .hero-stat-n{font-size:13px;white-space:nowrap}
+  .hero-stat-l{font-size:10px;white-space:nowrap}
+  .easy-section{padding:48px 16px}
+  .easy-title{font-size:clamp(26px,8vw,38px);margin-bottom:28px}
+  .easy-card{padding:24px 18px;min-height:auto}
+  .easy-card-title{font-size:clamp(22px,6vw,28px)}
+  .cal-dates{gap:4px}
+  .cal-day{min-width:36px;padding:6px 7px}
+  .cal-day-n{font-size:15px}
+  .cal-times{gap:4px}
+  .cal-time{padding:6px 9px;font-size:12px}
+  .hiw-sticky-nav{padding:0 10px}
+  .hiw-step-link{padding:9px 10px;font-size:9px;gap:4px}
+  .hiw-visual{min-height:200px;padding:16px;border-radius:14px}
+  .app-mock{padding:14px 16px}
+  .app-mock-big{font-size:32px}
+  .app-ring{width:80px;height:80px}
+  .app-ring-n{font-size:20px}
+  .ticker-sec{padding:40px 0}
+  .ticker-h{font-size:clamp(20px,6vw,28px)}
+  .ticker-checks{gap:10px;font-size:11px;padding:0 16px}
+  .ticker-chart-card{min-width:140px;padding:12px 14px}
+  .ticker-pause{padding:0 14px}
+  .tests-sec{padding:40px 14px}
+  .tests-h{font-size:clamp(22px,6vw,30px)}
+  .tests-doctor{flex-direction:column;gap:8px;margin-bottom:24px}
+  .tests-doctor-info{text-align:left}
+  .tcat{padding:18px 14px}
+  .tcat-title{font-size:clamp(16px,4vw,20px)}
+  .standard-sec{padding:40px 14px}
+  .standard-h{font-size:clamp(22px,7vw,32px)}
+  /* Bento mobile */
+  .bento{
+    display:flex;
+    flex-direction:row;
+    gap:10px;
+    overflow-x:auto;
+    overflow-y:visible;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:8px;
+    /* hide scrollbar */
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+  }
+  .bento::-webkit-scrollbar{display:none}
+  .bento-card{
+    flex:0 0 260px;
+    height:300px;
+    scroll-snap-align:start;
+    grid-column:unset!important;
+    grid-row:unset!important;
+  }
+  .bc-large{flex:0 0 280px;height:320px}
+  .bc-award{flex:0 0 160px;height:200px}
+  .bento-quote{font-size:12px}
+  .bc-large .bento-quote{font-size:13px}
+  .gold-sec{padding:40px 14px}
+  .gold-h{font-size:clamp(26px,7vw,36px)}
+  .gold-right{grid-template-columns:1fr;gap:10px}
+  .gold-stat-card{min-height:180px;padding:18px}
+  .gold-stat-big{font-size:clamp(36px,10vw,52px)}
+  .moscow-dots-wrap{width:140px;height:78px}
+  .compare-sec{padding:40px 14px}
+  .compare-h{font-size:clamp(22px,6vw,30px);margin-bottom:24px}
+  .ctable-head{grid-template-columns:1fr 68px 68px}
+  .crow{grid-template-columns:1fr 68px 68px}
+  .crow-feat{font-size:12px;padding:10px 4px;line-height:1.35;padding-right:6px}
+  .crow-ck{padding:10px 0}
+  .cth-col.main{padding:12px 4px 10px;font-size:13px}
+  .cth-main-logo{font-size:11px;gap:3px}
+  .cth-main-logo svg{width:12px!important;height:12px!important}
+  .ck-y,.ck-n{width:20px;height:20px;font-size:10px}
+  .docs-sec{padding:40px 14px}
+  .docs-h{font-size:clamp(22px,6vw,30px)}
+  .docs-grid{grid-template-columns:repeat(2,1fr);gap:14px}
+  .doc-name{font-size:13px}
+  .doc-role{font-size:11px}
+  .addons-sec{padding:40px 14px}
+  .addons-h{font-size:clamp(20px,5vw,28px)}
+  .addons-grid{grid-template-columns:1fr 1fr;gap:20px}
+  .addon-icon-wrap,.addon-icon-wrap svg{width:52px;height:52px}
+  .addon-title{font-size:13px}
+  .addon-desc{font-size:11px}
+  .data-sec{padding:40px 14px}
+  .data-h{font-size:clamp(20px,5vw,28px)}
+  .data-grid{grid-template-columns:1fr;gap:12px}
+  .data-card{padding:20px}
+  .data-card.tall{min-height:auto}
+  .bm-ring{width:100px;height:100px}
+  .bm-ring-n{font-size:28px}
+  .wear-stats{display:flex;flex-direction:column;gap:14px}
+  .wear-stat{border-right:none!important;border-bottom:1px solid var(--border);
+    padding-right:0!important;padding-left:0!important;padding-bottom:14px}
+  .wear-stat:last-child{border-bottom:none;padding-bottom:0}
+  .pricing-sec{padding:40px 14px}
+  .pricing-h{font-size:clamp(18px,5vw,26px)}
+  .pricing-card{padding:24px 18px}
+  .pc-price-big{font-size:clamp(44px,12vw,64px)}
+  .pc-feat{font-size:13px}
+  #faq{padding:40px 14px}
+  .faq-sec{padding:40px 14px}
+  .final-cta-sec{padding:56px 16px}
+  footer{padding:40px 14px 28px}
+  .footer-main--two-col{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:8px;align-items:flex-start}
+  .footer-social a{width:32px;height:32px;font-size:12px}
+}
+@media(max-width:360px){
+  .hero-stats{display:none}
+  .nav-cta{display:none}
+}
+@media(min-width:600px) and (max-width:767px){
+  .easy-grid{grid-template-columns:1fr}
+  .gold-right{grid-template-columns:1fr;gap:12px}
+  .docs-grid{grid-template-columns:repeat(2,1fr)}
+  .addons-grid{grid-template-columns:repeat(2,1fr)}
+  .data-grid{grid-template-columns:1fr}
+  .pricing-card{padding:32px 24px}
+  footer{padding:48px 20px 32px}
+}
+
+/* ══════════════════════════════════════════
+   TESTING IS EASY
+══════════════════════════════════════════ */
+.easy-section{
+  background:var(--cream);padding:100px 24px;
+}
+@media(min-width:768px){.easy-section{padding:120px 48px}}
+.easy-inner{max-width:1200px;margin:0 auto}
+.easy-title{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(36px,5vw,64px);
+  letter-spacing:-.02em;text-align:center;margin-bottom:64px;
+}
+.easy-title em{font-style:italic;color:var(--rust)}
+.easy-grid{
+  display:grid;gap:16px;
+  grid-template-columns:1fr;
+}
+@media(min-width:768px){.easy-grid{grid-template-columns:repeat(3,1fr)}}
+.easy-card{
+  background:var(--cream-d);border-radius:20px;
+  padding:40px 32px;min-height:auto;
+  display:flex;flex-direction:column;
+}
+.easy-num{
+  font-size:14px;font-weight:500;color:var(--rust);
+  margin-bottom:12px;letter-spacing:.02em;
+}
+.easy-card-title{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(26px,3vw,38px);letter-spacing:-.02em;
+  margin-bottom:8px;line-height:1.1;
+}
+.easy-card-sub{font-size:14px;color:var(--mid);margin-bottom:32px}
+
+/* Card 1: calendar widget */
+.cal-widget{margin-top:auto}
+.cal-dates{display:flex;gap:6px;margin-bottom:10px}
+.cal-day{
+  display:flex;flex-direction:column;align-items:center;
+  background:var(--cream);border-radius:10px;
+  padding:8px 10px;min-width:44px;cursor:pointer;transition:all .2s;
+}
+.cal-day.active{background:var(--rust);color:#fff}
+.cal-day-name{font-size:10px;font-weight:500;color:var(--light);text-transform:uppercase;margin-bottom:4px}
+.cal-day.active .cal-day-name{color:rgba(255,255,255,.7)}
+.cal-day-n{font-size:18px;font-weight:600}
+.cal-times{display:flex;gap:6px;flex-wrap:wrap}
+.cal-time{
+  background:var(--cream);border-radius:8px;
+  padding:7px 12px;font-size:13px;font-weight:500;cursor:pointer;
+  color:var(--mid);transition:all .2s;
+}
+.cal-time.active{background:var(--rust);color:#fff}
+.cal-time:hover:not(.active){background:var(--cream-d)}
+
+/* Card 2: results chart */
+.chart-widget{margin-top:auto;background:var(--cream);border-radius:12px;padding:20px}
+.chart-zones{display:flex;flex-direction:column;gap:0;position:relative;min-height:120px}
+.chart-zone{
+  display:flex;align-items:center;gap:12px;
+  font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--light);padding:16px 0;
+  border-bottom:1px solid var(--border);
+}
+.chart-zone:last-child{border-bottom:none}
+.chart-line{
+  flex:1;position:relative;height:40px;
+}
+.chart-dot{
+  width:10px;height:10px;border-radius:50%;
+  position:absolute;top:50%;transform:translateY(-50%);
+  box-shadow:0 0 0 3px rgba(196,98,45,.15);
+}
+.chart-dot.ok{background:var(--rust)}
+.chart-dot.warn{background:#E8A87C}
+.chart-val{
+  position:absolute;top:-16px;
+  font-size:12px;font-weight:600;color:var(--text);
+  transform:translateX(-50%);
+}
+.chart-connector{
+  position:absolute;top:50%;height:1.5px;
+  background:var(--rust);opacity:.4;transform:translateY(-50%);
+}
+
+/* Card 3: protocol items */
+.proto-items{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.proto-item{
+  display:flex;align-items:center;gap:12px;
+  background:var(--cream);border-radius:12px;padding:12px 14px;
+}
+.proto-icon{
+  width:36px;height:36px;border-radius:9px;
+  background:var(--rust);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.proto-title{font-size:13px;font-weight:600;color:var(--text)}
+.proto-sub{font-size:11px;color:var(--light);margin-top:1px}
+
+.easy-btns{
+  display:flex;gap:12px;justify-content:center;margin-top:48px;flex-wrap:wrap;
+}
+.btn-rust{
+  background:var(--rust);color:#fff;
+  padding:14px 28px;border-radius:100px;font-size:15px;font-weight:500;
+  border:none;cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all .2s;touch-action:manipulation;text-decoration:none;display:inline-block;
+}
+.btn-rust:hover{background:var(--rust-d);transform:translateY(-1px)}
+.btn-outline{
+  background:transparent;color:var(--text);
+  padding:14px 28px;border-radius:100px;font-size:15px;font-weight:500;
+  border:1.5px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all .2s;touch-action:manipulation;text-decoration:none;display:inline-block;
+}
+.btn-outline:hover{border-color:var(--text)}
+
+/* ══════════════════════════════════════════
+   DISEASE TICKER
+══════════════════════════════════════════ */
+.ticker-sec{
+  background:var(--cream);padding:80px 0;
+  border-top:1px solid var(--border);
+  overflow:hidden;
+}
+.ticker-head{text-align:center;padding:0 24px;margin-bottom:40px}
+.ticker-h{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(28px,4vw,52px);letter-spacing:-.02em;line-height:1.1;margin-bottom:16px;
+}
+.ticker-h em{font-style:italic;color:var(--rust)}
+.ticker-checks{
+  display:flex;gap:24px;justify-content:center;flex-wrap:wrap;
+  font-size:13px;color:var(--mid);
+}
+.ticker-check{display:flex;align-items:center;gap:6px}
+.ticker-check::before{content:'✓';color:var(--rust);font-weight:700}
+
+/* Center chart card */
+.ticker-center{
+  position:relative;display:flex;justify-content:center;
+  align-items:center;margin:0;
+}
+.ticker-wrap{
+  overflow:hidden;
+  mask-image:linear-gradient(to right,transparent,black 8%,black 92%,transparent);
+  padding:12px 0;
+  position:relative;
+}
+.ticker-row{
+  display:flex;gap:0;width:max-content;
+  align-items:center;
+  margin-bottom:0;
+}
+.ticker-row.r1{animation:tL 30s linear infinite}
+.ticker-row.r2{animation:tR 36s linear infinite}
+@keyframes tL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes tR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.tdis{
+  font-size:14px;color:var(--mid);white-space:nowrap;
+  padding:0 12px;
+}
+.tdis::after{content:'·';padding-left:12px;color:var(--light)}
+
+/* Floating chart overlay */
+.ticker-chart-card{
+  position:absolute;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  background:var(--cream);border:1px solid var(--border);
+  border-radius:16px;padding:20px 24px;
+  min-width:200px;z-index:10;
+  box-shadow:0 8px 32px rgba(0,0,0,.08);
+  pointer-events:none;
+}
+.tcc-zone{
+  font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--light);padding:8px 0;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.tcc-zone:last-child{border-bottom:none}
+.tcc-dot{width:8px;height:8px;border-radius:50%;background:var(--rust)}
+.tcc-dot.g{background:#4CAF50}
+.tcc-dot.y{background:#FF9800}
+.ticker-pause{
+  text-align:left;padding:0 24px;margin-top:16px;
+  font-size:11px;color:var(--light);cursor:pointer;
+}
+.ticker-pause button{
+  background:none;border:none;font-family:'DM Sans',sans-serif;
+  font-size:11px;color:var(--light);cursor:pointer;
+  display:flex;align-items:center;gap:6px;letter-spacing:.06em;text-transform:uppercase;
+  touch-action:manipulation;
+}
+.ticker-pause button:hover{color:var(--mid)}
+
+/* ══════════════════════════════════════════
+   160+ LAB TESTS
+══════════════════════════════════════════ */
+.tests-sec{
+  background:var(--cream);padding:80px 24px;
+  border-top:1px solid var(--border);
+}
+@media(min-width:768px){.tests-sec{padding:100px 48px}}
+.tests-inner{max-width:1200px;margin:0 auto}
+.tests-h{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(32px,4vw,56px);letter-spacing:-.02em;
+  margin-bottom:32px;line-height:1.1;
+}
+.tests-h em{font-style:italic;color:var(--rust)}
+.tests-doctor{
+  display:flex;align-items:center;gap:16px;
+  margin-bottom:56px;max-width:640px;
+}
+.tests-doctor-q{
+  font-size:15px;color:var(--mid);line-height:1.6;font-style:italic;
+  flex:1;
+}
+.tests-doctor-info{flex-shrink:0;text-align:right}
+.tests-doctor-name{font-size:13px;font-weight:600;color:var(--text)}
+.tests-doctor-role{font-size:11px;color:var(--light)}
+
+/* Grid layout matching screenshot 4 */
+.tests-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:0;
+  border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;
+}
+@media(min-width:768px){
+  .tests-grid{
+    grid-template-columns:repeat(3,1fr);
+    grid-template-rows:auto auto;
+  }
+}
+.tcat{
+  padding:32px 28px;border-bottom:1px solid var(--border);
+  transition:background .2s;
+}
+@media(min-width:768px){
+  .tcat{border-bottom:none;border-right:1px solid var(--border)}
+  .tcat:nth-child(3){border-right:none}
+  .tcat:nth-child(4){border-top:1px solid var(--border)}
+  .tcat:nth-child(5){border-top:1px solid var(--border)}
+  .tcat:nth-child(6){border-top:1px solid var(--border);border-right:none}
+}
+.tcat:hover{background:var(--cream-d)}
+.tcat-title{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(20px,2.5vw,28px);letter-spacing:-.01em;
+  margin-bottom:8px;line-height:1.2;
+}
+.tcat-count{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--rust);font-weight:500;margin-bottom:20px;
+}
+.tcat-count-bar{
+  display:flex;gap:2px;
+}
+.tcat-count-bar span{
+  width:3px;height:14px;border-radius:2px;background:var(--rust);opacity:.3;
+}
+.tcat-count-bar span:nth-child(1){opacity:.9}
+.tcat-count-bar span:nth-child(2){opacity:.7}
+.tcat-items{display:flex;flex-direction:column;gap:6px}
+.tcat-item{font-size:13px;color:var(--mid)}
+.tcat-item.faded{color:var(--light)}
+.tcat-more{
+  background:var(--cream-d);display:flex;align-items:center;justify-content:center;
+  padding:32px 28px;
+  flex-direction:column;gap:8px;
+  cursor:pointer;transition:background .2s;
+}
+.tcat-more:hover{background:var(--card)}
+.tcat-more-plus{
+  font-family:'Instrument Serif',serif;
+  font-size:32px;color:var(--rust);font-style:italic;
+}
+.tcat-more-text{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(24px,2.5vw,32px);font-style:italic;color:var(--rust);
+  text-align:center;line-height:1.2;
+}
+.tcat-more-btn{
+  margin-top:8px;background:transparent;
+  border:1.5px solid var(--border);border-radius:100px;
+  padding:10px 22px;font-size:13px;font-weight:500;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  color:var(--text);transition:all .2s;touch-action:manipulation;
+}
+.tcat-more-btn:hover{border-color:var(--text)}
+
+/* ══════════════════════════════════════════
+   THE NEW STANDARD — bento grid
+══════════════════════════════════════════ */
+.standard-sec{
+  background:var(--cream);padding:80px 24px;
+  border-top:1px solid var(--border);
+}
+@media(min-width:768px){.standard-sec{padding:100px 48px}}
+.standard-inner{max-width:1200px;margin:0 auto}
+.standard-h{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(32px,4vw,56px);letter-spacing:-.02em;
+  margin-bottom:8px;text-align:center;
+}
+.standard-h em{font-style:italic;color:var(--rust)}
+.standard-sub{font-size:15px;color:var(--mid);text-align:center;margin-bottom:48px}
+
+.bento{
+  display:grid;gap:12px;
+  grid-template-columns:1fr;
+}
+@media(min-width:600px){
+  .bento{
+    grid-template-columns:repeat(4,1fr);
+    grid-template-rows:220px 220px;
+  }
+}
+.bento-card{
+  border-radius:16px;overflow:hidden;position:relative;
+  background:var(--cream-d);
+  cursor:pointer;transition:transform .25s;
+}
+.bento-card:hover{transform:scale(1.01)}
+/* Layout spans */
+.bc-large{grid-column:span 2;grid-row:span 2}
+.bc-med{grid-column:span 2;grid-row:span 1}
+.bc-sm{grid-column:span 1;grid-row:span 1}
+@media(max-width:599px){
+  .bc-large,.bc-med,.bc-sm{grid-column:span 1;grid-row:span 1;height:220px}
+}
+
+.bento-photo{
+  width:100%;height:100%;object-fit:cover;
+  background:var(--card);
+}
+.bento-photo-placeholder{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:48px;
+}
+.bc-large .bento-photo-placeholder{font-size:72px}
+/* Gradient bg for person cards */
+.bp-1{background:linear-gradient(135deg,#1a1a1a 0%,#2c2c2c 100%)}
+.bp-2{background:linear-gradient(135deg,#8B6344 0%,#6B4A28 100%)}
+.bp-3{background:linear-gradient(135deg,#4A5568 0%,#2D3748 100%)}
+.bp-4{background:linear-gradient(135deg,#D4A574 0%,#B8845A 100%)}
+/* Award cards */
+.bc-award{
+  background:var(--cream);display:flex;align-items:center;justify-content:center;
+  padding:24px;
+}
+.bc-award-logo{
+  font-size:clamp(14px,2.5vw,18px);font-weight:900;color:var(--text);
+  letter-spacing:-.02em;text-align:center;line-height:1.2;
+}
+.bento-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.8) 0%,rgba(0,0,0,.2) 50%,transparent 100%);
+}
+.bento-text{
+  position:absolute;bottom:20px;left:20px;right:20px;color:#fff;
+}
+.bento-quote{font-size:14px;line-height:1.5;margin-bottom:8px;font-style:italic}
+.bento-name{font-size:13px;font-weight:600}
+.bento-role{font-size:11px;opacity:.7}
+.bc-large .bento-quote{font-size:17px}
+.bc-large .bento-name{font-size:15px}
+
+/* ══════════════════════════════════════════
+   GOLD STANDARD / MAP
+══════════════════════════════════════════ */
+.gold-sec{
+  background:var(--cream);padding:80px 24px;
+  border-top:1px solid var(--border);
+}
+@media(min-width:768px){.gold-sec{padding:100px 48px}}
+.gold-inner{max-width:1200px;margin:0 auto}
+.gold-layout{
+  display:grid;gap:48px;align-items:center;
+}
+@media(min-width:768px){.gold-layout{grid-template-columns:1fr 2fr}}
+.gold-left{}
+.gold-h{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(36px,4.5vw,64px);letter-spacing:-.03em;line-height:1;margin-bottom:16px;
+}
+.gold-h em{font-style:italic;color:var(--rust);display:block}
+.gold-sub{font-size:15px;color:var(--mid);line-height:1.6;max-width:340px;margin-bottom:32px}
+.gold-partners{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.gold-partner{
+  font-size:14px;font-weight:700;color:var(--mid);
+  display:flex;align-items:center;gap:6px;
+}
+.gold-partner-dot{width:6px;height:6px;border-radius:50%;background:var(--rust)}
+
+.gold-right{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+/* Stat card */
+.gold-stat-card{
+  background:var(--cream-d);border-radius:20px;padding:28px 24px;
+  overflow:hidden;position:relative;min-height:auto;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+@media(min-width:768px){.gold-stat-card{min-height:260px}}
+.gold-stat-label{
+  font-size:12px;font-weight:600;color:var(--rust);margin-bottom:4px;
+}
+.gold-stat-sub{font-size:12px;color:var(--mid);margin-bottom:20px;line-height:1.4}
+
+/* Moscow dot map */
+.moscow-map{
+  flex:1;position:relative;display:flex;align-items:center;justify-content:center;
+}
+.moscow-dots-wrap{position:relative;width:200px;height:110px;margin:0 auto}
+
+/* ══ COUNTER ANIMATION ══ */
+.count-up{display:inline-block}
+
+/* ══ RING ANIMATION ══ */
+.ring-arc{
+  stroke-dasharray:0 400;
+  transition:stroke-dasharray 1.6s cubic-bezier(.25,.46,.45,.94);
+}
+
+/* ══ EASY CARDS metrics animate in ══ */
+.easy-metric{
+  opacity:0;transform:translateY(8px);
+  transition:opacity .45s ease, transform .45s ease;
+}
+.easy-metric.shown{opacity:1;transform:none}
+
+/* ══ HIW STACKING on scroll ══ */
+.hiw-stack-wrapper{
+  position:relative;
+}
+.hiw-stack-block{
+  position:sticky;
+  background:var(--cream);
+  border-top:1px solid var(--border);
+  z-index:10;
+}
+.hiw-stack-block:nth-child(1){top:calc(var(--ann-h) + 56px + 41px)}
+.hiw-stack-block:nth-child(2){top:calc(var(--ann-h) + 56px + 53px)}
+.hiw-stack-block:nth-child(3){top:calc(var(--ann-h) + 56px + 65px)}
+.hiw-stack-block:nth-child(4){top:calc(var(--ann-h) + 56px + 77px)}
+/* MOBILE: completely disable sticky to prevent blank-screen gaps */
+@media(max-width:899px){
+  .hiw-stack-block{
+    position:relative!important;
+    top:auto!important;
+  }
+  .hiw-stack-wrapper{
+    display:flex;
+    flex-direction:column;
+  }
+}
+
+/* ══ DATA section animated ring ══ */
+.bm-ring-animated .ring-arc{stroke-dasharray:0 364}
+
+
+.gold-stat-big{
+  font-family:'DM Sans',sans-serif;
+  font-size:clamp(48px,6vw,80px);letter-spacing:-.04em;line-height:1;
+  color:var(--text);font-weight:900;
+}
+
+/* Bar chart */
+.gold-bars{
+  flex:1;display:flex;align-items:flex-end;gap:4px;
+  padding-top:8px;
+}
+.gbar{
+  flex:1;border-radius:3px 3px 0 0;
+  background:var(--rust);opacity:.3;
+  transition:all .8s ease;
+}
+.gbar.hi{opacity:1}
+.gbar.med{opacity:.65}
+
+/* ══════════════════════════════════════════
+   COMPARISON TABLE
+══════════════════════════════════════════ */
+.compare-sec{
+  background:var(--cream);padding:80px 24px;
+  border-top:1px solid var(--border);
+}
+@media(min-width:768px){.compare-sec{padding:100px 48px}}
+.compare-inner{max-width:1000px;margin:0 auto}
+.compare-h{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(32px,4vw,56px);letter-spacing:-.02em;
+  margin-bottom:48px;text-align:center;
+}
+.compare-h em{font-style:italic;color:var(--rust)}
+
+/* Table matching screenshot 7-8 exactly */
+.ctable{
+  position:relative;
+  border-radius:16px;overflow:hidden;
+}
+.ctable-head{
+  display:grid;grid-template-columns:1fr 68px 68px;
+  padding:0 0 16px;
+  gap:0;align-items:end;
+}
+@media(min-width:600px){.ctable-head{grid-template-columns:1fr 120px 120px}}
+@media(min-width:768px){.ctable-head{grid-template-columns:1fr 180px 180px}}
+.cth-empty{}
+.cth-col{
+  text-align:center;padding:0 16px 16px;
+  font-size:13px;font-weight:500;color:var(--mid);
+}
+.cth-col.main{
+  background:var(--rust);color:#fff;
+  border-radius:16px 16px 0 0;
+  padding:20px 16px 16px;
+  font-size:15px;font-weight:600;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.cth-main-logo{
+  display:flex;align-items:center;gap:6px;
+  font-family:'Instrument Serif',serif;font-size:17px;
+}
+
+.ctable-body{}
+.crow{
+  display:grid;grid-template-columns:1fr 68px 68px;
+  border-bottom:1px solid var(--border);
+  align-items:center;
+  gap:0;
+}
+@media(min-width:600px){.crow{grid-template-columns:1fr 120px 120px}}
+@media(min-width:768px){.crow{grid-template-columns:1fr 180px 180px}}
+.crow:last-child{border-bottom:none}
+.crow-feat{
+  padding:14px 0;font-size:14px;color:var(--text);font-weight:400;
+}
+@media(min-width:768px){.crow-feat{font-size:15px}}
+.crow-ck{
+  text-align:center;padding:14px 0;
+  display:flex;align-items:center;justify-content:center;
+}
+.crow-ck.main{background:rgba(196,98,45,.08)}
+.ck-y{
+  width:22px;height:22px;border-radius:50%;background:var(--rust);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;
+}
+.ck-n{
+  width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);
+  color:var(--light);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+}
+
+/* ══════════════════════════════════════════
+   DOCTORS
+══════════════════════════════════════════ */
+.docs-sec{
+  background:var(--cream);padding:80px 24px;
+  border-top:1px solid var(--border);
+}
+@media(min-width:768px){.docs-sec{padding:100px 48px}}
+.docs-inner{max-width:1200px;margin:0 auto}
+.docs-h{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(32px,4vw,56px);letter-spacing:-.02em;
+  margin-bottom:8px;text-align:center;
+}
+.docs-h em{font-style:italic;color:var(--rust)}
+.docs-sub{font-size:15px;color:var(--mid);text-align:center;margin-bottom:56px}
+.docs-grid{
+  display:grid;gap:32px;
+  grid-template-columns:repeat(2,1fr);
+}
+@media(min-width:768px){.docs-grid{grid-template-columns:repeat(4,1fr)}}
+.doc{cursor:pointer;transition:transform .2s}
+.doc:hover{transform:translateY(-4px)}
+.doc-img{
+  width:100%;aspect-ratio:1;border-radius:16px;overflow:hidden;
+  margin-bottom:14px;background:var(--cream-d);
+  display:flex;align-items:center;justify-content:center;
+  font-size:48px;
+}
+/* Gradient backgrounds for doc photos */
+.di-1{background:linear-gradient(135deg,#D4C5B5 0%,#B8A898 100%)}
+.di-2{background:linear-gradient(135deg,#2C2C2C 0%,#4A3C2C 100%)}
+.di-3{background:linear-gradient(135deg,#C8B5A0 0%,#A89080 100%)}
+.di-4{background:linear-gradient(135deg,#E8D5C0 0%,#C4A888 100%)}
+.di-5{background:linear-gradient(135deg,#3A2C24 0%,#5A4030 100%)}
+.di-6{background:linear-gradient(135deg,#8B6344 0%,#6B4A28 100%)}
+.di-7{background:linear-gradient(135deg,#C4A880 0%,#A08860 100%)}
+.di-8{background:linear-gradient(135deg,#D4C0A8 0%,#B8A088 100%)}
+.doc-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.doc-role{font-size:12px;color:var(--mid);line-height:1.5}
+
+/* ══════════════════════════════════════════
+   PRICING
+══════════════════════════════════════════ */
+.pricing-sec{
+  background:var(--cream);padding:80px 24px;
+  border-top:1px solid var(--border);
+}
+@media(min-width:768px){.pricing-sec{padding:100px 48px}}
+.pricing-inner{max-width:900px;margin:0 auto}
+.pricing-h{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(28px,4vw,52px);letter-spacing:-.02em;
+  margin-bottom:8px;text-align:center;line-height:1.1;
+}
+.pricing-h em{font-style:italic;color:var(--rust);text-decoration:line-through}
+.pricing-h em.ok{text-decoration:none}
+.pricing-sub{font-size:15px;color:var(--mid);text-align:center;margin-bottom:48px}
+
+.pricing-card{
+  background:var(--cream);border:1px solid var(--border);border-radius:20px;
+  padding:40px;overflow:hidden;
+}
+@media(min-width:768px){
+  .pricing-card{
+    display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;
+    padding:48px 56px;
+  }
+}
+.pc-left{}
+.pc-badge{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:500;color:var(--rust);margin-bottom:16px;
+}
+.pc-badge::before{content:'✓';color:var(--rust)}
+.pc-title{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(24px,3vw,36px);letter-spacing:-.02em;margin-bottom:28px;
+}
+.pc-price{display:flex;align-items:baseline;gap:4px;margin-bottom:4px}
+.pc-price-big{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(56px,7vw,88px);letter-spacing:-.04em;line-height:1;
+}
+.pc-price-unit{font-size:20px;font-weight:600;align-self:flex-start;padding-top:8px}
+.pc-price-period{font-size:15px;color:var(--mid);align-self:flex-end;padding-bottom:4px}
+.pc-period-note{font-size:13px;color:var(--light);margin-bottom:28px}
+.pc-cta{
+  background:var(--rust);color:#fff;
+  padding:14px 28px;border-radius:100px;font-size:15px;font-weight:500;
+  border:none;cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all .2s;touch-action:manipulation;width:100%;
+  margin-top:8px;
+}
+.pc-cta:hover{background:var(--rust-d)}
+.pc-right{}
+.pc-feats{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.pc-feat{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:14px;color:var(--text);line-height:1.4;
+}
+.pc-feat::before{
+  content:'✓';color:var(--rust);font-weight:700;flex-shrink:0;margin-top:1px;
+}
+
+.pricing-reviews{
+  display:grid;gap:24px;margin-top:48px;
+  grid-template-columns:1fr;
+}
+@media(min-width:600px){.pricing-reviews{grid-template-columns:repeat(3,1fr)}}
+.pr{text-align:center}
+.pr-stars{color:var(--rust);font-size:13px;letter-spacing:2px;margin-bottom:10px}
+.pr-text{font-size:13px;color:var(--mid);line-height:1.6;font-style:italic}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer{
+  background:var(--cream);border-top:1px solid var(--border);
+  padding:64px 24px 40px;
+}
+@media(min-width:768px){footer{padding:80px 48px 40px}}
+.footer-main{
+  max-width:1200px;margin:0 auto;
+  display:grid;gap:40px;grid-template-columns:1fr;
+}
+@media(min-width:600px){.footer-main--two-col{grid-template-columns:1fr 1.5fr;gap:32px}}
+.footer-logo{
+  display:flex;align-items:center;gap:8px;
+  font-family:'DM Sans',sans-serif;font-size:18px;color:var(--text);
+  font-weight:700;letter-spacing:-0.4px;
+  text-decoration:none;margin-bottom:16px;
+}
+.footer-tagline{font-size:13px;color:var(--mid);line-height:1.6;max-width:240px;margin-bottom:24px}
+.footer-apps{display:flex;flex-direction:column;gap:8px;max-width:180px}
+.footer-app-btn{
+  background:var(--dark);color:#fff;
+  border-radius:8px;padding:8px 14px;
+  font-size:11px;font-weight:600;text-decoration:none;
+  display:flex;align-items:center;gap:8px;transition:background .2s;
+}
+.footer-app-btn:hover{background:#2c1a10}
+.footer-app-icon{font-size:18px}
+.footer-app-text{display:flex;flex-direction:column}
+.footer-app-sub{font-size:9px;opacity:.6;font-weight:400}
+.footer-col-title{
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--light);margin-bottom:16px;
+}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{text-decoration:none;color:var(--mid);font-size:14px;transition:color .2s}
+.footer-links a:hover{color:var(--text)}
+.footer-sub-col h4{
+  font-family:'Instrument Serif',serif;font-size:22px;letter-spacing:-.01em;
+  margin-bottom:8px;
+}
+.footer-sub-col h4 em{font-style:italic;color:var(--rust)}
+.footer-sub-col p{font-size:13px;color:var(--mid);line-height:1.5;margin-bottom:16px}
+.footer-email-form{display:flex;gap:0;border:1px solid var(--border);border-radius:100px;overflow:hidden;max-width:300px}
+.footer-email-form input{
+  flex:1;background:transparent;border:none;padding:10px 16px;
+  font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;
+}
+.footer-email-form input::placeholder{color:var(--light)}
+.footer-email-form button{
+  background:var(--dark);color:#fff;border:none;padding:10px 18px;
+  font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:background .2s;white-space:nowrap;touch-action:manipulation;
+}
+.footer-email-form button:hover{background:var(--rust)}
+
+.footer-bottom{
+  max-width:1200px;margin:48px auto 0;
+  padding-top:24px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.footer-social{display:flex;gap:12px;margin-top:20px}
+.footer-social a{
+  width:36px;height:36px;border-radius:50%;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;color:var(--mid);font-size:14px;transition:all .2s;
+}
+.footer-social a:hover{border-color:var(--text);color:var(--text)}
+.footer-legal-links{display:flex;gap:16px;flex-wrap:wrap}
+.footer-legal-links a{font-size:12px;color:var(--light);text-decoration:none}
+.footer-legal-links a:hover{color:var(--mid)}
+.footer-copyright{font-size:12px;color:var(--light)}
+.footer-disclaimer{
+  max-width:1200px;margin:24px auto 0;
+  font-size:11px;color:var(--light);line-height:1.7;
+}
+
+/* ══════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════ */
+.modal-ov{
+  position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,.5);backdrop-filter:blur(8px);
+  display:none;align-items:flex-end;justify-content:center;
+}
+@media(min-width:600px){.modal-ov{align-items:center}}
+.modal-ov.open{display:flex}
+.modal-box{
+  background:var(--cream);border-radius:24px 24px 0 0;
+  padding:32px 24px 48px;width:100%;
+  animation:mUp .3s ease;
+}
+@media(min-width:600px){
+  .modal-box{border-radius:20px;max-width:440px;padding:48px;animation:mIn .3s ease;position:relative}
+}
+@keyframes mUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes mIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 24px}
+@media(min-width:600px){.modal-handle{display:none}}
+.modal-x{display:none;position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;color:var(--mid);cursor:pointer}
+@media(min-width:600px){.modal-x{display:block}}
+.modal-title{font-family:'Instrument Serif',serif;font-size:28px;margin-bottom:4px}
+.modal-sub{font-size:14px;color:var(--mid);margin-bottom:28px}
+.modal-lbl{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);margin-bottom:8px;display:block}
+.modal-inp{
+  width:100%;border:none;border-bottom:2px solid var(--border);
+  padding:10px 0;font-size:18px;font-family:'DM Sans',sans-serif;
+  color:var(--text);background:transparent;outline:none;
+  transition:border-color .2s;margin-bottom:20px;
+}
+.modal-inp:focus{border-color:var(--rust)}
+.modal-inp::placeholder{color:var(--border)}
+.modal-submit{
+  width:100%;padding:15px;background:var(--rust);color:#fff;border:none;
+  border-radius:100px;font-size:15px;font-weight:500;
+  font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:4px;
+  transition:all .2s;touch-action:manipulation;
+}
+.modal-submit:hover{background:var(--rust-d)}
+
+/* ══════════════════════════════════════════
+   REVEAL
+══════════════════════════════════════════ */
+.r{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.r.d1{transition-delay:.08s}.r.d2{transition-delay:.16s}.r.d3{transition-delay:.24s}.r.d4{transition-delay:.32s}
+.r.vis{opacity:1;transform:none}
+/* On mobile — elements start almost visible to prevent white screens */
+@media(max-width:767px){
+  .r{opacity:0;transform:translateY(10px)}
+}
+/* Ensure sections containing .r elements have visible overflow */
+.easy-grid,.bento,.docs-grid,.addons-grid,.data-grid,.pricing-card{overflow:visible}
+
+
+
+/* ══════════════════════════════════════════
+   NOTIFICATION
+══════════════════════════════════════════ */
+.notif{
+  position:fixed;bottom:24px;right:24px;z-index:9999;
+  background:var(--dark);color:#fff;
+  padding:14px 20px;border-radius:12px;
+  font-size:14px;font-weight:500;
+  box-shadow:0 8px 24px rgba(0,0,0,.2);
+  animation:fadeUp .3s ease;
+}
+
+/* ═══════════════════════════════════════════════════
+   MOBILE NUCLEAR RESET — all controlled by is-mobile class
+   Applied by JS on touch devices. Desktop untouched.
+═══════════════════════════════════════════════════ */
+
+/* Step 0: On is-mobile, ALL animated/hidden elements INSTANTLY visible */
+.is-mobile .r,
+.is-mobile .r.d1,
+.is-mobile .r.d2,
+.is-mobile .r.d3,
+.is-mobile .r.d4 {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* Step 1: Hero — no video, show gradient */
+.is-mobile .hero-bg-video {
+  display: none !important;
+}
+.is-mobile .hero {
+  background: linear-gradient(165deg, #3A1C0A 0%, #5C2E1A 25%, #8B4A24 55%, #2C1408 100%) !important;
+  min-height: 100svh !important;
+  min-height: 100vh !important;
+}
+
+/* Step 2: Kill ALL sticky positioning — main source of white screens */
+.is-mobile .hiw-stack-block,
+.is-mobile .hiw-sticky-nav {
+  position: relative !important;
+  top: auto !important;
+}
+.is-mobile .hiw-sticky-nav {
+  display: none !important;
+}
+
+/* Step 3: Kill all animated backgrounds on HIW visual */
+.is-mobile .hiw-visual::before {
+  animation: none !important;
+}
+
+/* Step 4: Bento — simple vertical stack */
+.is-mobile .bento {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: visible !important;
+  gap: 12px !important;
+}
+.is-mobile .bento-card {
+  flex: none !important;
+  width: 100% !important;
+  height: 220px !important;
+  grid-column: unset !important;
+  grid-row: unset !important;
+}
+.is-mobile .bc-large {
+  height: 280px !important;
+}
+.is-mobile .bc-award {
+  height: 120px !important;
+}
+
+/* Step 5: Remove all min-heights that cause blank space */
+.is-mobile .hiw-visual,
+.is-mobile .gold-stat-card,
+.is-mobile .data-card.tall {
+  min-height: 0 !important;
+}
+.is-mobile .hiw-visual {
+  padding: 20px !important;
+}
+
+/* Step 6: All grids → single column */
+.is-mobile .data-grid {
+  grid-template-columns: 1fr !important;
+}
+.is-mobile .gold-right {
+  grid-template-columns: 1fr !important;
+}
+.is-mobile .docs-grid {
+  grid-template-columns: 1fr 1fr !important;
+}
+.is-mobile .addons-grid {
+  grid-template-columns: 1fr 1fr !important;
+}
+.is-mobile .easy-grid {
+  grid-template-columns: 1fr !important;
+}
+
+/* Step 7: Remove all backdrop-filter — kills performance on iOS */
+.is-mobile .nav-inner {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(255,255,255,0.97) !important;
+}
+.is-mobile .app-mock {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(255,255,255,0.12) !important;
+}
+.is-mobile .hero-pause {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(0,0,0,0.5) !important;
+}
+
+/* Step 8: Font sizes safe on mobile */
+.is-mobile .hero-h1 {
+  font-size: clamp(34px, 9vw, 48px) !important;
+}
+.is-mobile .pricing-card {
+  display: block !important;
+}
+.is-mobile .easy-card {
+  min-height: auto !important;
+}
+.is-mobile .pc-feats {
+  margin-top: 24px !important;
+}
+.is-mobile .compare-inner {
+  overflow-x: auto !important;
+}
+
+/* Step 9: Kill hiwBgPulse animation — GPU heavy */
+/* hiwBgPulse disabled on mobile via .is-mobile .hiw-visual::before { animation:none } */
+
+/* === SECTION 2 CSS === */
+/* HIW sticky section */
+.hiw-section{background:var(--cream);border-top:1px solid var(--border)}
+.hiw-sticky-nav{
+  position:sticky;top:calc(var(--ann-h) + 56px);z-index:50;
+  background:var(--cream);border-bottom:1px solid var(--border);
+  padding:0 24px;overflow-x:auto;scrollbar-width:none;
+}
+.hiw-sticky-nav::-webkit-scrollbar{display:none}
+.hiw-steps-row{
+  display:flex;gap:0;max-width:1200px;margin:0 auto;
+  min-width:max-content;
+}
+.hiw-step-link{
+  display:flex;align-items:center;gap:8px;
+  padding:14px 20px;cursor:pointer;transition:all .2s;
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--light);border-bottom:2px solid transparent;
+  white-space:nowrap;text-decoration:none;
+}
+.hiw-step-link.active{color:var(--rust);border-bottom-color:var(--rust)}
+.hiw-step-link:hover{color:var(--mid)}
+.hiw-step-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:currentColor;opacity:.5;flex-shrink:0;
+}
+.hiw-step-link.active .hiw-step-dot{opacity:1}
+
+/* Each step block */
+.hiw-block{
+  display:grid;gap:48px;
+  padding:80px 24px;border-bottom:1px solid var(--border);
+  max-width:1200px;margin:0 auto;
+  align-items:center;
+}
+@media(min-width:768px){
+  .hiw-block{grid-template-columns:1fr 1fr;padding:100px 48px;gap:80px}
+}
+.hiw-eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--rust);margin-bottom:20px;display:flex;align-items:center;gap:10px;
+}
+.hiw-eyebrow::before{content:'';width:20px;height:1.5px;background:var(--rust)}
+.hiw-h{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(32px,4vw,52px);letter-spacing:-.02em;line-height:1.1;
+  margin-bottom:20px;
+}
+.hiw-h em{font-style:italic;color:var(--rust)}
+.hiw-body{font-size:15px;color:var(--mid);line-height:1.7;margin-bottom:28px}
+.hiw-feats{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.hiw-feat{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:14px;color:var(--mid);line-height:1.5;
+}
+.hiw-feat-ck{
+  width:20px;height:20px;border-radius:50%;border:1.5px solid var(--rust);
+  color:var(--rust);display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;
+}
+
+/* App mockup cards */
+.hiw-visual{
+  border-radius:24px;overflow:hidden;
+  background:#1C0D06;
+  min-height:300px;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  padding:32px;
+}
+@media(min-width:768px){.hiw-visual{min-height:400px}}
+.hiw-visual::before{
+  content:'';
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 30% 40%, rgba(92,46,26,.95) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 70% at 75% 65%, rgba(58,28,10,.9) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 45% at 55% 20%, rgba(112,52,20,.6) 0%, transparent 55%),
+    #1C0D06;
+  animation:hiwBgPulse 10s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+@keyframes hiwBgPulse{
+  0%{background:radial-gradient(ellipse 70% 60% at 30% 40%, rgba(92,46,26,.95) 0%, transparent 65%),radial-gradient(ellipse 60% 70% at 75% 65%, rgba(58,28,10,.9) 0%, transparent 60%),radial-gradient(ellipse 45% 45% at 55% 20%, rgba(112,52,20,.6) 0%, transparent 55%),#1C0D06}
+  25%{background:radial-gradient(ellipse 65% 70% at 50% 30%, rgba(108,54,24,.9) 0%, transparent 60%),radial-gradient(ellipse 55% 55% at 20% 70%, rgba(64,32,12,.85) 0%, transparent 55%),radial-gradient(ellipse 50% 40% at 80% 50%, rgba(96,48,18,.7) 0%, transparent 50%),#1C0D06}
+  50%{background:radial-gradient(ellipse 75% 55% at 60% 55%, rgba(88,44,20,.9) 0%, transparent 65%),radial-gradient(ellipse 50% 65% at 30% 35%, rgba(72,36,14,.85) 0%, transparent 55%),radial-gradient(ellipse 40% 50% at 70% 25%, rgba(104,50,20,.65) 0%, transparent 50%),#1C0D06}
+  75%{background:radial-gradient(ellipse 60% 65% at 40% 60%, rgba(100,50,22,.9) 0%, transparent 60%),radial-gradient(ellipse 65% 50% at 70% 40%, rgba(54,26,10,.9) 0%, transparent 60%),radial-gradient(ellipse 48% 42% at 25% 30%, rgba(116,58,22,.55) 0%, transparent 50%),#1C0D06}
+  100%{background:radial-gradient(ellipse 55% 70% at 25% 45%, rgba(96,48,22,.95) 0%, transparent 62%),radial-gradient(ellipse 70% 55% at 72% 58%, rgba(62,30,10,.88) 0%, transparent 58%),radial-gradient(ellipse 42% 48% at 60% 22%, rgba(108,54,20,.6) 0%, transparent 52%),#1C0D06}
+}
+.app-mock{
+  background:rgba(255,255,255,.08);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.15);border-radius:18px;
+  padding:20px 24px;width:100%;max-width:320px;
+  box-shadow:0 8px 32px rgba(0,0,0,.3);
+  position:relative;z-index:1;
+}
+.app-mock-title{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);margin-bottom:16px;
+}
+.app-mock-big{
+  font-family:'DM Sans',sans-serif;font-weight:900;
+  font-size:48px;letter-spacing:-.04em;line-height:1;color:#fff;margin-bottom:4px;
+}
+.app-mock-sub{font-size:12px;color:rgba(255,255,255,.5)}
+.app-cat-row{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,.05);border-radius:10px;
+  padding:10px 12px;margin-bottom:6px;
+}
+.app-cat-name{font-size:13px;font-weight:600;color:#fff;flex:1}
+.app-cat-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.1);flex:1;overflow:hidden}
+.app-cat-fill{height:100%;border-radius:2px;background:#4CAF50}
+.app-cat-fill.warn{background:var(--rust)}
+.app-ring{
+  width:120px;height:120px;margin:16px auto;position:relative;
+}
+.app-ring svg{width:100%;height:100%}
+.app-ring-label{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;
+}
+.app-ring-n{font-family:'DM Sans',sans-serif;font-size:28px;font-weight:900;color:#fff;line-height:1}
+.app-ring-s{font-size:10px;color:rgba(255,255,255,.5)}
+
+/* Step 2 - insight rows */
+.insight-row{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08);
+}
+.insight-row:last-child{border-bottom:none}
+.insight-name{font-size:12px;color:rgba(255,255,255,.8);flex:1}
+.insight-bar{height:3px;flex:2;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+.insight-fill{height:100%;border-radius:2px}
+.insight-fill.g{background:#4CAF50}
+.insight-fill.r{background:var(--rust)}
+.insight-fill.y{background:#F5A623}
+
+/* ADD-ONS section */
+.addons-sec{
+  background:var(--cream);padding:80px 24px;border-top:1px solid var(--border);
+  text-align:center;
+}
+@media(min-width:768px){.addons-sec{padding:100px 48px}}
+.addons-inner{max-width:1200px;margin:0 auto}
+.addons-h{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(28px,3.5vw,48px);letter-spacing:-.02em;line-height:1.15;
+  margin-bottom:12px;
+}
+.addons-h em{font-style:italic;color:var(--rust)}
+.addons-sub{font-size:15px;color:var(--mid);max-width:540px;margin:0 auto 56px;line-height:1.65}
+.addons-grid{
+  display:grid;gap:32px;
+  grid-template-columns:repeat(2,1fr);
+}
+@media(min-width:768px){.addons-grid{grid-template-columns:repeat(4,1fr)}}
+.addon-item{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.addon-icon-wrap{
+  width:88px;height:88px;
+  display:flex;align-items:center;justify-content:center;
+}
+.addon-title{font-size:15px;font-weight:600;color:var(--text)}
+.addon-desc{font-size:13px;color:var(--mid);line-height:1.5}
+.addon-badge{
+  font-size:11px;font-weight:600;color:var(--light);
+  border:1px solid var(--border);border-radius:20px;padding:2px 10px;margin-top:4px;
+}
+
+/* DATA section */
+.data-sec{
+  background:var(--cream);padding:80px 24px;border-top:1px solid var(--border);
+}
+@media(min-width:768px){.data-sec{padding:100px 48px}}
+.data-inner{max-width:1200px;margin:0 auto}
+.data-h{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(28px,3.5vw,52px);letter-spacing:-.02em;margin-bottom:8px;
+  text-align:center;
+}
+.data-h em{font-style:italic;color:var(--rust)}
+.data-sub{font-size:15px;color:var(--mid);text-align:center;margin-bottom:56px}
+.data-grid{
+  display:grid;gap:16px;
+  grid-template-columns:1fr;
+}
+@media(min-width:900px){.data-grid{grid-template-columns:1.4fr 1fr 1fr}}
+.data-card{
+  background:var(--cream-d);border-radius:20px;padding:28px;overflow:hidden;
+}
+.data-card.tall{min-height:300px}
+@media(min-width:900px){.data-card.tall{min-height:400px}}
+.data-card-eyebrow{
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--rust);margin-bottom:8px;
+}
+.data-card-title{font-size:20px;font-weight:700;margin-bottom:20px;line-height:1.3}
+
+/* Biomarker ring card */
+.bm-ring{width:140px;height:140px;margin:0 auto 16px;position:relative}
+.bm-ring svg{width:100%;height:100%}
+.bm-ring-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.bm-ring-n{font-family:'DM Sans',sans-serif;font-size:32px;font-weight:900;color:var(--text);line-height:1}
+.bm-ring-s{font-size:11px;color:var(--mid)}
+.bm-cats{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.bm-cat{
+  background:var(--cream);border-radius:10px;padding:10px 14px;
+  display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .2s;
+}
+.bm-cat:hover{background:var(--cream-d)}
+.bm-cat-name{font-size:13px;font-weight:600;flex:1}
+.bm-cat-bars{display:flex;gap:4px;align-items:center}
+.bm-cat-ok{width:28px;height:4px;border-radius:2px;background:#4CAF50}
+.bm-cat-warn{width:12px;height:4px;border-radius:2px;background:var(--rust)}
+
+/* Action plan card */
+.action-items{display:flex;flex-direction:column;gap:10px}
+.action-item{
+  display:flex;align-items:center;gap:12px;
+  background:var(--cream);border-radius:12px;padding:12px 14px;
+}
+.action-icon{
+  width:36px;height:36px;border-radius:10px;background:var(--rust);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.action-title{font-size:13px;font-weight:600;color:var(--text)}
+.action-sub{font-size:11px;color:var(--light);margin-top:2px}
+
+/* Bio age card */
+.bio-age-photo{
+  width:100%;height:160px;border-radius:14px;overflow:hidden;margin-bottom:16px;
+  background:linear-gradient(135deg,#8B5E3C,#4A2C18);
+  position:relative;
+}
+.bio-age-photo img{width:100%;height:100%;object-fit:cover}
+.bio-age-badge{
+  position:absolute;bottom:12px;right:12px;
+  background:rgba(28,13,6,.8);backdrop-filter:blur(8px);
+  border-radius:12px;padding:10px 14px;text-align:center;
+}
+.bio-age-n{font-family:'DM Sans',sans-serif;font-size:28px;font-weight:900;color:#fff;line-height:1}
+.bio-age-s{font-size:10px;color:rgba(255,255,255,.6)}
+
+/* Wearables card */
+.wear-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px}
+.wear-stat{}
+.wear-stat-icon{font-size:18px;margin-bottom:6px}
+.wear-stat-label{font-size:10px;color:var(--mid);text-transform:uppercase;letter-spacing:.06em}
+.wear-stat-val{font-family:'DM Sans',sans-serif;font-size:22px;font-weight:900;color:var(--text);letter-spacing:-.03em}
+.wear-stat-unit{font-size:11px;color:var(--light);font-weight:400}
+.wear-logos{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.wear-logo{
+  font-size:11px;font-weight:600;color:var(--light);
+  background:var(--cream);border:1px solid var(--border);
+  border-radius:6px;padding:4px 10px;
+}
+</style>
+</head>
+<body>
+
+<!-- MODAL -->
+<div class="modal-ov" id="mOv" onclick="closeMBg(event)">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <button class="modal-x" onclick="closeM()">✕</button>
+    <div class="modal-title">Начать тестирование</div>
+    <div class="modal-sub">Оставьте контакты — свяжемся лично</div>
+    <label class="modal-lbl">Имя</label>
+    <input type="text" class="modal-inp" id="mName" placeholder="Как вас зовут?">
+    <label class="modal-lbl">Телефон</label>
+    <input type="tel" class="modal-inp" id="mPhone" placeholder="+7 (___) ___ __ __" inputmode="numeric">
+    <button class="modal-submit" onclick="submitM()">Записаться →</button>
+  </div>
+</div>
+
+<!-- ANN BAR -->
+<div class="ann">
+  <span>Первые 100 мест — по специальной цене.</span>
+  <a onclick="openM();return false">Записаться →</a>
+</div>
+
+<!-- NAV -->
+<div class="nav-outer" id="navOuter">
+  <div class="nav-inner" id="navInner">
+    <a class="nav-logo" href="#">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+        <path d="M16 28 C16 28 3 20 3 11.5 C3 7.4 6.4 4 10.5 4 C12.9 4 15.1 5.1 16 7 C16.9 5.1 19.1 4 21.5 4 C25.6 4 29 7.4 29 11.5 C29 20 16 28 16 28Z" fill="#C4622D" opacity=".18" stroke="#C4622D" stroke-width="1.8" stroke-linejoin="round"/>
+        <polyline points="10,16 14,20 22,11" stroke="#C4622D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      Чекапи
+    </a>
+    <ul class="nav-links">
+      <li><a href="#how">Как работает</a></li>
+      <li><a href="#tests">Что проверяем</a></li>
+      <li><a href="#pricing">Цены</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-right">
+      <a class="nav-login" href="#">Войти</a>
+      <button class="nav-cta" onclick="openM()">Начать тестирование</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO — video background -->
+<section class="hero" id="top">
+  <video
+    id="heroVideo"
+    class="hero-bg-video"
+    autoplay muted loop playsinline
+    webkit-playsinline
+    x-webkit-airplay="deny"
+    disableRemotePlayback
+    preload="metadata"
+    style="background:transparent">
+    <source src="hero-final.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="hero-h1">Быть на чеку<br><em>просто.</em></h1>
+    <p class="hero-sub">Каждый год. Начиная со 160+ анализов, выявляющих 1000+ состояний. Меньше 85 ₽ в день.</p>
+    <button class="hero-cta" onclick="openM()">Начать тестирование</button>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-n">160+ анализов</div>
+        <div class="hero-stat-l">Всего за год</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-n">Всё тело</div>
+        <div class="hero-stat-l">Тест 2× в год</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-n">85 ₽ в день</div>
+        <div class="hero-stat-l">Оплата раз в год</div>
+      </div>
+    </div>
+  </div>
+  <button class="hero-pause" id="heroPauseBtn" onclick="toggleHeroAnim()" title="Пауза">⏸</button>
+</section>
+
+<!-- TESTING IS EASY -->
+<div id="how" class="easy-section">
+  <div class="easy-inner">
+    <h2 class="easy-title r">Быть на чеку <em>просто</em></h2>
+    <div class="easy-grid">
+      <!-- Card 1 -->
+      <div class="easy-card r d1">
+        <div class="easy-num">01</div>
+        <h3 class="easy-card-title">160+ анализов</h3>
+        <p class="easy-card-sub">Запись в 400+ лабораторий Москвы</p>
+        <div class="cal-widget" id="calWidget">
+          <div class="cal-dates" id="calDates">
+            <div class="cal-day" data-day="ВТ" data-num="5" onclick="selDay(this)"><div class="cal-day-name">ВТ</div><div class="cal-day-n">5</div></div>
+            <div class="cal-day" data-day="СР" data-num="6" onclick="selDay(this)"><div class="cal-day-name">СР</div><div class="cal-day-n">6</div></div>
+            <div class="cal-day active" data-day="ЧТ" data-num="7" onclick="selDay(this)"><div class="cal-day-name">ЧТ</div><div class="cal-day-n">7</div></div>
+            <div class="cal-day" data-day="ПТ" data-num="8" onclick="selDay(this)"><div class="cal-day-name">ПТ</div><div class="cal-day-n">8</div></div>
+            <div class="cal-day" data-day="СБ" data-num="9" onclick="selDay(this)"><div class="cal-day-name">СБ</div><div class="cal-day-n">9</div></div>
+          </div>
+          <div class="cal-times" id="calTimes">
+            <div class="cal-time" onclick="selTime(this)">8:50</div>
+            <div class="cal-time active" onclick="selTime(this)">9:00</div>
+            <div class="cal-time" onclick="selTime(this)">9:10</div>
+            <div class="cal-time" onclick="selTime(this)">9:20</div>
+            <div class="cal-time" onclick="selTime(this)">9:30</div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="easy-card r d2">
+        <div class="easy-num">02</div>
+        <h3 class="easy-card-title">Понятные результаты</h3>
+        <p class="easy-card-sub">Аналитика ведущих врачей и сотен часов исследований</p>
+        <div class="chart-widget">
+          <div class="chart-zones">
+            <div class="chart-zone">
+              <span>Выше нормы</span>
+              <div class="chart-line">
+                <div class="chart-dot ok" style="left:60%"><span class="chart-val">16.7</span></div>
+              </div>
+            </div>
+            <div class="chart-zone" style="border-bottom:none">
+              <span>В норме</span>
+              <div class="chart-line" style="position:relative;height:40px">
+                <div class="chart-dot ok" style="left:20%"><span class="chart-val">10.0</span></div>
+                <div class="chart-dot ok" style="left:65%"><span class="chart-val">12.5</span></div>
+                <div class="chart-connector" style="left:20%;width:45%"></div>
+              </div>
+            </div>
+            <div class="chart-zone">
+              <span>Ниже нормы</span>
+              <div class="chart-line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="easy-card r d3">
+        <div class="easy-num">03</div>
+        <h3 class="easy-card-title">Простые шаги</h3>
+        <p class="easy-card-sub">Действуйте. Тестируйте снова.</p>
+        <div class="proto-items">
+          <div class="proto-item">
+            <div class="proto-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+            </div>
+            <div>
+              <div class="proto-title">Питание</div>
+              <div class="proto-sub">Лосось, органическая зелень...</div>
+            </div>
+          </div>
+          <div class="proto-item">
+            <div class="proto-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/>
+              </svg>
+            </div>
+            <div>
+              <div class="proto-title">Добавки</div>
+              <div class="proto-sub">Инозитол 750мг, CoQ10 100мг...</div>
+            </div>
+          </div>
+          <div class="proto-item">
+            <div class="proto-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+              </svg>
+            </div>
+            <div>
+              <div class="proto-title">Образ жизни</div>
+              <div class="proto-sub">Растяжка, нагрузка, сон...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="easy-btns r d2">
+      <button class="btn-rust" onclick="openM()">Начать тестирование</button>
+      <a class="btn-outline" href="#hiw">Как это работает</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     HOW IT WORKS — STICKY SCROLL (images 3-6)
+════════════════════════════════════════════ -->
+
+
+<!-- HOW IT WORKS SECTION -->
+<div id="hiw" class="hiw-section">
+
+  <!-- Sticky step nav -->
+  <div class="hiw-sticky-nav">
+    <div class="hiw-steps-row">
+      <a class="hiw-step-link active" href="#hiw-step1" data-step="1">
+        <div class="hiw-step-dot"></div>ШАГ 01 · Запланировать анализы
+      </a>
+      <a class="hiw-step-link" href="#hiw-step2" data-step="2">
+        <div class="hiw-step-dot"></div>ШАГ 02 · Понять результаты
+      </a>
+      <a class="hiw-step-link" href="#hiw-step3" data-step="3">
+        <div class="hiw-step-dot"></div>ШАГ 03 · Действовать
+      </a>
+      <a class="hiw-step-link" href="#hiw-step4" data-step="4">
+        <div class="hiw-step-dot"></div>ШАГ 04 · Наблюдение всю жизнь
+      </a>
+    </div>
+  </div>
+
+  <!-- Step blocks stacking wrapper -->
+  <div class="hiw-stack-wrapper">
+
+  <!-- Step 1 -->
+  <div id="hiw-step1" class="hiw-stack-block" data-step-block="1">
+  <div class="hiw-block">
+    <div>
+      <div class="hiw-eyebrow">ШАГ 01 · Запланировать анализы</div>
+      <h2 class="hiw-h">Начните со 160+<br>анализов <em>каждый год</em></h2>
+      <p class="hiw-body">Охватывает сердце, гормоны, почки, печень, щитовидную железу и многое другое.</p>
+      <div class="hiw-feats">
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>160+ анализов включены в пакет</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Полное исследование за один визит 15 минут</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>400+ точек Инвитро, Хеликс, KDL по всей России</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Выезд медсестры домой — в день заказа</span></div>
+      </div>
+      <button class="btn-rust" onclick="openM()">Записаться →</button>
+    </div>
+    <div class="hiw-visual">
+      <div class="app-mock">
+        <div class="app-mock-title">160+ анализов</div>
+        <div class="app-mock-big">160<span style="font-size:28px;opacity:.6">+</span></div>
+        <div class="app-mock-sub">Анализов ежегодно</div>
+        <div style="margin-top:20px;height:1px;background:rgba(255,255,255,.1)"></div>
+        <div style="margin-top:16px;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">Месяц 1</div>
+        <div style="display:flex;align-items:flex-end;gap:3px;height:48px">
+          <div style="flex:1;background:rgba(255,255,255,.2);border-radius:2px 2px 0 0;height:30%"></div>
+          <div style="flex:1;background:rgba(255,255,255,.2);border-radius:2px 2px 0 0;height:45%"></div>
+          <div style="flex:1;background:rgba(255,255,255,.35);border-radius:2px 2px 0 0;height:60%"></div>
+          <div style="flex:1;background:rgba(196,98,45,.8);border-radius:2px 2px 0 0;height:100%"></div>
+          <div style="flex:1;background:rgba(196,98,45,.6);border-radius:2px 2px 0 0;height:80%"></div>
+          <div style="flex:1;background:rgba(196,98,45,.4);border-radius:2px 2px 0 0;height:65%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div id="hiw-step2" class="hiw-stack-block" data-step-block="2">
+  <div class="hiw-block">
+    <div>
+      <div class="hiw-eyebrow">ШАГ 02 · Понять результаты</div>
+      <h2 class="hiw-h">Изучите <em>результаты</em><br>с нашими врачами</h2>
+      <p class="hiw-body">Врачи проверяют ваши данные с учётом истории здоровья и выделяют главное.</p>
+      <div class="hiw-feats">
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Глубже, чем обычный медосмотр</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Персональные гиды по питанию и добавкам</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Скачайте и поделитесь с любым врачом</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Соответствует медицинским стандартам конфиденциальности</span></div>
+      </div>
+      <button class="btn-rust" onclick="openM()">Открыть результаты →</button>
+    </div>
+    <div class="hiw-visual">
+      <div class="app-mock">
+        <div class="app-mock-title">Мои результаты</div>
+        <div class="app-ring" id="hiwRing">
+          <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="10"/><circle id="hiwArcG" cx="60" cy="60" r="50" fill="none" stroke="#4CAF50" stroke-width="10" stroke-dasharray="0 314" stroke-linecap="round" style="transform:rotate(-90deg);transform-origin:60px 60px;transition:stroke-dasharray 1.4s cubic-bezier(.25,.46,.45,.94)"/><circle id="hiwArcR" cx="60" cy="60" r="50" fill="none" stroke="var(--rust)" stroke-width="10" stroke-dasharray="0 314" stroke-linecap="round" style="transform:rotate(-90deg);transform-origin:60px 60px;transition:stroke-dasharray 1.6s cubic-bezier(.25,.46,.45,.94) .3s"/></svg>
+          <div class="app-ring-label"><div class="app-ring-n" id="hiwRingN">0</div><div class="app-ring-s">биомаркера</div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.5);margin-bottom:12px">
+          <span>В норме · <span id="hiwOk">0</span></span><span style="color:var(--rust)">Вне нормы · <span id="hiwOut">0</span></span>
+        </div>
+        <div class="insight-row"><div class="insight-name">Аутоиммунитет</div><div class="insight-bar"><div class="insight-fill g hiw-bar" style="width:0%" data-w="80%"></div></div></div>
+        <div class="insight-row"><div class="insight-name">Сердце</div><div class="insight-bar"><div class="insight-fill g hiw-bar" style="width:0%" data-w="90%"></div></div></div>
+        <div class="insight-row"><div class="insight-name">Гормоны</div><div class="insight-bar"><div class="insight-fill y hiw-bar" style="width:0%" data-w="60%"></div></div></div>
+        <div class="insight-row"><div class="insight-name">Нутриенты</div><div class="insight-bar"><div class="insight-fill r hiw-bar" style="width:0%" data-w="40%"></div></div></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div id="hiw-step3" class="hiw-stack-block" data-step-block="3">
+  <div class="hiw-block">
+    <div>
+      <div class="hiw-eyebrow">ШАГ 03 · Действовать</div>
+      <h2 class="hiw-h">Сдайте снова.<br><em>Здоровье — это паттерн.</em></h2>
+      <p class="hiw-body">Здоровье — это не один тест, а динамика. Сдайте повторно через 3–6 месяцев.</p>
+      <div class="hiw-feats">
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>60+ анализов в середине года</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Видите как меняется тело</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Добавьте тесты по любым отклонениям</span></div>
+      </div>
+      <button class="btn-rust" onclick="openM()">Начать протокол →</button>
+    </div>
+    <div class="hiw-visual">
+      <div class="app-mock">
+        <div class="app-mock-title">60+ анализов</div>
+        <div class="app-mock-big">60<span style="font-size:28px;opacity:.6">+</span></div>
+        <div class="app-mock-sub">Анализов в середине года</div>
+        <div style="margin-top:16px;height:1px;background:rgba(255,255,255,.1)"></div>
+        <div style="margin-top:14px;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Месяц 6</div>
+        <div style="display:flex;gap:16px;margin-top:12px">
+          <div style="text-align:center">
+            <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);margin:0 auto 6px"></div>
+            <div style="font-size:10px;color:rgba(255,255,255,.4)">Май</div>
+          </div>
+          <div style="flex:1;height:1px;background:rgba(255,255,255,.15);margin-top:4px;align-self:flex-start;margin-top:7px"></div>
+          <div style="text-align:center">
+            <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);margin:0 auto 6px"></div>
+            <div style="font-size:10px;color:rgba(255,255,255,.4)">Нояб</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div id="hiw-step4" class="hiw-stack-block" data-step-block="4">
+  <div class="hiw-block">
+    <div>
+      <div class="hiw-eyebrow">ШАГ 04 · Наблюдение всю жизнь</div>
+      <h2 class="hiw-h">Выявляйте паттерны<br>и <em>тревожные сигналы</em></h2>
+      <p class="hiw-body">Большинство начинает лечиться когда уже поздно. Чекапи отслеживает данные во времени — выявляет признаки болезней до симптомов.</p>
+      <div class="hiw-feats">
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Мониторинг тысяч заболеваний на ранней стадии</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Тренды биомаркеров со временем</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Повторные тесты для отслеживания прогресса</span></div>
+      </div>
+      <button class="btn-rust" onclick="openM()">Начать наблюдение →</button>
+    </div>
+    <div class="hiw-visual">
+      <div class="app-mock">
+        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:4px">(АпоB)</div>
+        <div style="font-size:14px;font-weight:700;color:#4CAF50;margin-bottom:12px">В норме 84 мг/дл</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.5;margin-bottom:16px">Переносит липиды в кровотоке. Мощный маркер риска сердечно-сосудистых заболеваний.</div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px"><span>Выше нормы</span><span style="color:var(--rust);font-size:11px;font-weight:700">93</span></div>
+          <div style="height:2px;background:var(--rust);border-radius:1px;margin-bottom:8px"></div>
+          <div style="font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">В норме</div>
+          <div style="height:2px;background:#4CAF50;border-radius:1px;margin-bottom:8px"></div>
+          <div style="font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase">Ниже нормы</div>
+        </div>
+        <div style="margin-top:16px;background:rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px">
+          <div style="width:28px;height:28px;border-radius:8px;background:var(--rust);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/></svg>
+          </div>
+          <div><div style="font-size:12px;font-weight:600;color:#fff">Омега-3 жирные кислоты</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Лосось 2 раза в неделю для триглицеридов</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div><!-- end hiw-stack-wrapper -->
+
+</div><!-- end hiw-section -->
+
+<!-- ADD-ONS (image 9) -->
+<div class="addons-sec">
+  <div class="addons-inner">
+    <h2 class="addons-h r">Чекапи даёт доступ<br>к <em>дополнительным исследованиям</em></h2>
+    <p class="addons-sub r d1">Расширенные тесты выявляют скрытые риски и дают более глубокое понимание для принятия решений о здоровье.</p>
+    <div class="addons-grid r d2">
+      <div class="addon-item">
+        <div class="addon-icon-wrap">
+          <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+            <circle cx="36" cy="36" r="28" fill="none" stroke="var(--rust-l)" stroke-width="1.5" stroke-dasharray="3 4"/>
+            <circle cx="36" cy="36" r="16" fill="var(--rust-ll)"/>
+            <circle cx="36" cy="36" r="8" fill="none" stroke="var(--rust)" stroke-width="2"/>
+            <circle cx="28" cy="28" r="4" fill="none" stroke="var(--rust-l)" stroke-width="1.5"/>
+            <circle cx="44" cy="28" r="3" fill="none" stroke="var(--rust-l)" stroke-width="1.5"/>
+            <circle cx="28" cy="44" r="3" fill="none" stroke="var(--rust-l)" stroke-width="1.5"/>
+            <circle cx="44" cy="44" r="4" fill="none" stroke="var(--rust-l)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="addon-title">Онкомаркеры GRAIL</div>
+        <div class="addon-desc">Выявляет сигналы 50+ типов рака уже на первой стадии.</div>
+      </div>
+      <div class="addon-item">
+        <div class="addon-icon-wrap">
+          <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+            <ellipse cx="36" cy="28" rx="18" ry="22" fill="none" stroke="var(--rust)" stroke-width="1.5"/>
+            <ellipse cx="36" cy="28" rx="10" ry="13" fill="none" stroke="var(--rust-l)" stroke-width="1.5"/>
+            <rect x="28" y="48" width="16" height="4" rx="2" fill="var(--rust-l)"/>
+            <rect x="31" y="52" width="10" height="8" rx="2" fill="none" stroke="var(--rust)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="addon-title">МРТ и КТ сканирование</div>
+        <div class="addon-desc">Широкий спектр состояний: признаки рака, инсульта, аневризмы.</div>
+      </div>
+      <div class="addon-item">
+        <div class="addon-icon-wrap">
+          <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+            <rect x="28" y="16" width="8" height="40" rx="4" fill="none" stroke="var(--rust)" stroke-width="1.5"/>
+            <circle cx="36" cy="36" r="8" fill="var(--rust-ll)" stroke="var(--rust-l)" stroke-width="1"/>
+            <circle cx="50" cy="28" r="5" fill="var(--rust-ll)" stroke="var(--rust)" stroke-width="1.5"/>
+            <circle cx="50" cy="44" r="5" fill="var(--rust-ll)" stroke="var(--rust)" stroke-width="1.5"/>
+            <line x1="44" y1="36" x2="42" y2="36" stroke="var(--rust-l)" stroke-width="1.5"/>
+            <line x1="44" y1="32" x2="42" y2="34" stroke="var(--rust-l)" stroke-width="1.5"/>
+            <line x1="44" y1="40" x2="42" y2="38" stroke="var(--rust-l)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="addon-title">Расширенные панели</div>
+        <div class="addon-desc">Дополнительные биомаркеры сердца, болезни Альцгеймера, аллергий.</div>
+      </div>
+      <div class="addon-item">
+        <div class="addon-icon-wrap">
+          <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+            <path d="M20 44 C20 38 24 32 30 30 C28 26 26 20 30 17 C34 14 38 17 40 21 C44 19 48 20 50 24 C54 22 58 25 58 30 C58 38 52 44 44 46 L28 46 C24 46 20 45 20 44Z" fill="var(--rust-ll)" stroke="var(--rust)" stroke-width="1.5"/>
+            <path d="M30 46 L28 54 M36 46 L36 54 M42 46 L44 54" stroke="var(--rust-l)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="addon-title">Микробиом кишечника</div>
+        <div class="addon-desc">Глубокий анализ микрофлоры и связи с метаболизмом.</div>
+        <div class="addon-badge">Скоро</div>
+      </div>
+    </div>
+    <div style="margin-top:40px" class="r d3">
+      <button class="btn-outline" onclick="document.getElementById('tests').scrollIntoView({behavior:'smooth'})">Смотреть все анализы</button>
+    </div>
+  </div>
+</div>
+
+<!-- DATA / WEARABLES (image 10) -->
+<div class="data-sec">
+  <div class="data-inner">
+    <h2 class="data-h r">Данные, которые <em>приводят здоровье в движение</em></h2>
+    <p class="data-sub r d1">Узнайте где вы сейчас. Решите куда двигаться.</p>
+    <div class="data-grid">
+      <!-- Big biomarker card -->
+      <div class="data-card tall r d1" style="background:linear-gradient(135deg,#5C2E1A,#2C1408);color:#fff">
+        <div class="data-card-eyebrow" style="color:rgba(255,255,255,.5)">160+ АНАЛИЗОВ</div>
+        <div class="data-card-title" style="color:#fff">Расширенное тестирование</div>
+        <div class="bm-ring" id="bmRing">
+          <svg viewBox="0 0 140 140"><circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="12"/><circle id="bmArcGreen" cx="70" cy="70" r="58" fill="none" stroke="#4CAF50" stroke-width="12" stroke-dasharray="0 364" stroke-linecap="round" style="transition:stroke-dasharray 1.6s cubic-bezier(.25,.46,.45,.94);transform:rotate(-90deg);transform-origin:70px 70px"/><circle id="bmArcRust" cx="70" cy="70" r="58" fill="none" stroke="var(--rust)" stroke-width="12" stroke-dasharray="0 364" stroke-linecap="round" style="transition:stroke-dasharray 1.8s cubic-bezier(.25,.46,.45,.94) .2s;transform:rotate(-90deg);transform-origin:70px 70px"/></svg>
+          <div class="bm-ring-label"><div class="bm-ring-n" id="bmCount" style="color:#fff">0</div><div class="bm-ring-s" style="color:rgba(255,255,255,.5)">биомаркеров</div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:16px">
+          <span style="color:rgba(255,255,255,.5)">В норме: <strong id="bmOk" style="color:#4CAF50">0</strong></span>
+          <span style="color:rgba(255,255,255,.5)">Вне нормы: <strong id="bmOut" style="color:var(--rust)">0</strong></span>
+        </div>
+        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">Категории</div>
+        <div class="bm-cats">
+          <div class="bm-cat" style="background:rgba(255,255,255,.08)">
+            <div class="bm-cat-name" style="color:#fff">Аутоиммунитет</div>
+            <div class="bm-cat-bars"><div class="bm-cat-ok"></div><div class="bm-cat-warn" style="width:8px"></div></div>
+          </div>
+          <div class="bm-cat" style="background:rgba(255,255,255,.08)">
+            <div class="bm-cat-name" style="color:#fff">Сердце</div>
+            <div class="bm-cat-bars"><div class="bm-cat-ok" style="width:36px"></div><div class="bm-cat-warn"></div></div>
+          </div>
+          <div class="bm-cat" style="background:rgba(255,255,255,.08)">
+            <div class="bm-cat-name" style="color:#fff">Нутриенты</div>
+            <div class="bm-cat-bars"><div class="bm-cat-ok" style="width:32px"></div><div class="bm-cat-warn" style="width:10px"></div></div>
+          </div>
+        </div>
+      </div>
+      <!-- Action plan card -->
+      <div class="data-card r d2">
+        <div class="data-card-eyebrow">СЛЕДУЮЩИЕ ШАГИ</div>
+        <div class="data-card-title">Понятные действия</div>
+        <div class="action-items">
+          <div class="action-item">
+            <div class="action-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/></svg></div>
+            <div><div class="action-title">Питание</div><div class="action-sub">Лосось, органическая зелень...</div></div>
+          </div>
+          <div class="action-item">
+            <div class="action-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+            <div><div class="action-title">Добавки</div><div class="action-sub">Инозитол 750мг, CoQ10 100мг...</div></div>
+          </div>
+          <div class="action-item">
+            <div class="action-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+            <div><div class="action-title">Режим дня</div><div class="action-sub">Голодание 16:8, 2л воды до 19:00...</div></div>
+          </div>
+        </div>
+        <div style="margin-top:20px;background:var(--cream);border-radius:12px;padding:14px">
+          <div style="font-size:11px;font-weight:700;color:var(--rust);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">Биологический возраст</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:36px;font-weight:900;color:var(--text);letter-spacing:-.04em;line-height:1">33.4</div>
+        </div>
+      </div>
+      <!-- Wearables card - like image 5/6 -->
+      <div class="data-card r d3" id="wearCard">
+        <div class="data-card-eyebrow">ГАДЖЕТЫ</div>
+        <div class="data-card-title">Интеграция с трекерами здоровья</div>
+        <div class="wear-stats">
+          <div class="wear-stat" style="border-right:1px solid var(--border);padding-right:12px">
+            <!-- Steps icon -->
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="margin-bottom:6px">
+              <path d="M8 22 L12 10 M12 10 L10 6 M10 6 C10 4.3 11.3 3 13 3 C14.7 3 16 4.3 16 6 L16 10 M16 10 L20 22" stroke="#7B8BD4" stroke-width="2" stroke-linecap="round"/>
+              <path d="M7 22 C7 22 9 20 12 22 C15 24 17 20 20 22" stroke="#7B8BD4" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <circle cx="13" cy="3" r="2" fill="#7B8BD4"/>
+            </svg>
+            <div class="wear-stat-label">Шаги</div>
+            <div class="wear-stat-val"><span id="stepValN">4 787</span><span class="wear-stat-unit"> ср</span></div>
+            <div class="wear-mini-bars" id="stepBars" style="display:flex;align-items:flex-end;gap:2px;height:32px;margin-top:8px"></div>
+          </div>
+          <div class="wear-stat" style="border-right:1px solid var(--border);padding-right:12px;padding-left:12px">
+            <!-- Sleep icon -->
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="margin-bottom:6px">
+              <path d="M6 10 L6 20 C6 21.1 6.9 22 8 22 L14 22 C15.1 22 16 21.1 16 20 L16 10" stroke="#A78BD4" stroke-width="2" stroke-linecap="round"/>
+              <path d="M4 10 L18 10" stroke="#A78BD4" stroke-width="2" stroke-linecap="round"/>
+              <path d="M10 6 L10 10" stroke="#A78BD4" stroke-width="2" stroke-linecap="round"/>
+              <path d="M8 6 L12 6" stroke="#A78BD4" stroke-width="2" stroke-linecap="round"/>
+              <rect x="19" y="14" width="5" height="8" rx="2" fill="none" stroke="#A78BD4" stroke-width="1.5"/>
+            </svg>
+            <div class="wear-stat-label">Сон</div>
+            <div class="wear-stat-val"><span id="sleepValN">7.5</span><span class="wear-stat-unit"> ч</span></div>
+            <div class="wear-mini-bars" id="sleepBars" style="display:flex;align-items:flex-end;gap:2px;height:32px;margin-top:8px"></div>
+          </div>
+          <div class="wear-stat" style="padding-left:12px">
+            <!-- HR icon -->
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="margin-bottom:6px">
+              <path d="M14 22 C14 22 4 16 4 9.5 C4 6.9 6.2 5 8.5 5 C10.1 5 11.5 5.8 12.3 7 C12.7 7.6 13.3 8 14 8 C14.7 8 15.3 7.6 15.7 7 C16.5 5.8 17.9 5 19.5 5 C21.8 5 24 6.9 24 9.5 C24 16 14 22 14 22Z" fill="none" stroke="#C0685C" stroke-width="1.8"/>
+            </svg>
+            <div class="wear-stat-label">ЧСС</div>
+            <div class="wear-stat-val"><span id="hrValN">64</span><span class="wear-stat-unit"> уд</span></div>
+            <div class="wear-hr-line" id="hrLine" style="margin-top:8px;height:32px;position:relative"></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;align-items:center">
+          <span style="font-size:11px;color:var(--light)">Apple Health</span><span style="color:var(--border);font-size:11px">·</span>
+          <span style="font-size:11px;color:var(--light)">iFit</span><span style="color:var(--border);font-size:11px">·</span>
+          <span style="font-size:11px;color:var(--light)">Withings</span><span style="color:var(--border);font-size:11px">·</span>
+          <span style="font-size:11px;color:var(--light)">Oura</span><span style="color:var(--border);font-size:11px">·</span>
+          <span style="font-size:11px;color:var(--light)">Fitbit</span><span style="color:var(--border);font-size:11px">·</span>
+          <span style="font-size:11px;color:var(--light)">Garmin</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DISEASE TICKER -->
+<div class="ticker-sec">
+  <div class="ticker-head">
+    <h2 class="ticker-h r">Мониторинг ранних признаков <em>тысяч заболеваний</em></h2>
+    <div class="ticker-checks r d1">
+      <span class="ticker-check">Установите долгосрочный базовый уровень</span>
+      <span class="ticker-check">Отслеживается всю жизнь</span>
+      <span class="ticker-check">Следите за изменениями тела</span>
+    </div>
+  </div>
+
+  <div style="position:relative">
+    <div class="ticker-wrap">
+      <div class="ticker-row r1" id="trow1">
+        <span class="tdis">Ишемическая болезнь</span><span class="tdis">Болезнь Аддисона</span><span class="tdis">Серповидноклеточная</span><span class="tdis">Сахарный диабет</span><span class="tdis">Рак яичников</span><span class="tdis">Рак простаты</span><span class="tdis">Болезнь Грейвса</span><span class="tdis">Хроническая болезнь почек</span><span class="tdis">Ревматоидный артрит</span><span class="tdis">Инсулинорезистентность</span><span class="tdis">СПКЯ</span><span class="tdis">Гипогонадизм</span><span class="tdis">Анемия</span><span class="tdis">Токсичность свинца</span><span class="tdis">Болезнь Хашимото</span>
+        <span class="tdis">Ишемическая болезнь</span><span class="tdis">Болезнь Аддисона</span><span class="tdis">Серповидноклеточная</span><span class="tdis">Сахарный диабет</span><span class="tdis">Рак яичников</span><span class="tdis">Рак простаты</span><span class="tdis">Болезнь Грейвса</span><span class="tdis">Хроническая болезнь почек</span><span class="tdis">Ревматоидный артрит</span><span class="tdis">Инсулинорезистентность</span><span class="tdis">СПКЯ</span><span class="tdis">Гипогонадизм</span><span class="tdis">Анемия</span><span class="tdis">Токсичность свинца</span><span class="tdis">Болезнь Хашимото</span>
+      </div>
+    </div>
+    <div class="ticker-wrap" style="margin-top:0">
+      <div class="ticker-row r2" id="trow2">
+        <span class="tdis">Гипогонадизм</span><span class="tdis">Анемия</span><span class="tdis">Токсичность свинца</span><span class="tdis">Синдром Шёгрена</span><span class="tdis">Хроническая болезнь почек</span><span class="tdis">Инсулинорезистентность</span><span class="tdis">СПКЯ</span><span class="tdis">Болезнь Альцгеймера</span><span class="tdis">Токсичность плесени</span><span class="tdis">Болезнь Грейвса</span><span class="tdis">Сахарный диабет</span><span class="tdis">Гемохроматоз</span><span class="tdis">Гипотиреоз</span><span class="tdis">Подагра</span>
+        <span class="tdis">Гипогонадизм</span><span class="tdis">Анемия</span><span class="tdis">Токсичность свинца</span><span class="tdis">Синдром Шёгрена</span><span class="tdis">Хроническая болезнь почек</span><span class="tdis">Инсулинорезистентность</span><span class="tdis">СПКЯ</span><span class="tdis">Болезнь Альцгеймера</span><span class="tdis">Токсичность плесени</span><span class="tdis">Болезнь Грейвса</span><span class="tdis">Сахарный диабет</span><span class="tdis">Гемохроматоз</span><span class="tdis">Гипотиреоз</span><span class="tdis">Подагра</span>
+      </div>
+    </div>
+
+    <!-- Floating chart card -->
+    <div class="ticker-chart-card">
+      <div class="tcc-zone" style="color:var(--rust)">
+        <span>Выше нормы</span>
+        <div style="display:flex;gap:4px;align-items:center">
+          <span style="font-size:12px;font-weight:700;color:var(--rust)">16.7</span>
+          <div class="tcc-dot"></div>
+        </div>
+      </div>
+      <div class="tcc-zone" style="padding:12px 0">
+        <span>В норме</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:11px;color:var(--mid)">10.0 → 12.5</span>
+          <div class="tcc-dot g"></div>
+        </div>
+      </div>
+      <div class="tcc-zone">
+        <span>Ниже нормы</span>
+        <div class="tcc-dot y"></div>
+      </div>
+      <div style="font-size:9px;color:var(--light);text-align:center;margin-top:8px;letter-spacing:.04em">МАЙ · ОКТ · МАЙ</div>
+    </div>
+  </div>
+
+  <div class="ticker-pause">
+    <button onclick="toggleTicker()" id="tickPauseBtn">⏸&nbsp; PAUSE MOTION</button>
+  </div>
+</div>
+
+<!-- 160+ LAB TESTS -->
+<div id="tests" class="tests-sec">
+  <div class="tests-inner">
+    <h2 class="tests-h r">160+ анализов <em>отобранных врачами</em></h2>
+    <div class="tests-doctor r d1">
+      <div class="tests-doctor-q">«Самый мощный подход к диагностике за всю мою карьеру. Бескомпромиссная глубина — без сокращений.»</div>
+      <div class="tests-doctor-info">
+        <div class="tests-doctor-name">проф. Михаил Лебедев</div>
+        <div class="tests-doctor-role">д.м.н., зав. кафедрой<br>превентивной медицины</div>
+      </div>
+    </div>
+    <div class="tests-grid r d2">
+      <!-- Cat 1 -->
+      <div class="tcat">
+        <div class="tcat-title">Гормоны<br>и щитовидная</div>
+        <div class="tcat-count">
+          <div class="tcat-count-bar"><span></span><span></span><span></span></div>
+          16 показателей
+        </div>
+        <div class="tcat-items">
+          <div class="tcat-item">Т4 свободный</div>
+          <div class="tcat-item">АТ к тиреоглобулину</div>
+          <div class="tcat-item">Тестостерон общий</div>
+          <div class="tcat-item">АМГ</div>
+          <div class="tcat-item faded">Эстрадиол</div>
+        </div>
+      </div>
+      <!-- Cat 2 -->
+      <div class="tcat">
+        <div class="tcat-title">Онкомаркеры<br>и скрытые риски</div>
+        <div class="tcat-count">
+          <div class="tcat-count-bar"><span></span><span></span><span></span></div>
+          34 показателя
+        </div>
+        <div class="tcat-items">
+          <div class="tcat-item">ПСА общий</div>
+          <div class="tcat-item">CA-125, CA 19-9</div>
+          <div class="tcat-item">Ревматоидный фактор</div>
+          <div class="tcat-item faded">Ртуть</div>
+          <div class="tcat-item faded">Свинец</div>
+        </div>
+      </div>
+      <!-- Cat 3 -->
+      <div class="tcat">
+        <div class="tcat-title">Сердце<br>и метаболизм</div>
+        <div class="tcat-count">
+          <div class="tcat-count-bar"><span></span><span></span><span></span></div>
+          18 показателей
+        </div>
+        <div class="tcat-items">
+          <div class="tcat-item">ЛПНП мелкие частицы</div>
+          <div class="tcat-item">Липопротеин (а)</div>
+          <div class="tcat-item">Аполипопротеин B</div>
+          <div class="tcat-item faded">Омега-3 общий</div>
+          <div class="tcat-item faded">Инсулин</div>
+        </div>
+      </div>
+      <!-- Cat 4 -->
+      <div class="tcat">
+        <div class="tcat-title">Долголетие<br>и биовозраст</div>
+        <div class="tcat-count">
+          <div class="tcat-count-bar"><span></span><span></span><span></span></div>
+          26 показателей
+        </div>
+        <div class="tcat-items">
+          <div class="tcat-item">ГСПГ</div>
+          <div class="tcat-item">ДГЭА-С</div>
+          <div class="tcat-item">ИФР-1 (СТГ-прокси)</div>
+          <div class="tcat-item faded">Гомоцистеин</div>
+          <div class="tcat-item faded">Витамин D</div>
+        </div>
+      </div>
+      <!-- Cat 5 -->
+      <div class="tcat">
+        <div class="tcat-title">Психика<br>и фокус</div>
+        <div class="tcat-count">
+          <div class="tcat-count-bar"><span></span><span></span><span></span></div>
+          36 показателей
+        </div>
+        <div class="tcat-items">
+          <div class="tcat-item">Кортизол</div>
+          <div class="tcat-item">СРБ высокочувствительный</div>
+          <div class="tcat-item">Железо</div>
+          <div class="tcat-item faded">Ферритин</div>
+          <div class="tcat-item faded">Метилмалоновая кислота</div>
+        </div>
+      </div>
+      <!-- More -->
+      <div class="tcat-more r" onclick="openM()">
+        <div class="tcat-more-plus">+Ещё</div>
+        <div class="tcat-more-text">Всё<br>в одном</div>
+        <button class="tcat-more-btn">Смотреть все</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THE NEW STANDARD — bento -->
+<div class="standard-sec">
+  <div class="standard-inner">
+    <h2 class="standard-h r">Контроль здоровья <em>с Чекапи</em></h2>
+    <p class="standard-sub r d1">Здоровье для нового, требовательного поколения</p>
+    <div class="bento r d2">
+      <!-- Large testimonial — man -->
+      <div class="bento-card bc-large">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop&crop=face" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top">
+        <div class="bento-overlay"></div>
+        <div class="bento-text">
+          <div class="bento-quote">«Наконец-то нашёл причину хронической усталости — ферритин был критически низким. Без Чекапи не узнал бы ещё год.»</div>
+          <div class="bento-name">Дмитрий К.</div>
+          <div class="bento-role">Москва · IT-директор</div>
+        </div>
+      </div>
+      <!-- Testimonial 2 -->
+      <div class="bento-card bc-sm">
+        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top">
+        <div class="bento-overlay"></div>
+        <div class="bento-text">
+          <div class="bento-quote">«Чекапи помог понять свою биологию — теперь знаю что и зачем принимать.»</div>
+          <div class="bento-name">Мария В.</div>
+          <div class="bento-role">Нутрициолог</div>
+        </div>
+      </div>
+      <!-- Stat card -->
+      <div class="bento-card bc-sm bc-award" style="flex-direction:column;gap:4px">
+        <div style="font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,56px);letter-spacing:-.03em;color:var(--rust);line-height:1">5М+</div>
+        <div style="font-size:12px;color:var(--mid);font-weight:500;text-align:center;line-height:1.4">результатов<br>анализов в базе</div>
+      </div>
+      <!-- Testimonial 3 -->
+      <div class="bento-card bc-sm">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top">
+        <div class="bento-overlay"></div>
+        <div class="bento-text">
+          <div class="bento-quote">«Глубоко верю в то, что делает Чекапи. Это меняет подход к здоровью.»</div>
+          <div class="bento-name">Игорь С.</div>
+          <div class="bento-role">Предприниматель</div>
+        </div>
+      </div>
+      <!-- Stat card 2 -->
+      <div class="bento-card bc-sm bc-award" style="flex-direction:column;gap:4px">
+        <div style="font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,56px);letter-spacing:-.03em;color:var(--rust);line-height:1">160+</div>
+        <div style="font-size:12px;color:var(--mid);font-weight:500;text-align:center;line-height:1.4">анализов<br>в каждом чекапе</div>
+      </div>
+      <!-- Testimonial 4 -->
+      <div class="bento-card bc-sm">
+        <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&crop=face" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top">
+        <div class="bento-overlay"></div>
+        <div class="bento-text">
+          <div class="bento-quote">«Помогло выявить дисбаланс гормонов. Теперь живу в ресурсе.»</div>
+          <div class="bento-name">Екатерина Л.</div>
+          <div class="bento-role">Москва</div>
+        </div>
+      </div>
+      <!-- Stat card 3 -->
+      <div class="bento-card bc-sm bc-award" style="flex-direction:column;gap:4px">
+        <div style="font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,56px);letter-spacing:-.03em;color:var(--rust);line-height:1">2×</div>
+        <div style="font-size:12px;color:var(--mid);font-weight:500;text-align:center;line-height:1.4">в год<br>полное тело</div>
+      </div>
+      <!-- Testimonial 5 -->
+      <div class="bento-card bc-sm">
+        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top">
+        <div class="bento-overlay"></div>
+        <div class="bento-text">
+          <div class="bento-quote">«Впервые увидел динамику показателей за год — это меняет всё.»</div>
+          <div class="bento-name">Алексей Р.</div>
+          <div class="bento-role">Руководитель</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GOLD STANDARD / MAP -->
+<div class="gold-sec">
+  <div class="gold-inner">
+    <div class="gold-layout">
+      <div class="gold-left r">
+        <h2 class="gold-h">
+          <em>Золотой стандарт</em>
+          для диагностики
+        </h2>
+        <p class="gold-sub">Лаборатории, которым доверяет медицинское сообщество. Никаких непроверенных партнёров.</p>
+        <div class="gold-partners">
+          <div class="gold-partner"><div class="gold-partner-dot"></div>Инвитро</div>
+          <div class="gold-partner"><div class="gold-partner-dot"></div>Хеликс</div>
+          <div class="gold-partner"><div class="gold-partner-dot"></div>KDL</div>
+        </div>
+      </div>
+      <div class="gold-right r d1">
+        <!-- Map card -->
+        <div class="gold-stat-card">
+          <div class="gold-stat-label">400+ точек сдачи</div>
+          <div class="gold-stat-sub">Инвитро, Хеликс, KDL и партнёры по РФ</div>
+          <div class="moscow-map" id="moscowMap">
+            <div class="moscow-dots-wrap" id="moscowDots"></div>
+          </div>
+          <div class="gold-stat-big">400</div>
+        </div>
+        <!-- Results chart card -->
+        <div class="gold-stat-card">
+          <div class="gold-stat-label">5М+ результатов</div>
+          <div class="gold-stat-sub">обработано и интерпретировано врачами</div>
+          <div class="gold-bars" id="goldBars"></div>
+          <div class="gold-stat-big">5М<span style="font-size:32px">+</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON TABLE -->
+<div class="compare-sec">
+  <div class="compare-inner">
+    <h2 class="compare-h r"><em>Больше чем обычный</em> осмотр</h2>
+    <div class="ctable r d1">
+      <div class="ctable-head">
+        <div class="cth-empty"></div>
+        <div class="cth-col main">
+          <div class="cth-main-logo">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="none"><path d="M16 28 C16 28 3 20 3 11.5 C3 7.4 6.4 4 10.5 4 C12.9 4 15.1 5.1 16 7 C16.9 5.1 19.1 4 21.5 4 C25.6 4 29 7.4 29 11.5 C29 20 16 28 16 28Z" fill="rgba(255,255,255,.25)" stroke="rgba(255,255,255,.8)" stroke-width="2" stroke-linejoin="round"/><polyline points="10,16 14,20 22,11" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Чекапи
+          </div>
+        </div>
+        <div class="cth-col">Обычный<br>осмотр</div>
+      </div>
+      <div class="ctable-body">
+        <div class="crow"><div class="crow-feat">Анализов ежегодно</div><div class="crow-ck main"><span style="font-size:14px;font-weight:700;color:var(--rust)">160+</span></div><div class="crow-ck"><span style="font-size:13px;color:var(--light)">~26</span></div></div>
+        <div class="crow"><div class="crow-feat">Персональный план действий</div><div class="crow-ck main"><div class="ck-y">✓</div></div><div class="crow-ck"><div class="ck-n">✕</div></div></div>
+        <div class="crow"><div class="crow-feat">Загрузка прошлых анализов</div><div class="crow-ck main"><div class="ck-y">✓</div></div><div class="crow-ck"><div class="ck-n">✕</div></div></div>
+        <div class="crow"><div class="crow-feat">Без направлений</div><div class="crow-ck main"><div class="ck-y">✓</div></div><div class="crow-ck"><div class="ck-n">✕</div></div></div>
+        <div class="crow"><div class="crow-feat">Каждые 6 месяцев</div><div class="crow-ck main"><div class="ck-y">✓</div></div><div class="crow-ck"><div class="ck-n">✕</div></div></div>
+        <div class="crow"><div class="crow-feat">Гормоны и тесты фертильности</div><div class="crow-ck main"><div class="ck-y">✓</div></div><div class="crow-ck"><div class="ck-n">✕</div></div></div>
+        <div class="crow"><div class="crow-feat">Тяжёлые металлы и токсины</div><div class="crow-ck main"><div class="ck-y">✓</div></div><div class="crow-ck"><div class="ck-n">✕</div></div></div>
+        <div class="crow"><div class="crow-feat">Метаболизм и поджелудочная</div><div class="crow-ck main"><div class="ck-y">✓</div></div><div class="crow-ck"><div class="ck-n">✕</div></div></div>
+        <div class="crow"><div class="crow-feat">Сердце — глубже холестерина</div><div class="crow-ck main"><div class="ck-y">✓</div></div><div class="crow-ck"><div class="ck-n">✕</div></div></div>
+        <div class="crow"><div class="crow-feat">Нутриенты и электролиты</div><div class="crow-ck main"><div class="ck-y">✓</div></div><div class="crow-ck"><div class="ck-n">✕</div></div></div>
+        <div class="crow"><div class="crow-feat">Аутоиммунная диагностика</div><div class="crow-ck main"><div class="ck-y">✓</div></div><div class="crow-ck"><div class="ck-n">✕</div></div></div>
+        <div class="crow"><div class="crow-feat">Онкомаркеры</div><div class="crow-ck main"><div class="ck-y">✓</div></div><div class="crow-ck"><div class="ck-n">✕</div></div></div>
+        <div class="crow"><div class="crow-feat">Динамика показателей за годы</div><div class="crow-ck main"><div class="ck-y">✓</div></div><div class="crow-ck"><div class="ck-n">✕</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DOCTORS -->
+<div class="docs-sec">
+  <div class="docs-inner">
+    <h2 class="docs-h r">Создано с <em>ведущими врачами</em></h2>
+    <p class="docs-sub r d1">Научно-медицинский совет Чекапи</p>
+    <div class="docs-grid">
+      <div class="doc r d1">
+        <div class="doc-img di-1"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop&crop=face" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></div>
+        <div class="doc-name">Алина Милованова</div>
+        <div class="doc-role">Кандидат наук по биологии. Главный методолог Чекапи.</div>
+      </div>
+      <div class="doc r d2">
+        <div class="doc-img di-2"><img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=300&h=300&fit=crop&crop=face" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></div>
+        <div class="doc-name">Марат Ахметов</div>
+        <div class="doc-role">CEO Чекапи. Serial entrepreneur в HealthTech.</div>
+      </div>
+      <div class="doc r d3">
+        <div class="doc-img di-3"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></div>
+        <div class="doc-name">Дмитрий Соколов</div>
+        <div class="doc-role">COO Чекапи. Операционное масштабирование и партнёрства.</div>
+      </div>
+      <div class="doc r d4">
+        <div class="doc-img di-4"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=300&fit=crop&crop=face" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></div>
+        <div class="doc-name">Виталий Кузнецов</div>
+        <div class="doc-role">Кандидат наук по биологии. Научный руководитель.</div>
+      </div>
+      <div class="doc r d1">
+        <div class="doc-img di-5"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop&crop=face" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></div>
+        <div class="doc-name">Михаил Попов</div>
+        <div class="doc-role">Lead Developer. Архитектура платформы и интеграции.</div>
+      </div>
+      <div class="doc r d2">
+        <div class="doc-img di-6"><img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=300&h=300&fit=crop&crop=face" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></div>
+        <div class="doc-name">д.м.н. Наталья Орлова</div>
+        <div class="doc-role">Онколог, НМИЦ онкологии им. Блохина.</div>
+      </div>
+      <div class="doc r d3">
+        <div class="doc-img di-7"><img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&h=300&fit=crop&crop=face" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></div>
+        <div class="doc-name">д.м.н. Алексей Суворов</div>
+        <div class="doc-role">Кардиолог, превентивная медицина.</div>
+      </div>
+      <div class="doc r d4">
+        <div class="doc-img di-8"><img src="https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=300&h=300&fit=crop&crop=face" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></div>
+        <div class="doc-name">проф. Ирина Волкова</div>
+        <div class="doc-role">Зав. кафедрой эндокринологии, РНИМУ им. Пирогова.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div id="pricing" class="pricing-sec">
+  <div class="pricing-inner">
+    <h2 class="pricing-h r">То, что стоит <em>300 000 ₽</em>, — это <em class="ok">30 940 ₽</em></h2>
+    <p class="pricing-sub r d1">Прозрачные цены. Без направлений и очередей.</p>
+    <div class="pricing-card r d2">
+      <div class="pc-left">
+        <div class="pc-title">Чекапи</div>
+        <div class="pc-price">
+          <div class="pc-price-big">85</div>
+          <div class="pc-price-unit">₽</div>
+          <div class="pc-price-period">/день</div>
+        </div>
+        <div class="pc-period-note">Оплата раз в год.</div>
+        <button class="pc-cta" onclick="openM()">Записаться в Чекапи</button>
+      </div>
+      <div class="pc-right">
+        <div class="pc-feats">
+          <div class="pc-feat">160+ анализов ежегодно</div>
+          <div class="pc-feat">Тестирование 2× в год и по запросу</div>
+          <div class="pc-feat">Интерпретация от ведущих врачей</div>
+          <div class="pc-feat">Всё тело — в одном месте</div>
+          <div class="pc-feat">Хранение в защищённом кабинете</div>
+          <div class="pc-feat">Врачи проверяют каждый результат</div>
+          <div class="pc-feat">Персональный протокол действий</div>
+          <div class="pc-feat">Выезд медсестры домой</div>
+          <div class="pc-feat">Без направлений, прозрачные цены</div>
+        </div>
+      </div>
+    </div>
+    <div class="pricing-reviews r d3">
+      <div class="pr">
+        <div class="pr-stars">★★★★★</div>
+        <div class="pr-text">«Самая комплексная диагностика за всю мою жизнь. Теперь знаю о своём здоровье всё.»</div>
+      </div>
+      <div class="pr">
+        <div class="pr-stars">★★★★★</div>
+        <div class="pr-text">«Лучшие деньги, вложенные в здоровье.»</div>
+      </div>
+      <div class="pr">
+        <div class="pr-stars">★★★★★</div>
+        <div class="pr-text">«Чекапи поражает. Опыт, цена и комментарии врачей — на высшем уровне.»</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div id="faq" class="faq-sec">
+  <div style="max-width:900px;margin:0 auto">
+    <div class="r">
+      <h2 style="font-family:'Instrument Serif',serif;font-size:clamp(32px,4vw,52px);letter-spacing:-.02em;margin-bottom:48px">Частые <em style="font-style:italic;color:var(--rust)">вопросы</em></h2>
+    </div>
+    <div class="r d1" style="display:flex;flex-direction:column;gap:0;border-top:1px solid var(--border)">
+      <div class="faq-item" style="border-bottom:1px solid var(--border)">
+        <button onclick="tFaq(this)" style="width:100%;padding:22px 0;display:flex;justify-content:space-between;align-items:center;background:none;border:none;cursor:pointer;text-align:left;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:var(--text);gap:16px;touch-action:manipulation">Нужно ли платить в лаборатории?<span style="font-size:20px;color:var(--light);transition:transform .3s;flex-shrink:0">↓</span></button>
+        <div class="fa" style="display:none;padding-bottom:20px;font-size:14px;color:var(--mid);line-height:1.7">Нет. Анализы включены в стоимость пакета. Приходите — платить на месте не нужно.</div>
+      </div>
+      <div class="faq-item" style="border-bottom:1px solid var(--border)">
+        <button onclick="tFaq(this)" style="width:100%;padding:22px 0;display:flex;justify-content:space-between;align-items:center;background:none;border:none;cursor:pointer;text-align:left;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:var(--text);gap:16px;touch-action:manipulation">Чем это отличается от похода в лабораторию?<span style="font-size:20px;color:var(--light);transition:transform .3s;flex-shrink:0">↓</span></button>
+        <div class="fa" style="display:none;padding-bottom:20px;font-size:14px;color:var(--mid);line-height:1.7">В лаборатории вы получаете PDF с числами. Чекапи объясняет что они значат, строит динамику за годы и предупреждает об отклонениях до появления симптомов.</div>
+      </div>
+      <div class="faq-item" style="border-bottom:1px solid var(--border)">
+        <button onclick="tFaq(this)" style="width:100%;padding:22px 0;display:flex;justify-content:space-between;align-items:center;background:none;border:none;cursor:pointer;text-align:left;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:var(--text);gap:16px;touch-action:manipulation">Могу загрузить старые анализы?<span style="font-size:20px;color:var(--light);transition:transform .3s;flex-shrink:0">↓</span></button>
+        <div class="fa" style="display:none;padding-bottom:20px;font-size:14px;color:var(--mid);line-height:1.7">Да. Загружайте PDF из Инвитро, Хеликса и других — они автоматически встраиваются в историю.</div>
+      </div>
+      <div class="faq-item" style="border-bottom:1px solid var(--border)">
+        <button onclick="tFaq(this)" style="width:100%;padding:22px 0;display:flex;justify-content:space-between;align-items:center;background:none;border:none;cursor:pointer;text-align:left;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:var(--text);gap:16px;touch-action:manipulation">Это медицинская услуга?<span style="font-size:20px;color:var(--light);transition:transform .3s;flex-shrink:0">↓</span></button>
+        <div class="fa" style="display:none;padding-bottom:20px;font-size:14px;color:var(--mid);line-height:1.7">Нет. Чекапи — аналитический сервис. Мы не ставим диагнозы. Все лабораторные услуги — сертифицированные партнёры.</div>
+      </div>
+      <div class="faq-item">
+        <button onclick="tFaq(this)" style="width:100%;padding:22px 0;display:flex;justify-content:space-between;align-items:center;background:none;border:none;cursor:pointer;text-align:left;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:var(--text);gap:16px;touch-action:manipulation">Работаете ли вы за пределами Москвы?<span style="font-size:20px;color:var(--light);transition:transform .3s;flex-shrink:0">↓</span></button>
+        <div class="fa" style="display:none;padding-bottom:20px;font-size:14px;color:var(--mid);line-height:1.7">Сейчас мы активно расширяем сеть по России. Уточняйте доступные точки при записи.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<div class="final-cta-sec">
+  <div style="max-width:800px;margin:0 auto">
+    <h2 class="r" style="font-family:'Instrument Serif',serif;font-size:clamp(36px,6vw,80px);letter-spacing:-.04em;line-height:.98;margin-bottom:8px">Следить за здоровьем <em style="font-style:italic;color:var(--rust)">сложно?</em></h2>
+    <h2 class="r d1" style="font-family:'Instrument Serif',serif;font-size:clamp(36px,6vw,80px);letter-spacing:-.04em;line-height:.98;margin-bottom:28px">Мы не согласны.</h2>
+    <p class="r d2" style="font-size:clamp(15px,1.5vw,18px);color:var(--mid);max-width:440px;margin:0 auto 40px;line-height:1.65">Начните следить за здоровьем сегодня. Первый чекап меняет всё.</p>
+    <div class="r d3" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn-rust" onclick="openM()">Начать тестирование</button>
+      <a class="btn-outline" href="#tests">Что проверяем</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main footer-main--two-col">
+    <div>
+      <a class="footer-logo" href="#">
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <path d="M16 28 C16 28 3 20 3 11.5 C3 7.4 6.4 4 10.5 4 C12.9 4 15.1 5.1 16 7 C16.9 5.1 19.1 4 21.5 4 C25.6 4 29 7.4 29 11.5 C29 20 16 28 16 28Z" fill="#C4622D" opacity=".2" stroke="#C4622D" stroke-width="1.8" stroke-linejoin="round"/>
+          <polyline points="10,16 14,20 22,11" stroke="#C4622D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        Чекапи
+      </a>
+      <p class="footer-tagline">Сервис контроля здоровья. Сдайте анализы — получите понятную интерпретацию и динамику за годы.</p>
+      <div class="footer-social">
+        <a href="#">TG</a><a href="#">VK</a><a href="#">YT</a><a href="#">IN</a>
+      </div>
+    </div>
+    <div class="footer-sub-col">
+      <h4>Подпишитесь и получите <em>9 гидов о здоровье</em></h4>
+      <p>Основополагающие гиды для здоровья на всю жизнь. Созданы ведущими экспертами.</p>
+      <div class="footer-email-form">
+        <input type="email" placeholder="Email адрес" id="footerEmail">
+        <button onclick="subEmail()">Подписаться</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-legal-links">
+      <a href="#">Политика конфиденциальности</a>
+      <a href="#">Пользовательское соглашение</a>
+    </div>
+    <div class="footer-copyright">© 2026 Чекапи · Москва. 100 здоровых лет.</div>
+  </div>
+  <div class="footer-disclaimer">
+    Чекапи является аналитическим сервисом, а не лабораторией или медицинской организацией. Все лабораторные услуги предоставляются независимыми сертифицированными партнёрами. Чекапи не ставит диагнозы, не назначает лечение и не оказывает медицинских услуг. При наличии вопросов по результатам анализов проконсультируйтесь с лечащим врачом.
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   ЧЕКАПИ — main.js
+═══════════════════════════════════════════════════ */
+
+/* ── VIDEO FALLBACK — skip on mobile, show gradient ── */
+(function(){
+  if(window.__isMobile) return; // Mobile uses CSS gradient — no video needed
+  const v = document.getElementById('heroVideo');
+  if(!v) return;
+  v.style.opacity='0';
+  v.style.transition='opacity 1.2s ease';
+  const playPromise = v.play();
+  if(playPromise !== undefined){
+    playPromise.catch(()=>{ v.style.display='none'; });
+  }
+  v.addEventListener('canplay', ()=>{ v.style.opacity='1'; });
+  v.addEventListener('error', ()=>{ v.style.display='none'; });
+})();
+
+/* ── MODAL ── */
+function openM(e){
+  if(e) e.preventDefault();
+  document.getElementById('mOv').classList.add('open');
+  document.body.style.overflow='hidden';
+  if(window.innerWidth>=600) setTimeout(()=>{ const el=document.getElementById('mName'); if(el) el.focus(); },100);
+}
+function closeM(){
+  document.getElementById('mOv').classList.remove('open');
+  document.body.style.overflow='';
+}
+function closeMBg(e){ if(e.target===document.getElementById('mOv')) closeM(); }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeM(); });
+
+const phoneInput = document.getElementById('mPhone');
+if(phoneInput) phoneInput.addEventListener('input', function(){
+  let v = this.value.replace(/\D/g,'');
+  if(v.startsWith('7')||v.startsWith('8')) v=v.slice(1);
+  let r='';
+  if(v.length>0) r='+7 ('+v.slice(0,3);
+  if(v.length>=3) r+=') '+v.slice(3,6);
+  if(v.length>=6) r+=' '+v.slice(6,8);
+  if(v.length>=8) r+=' '+v.slice(8,10);
+  this.value=r;
+});
+
+function submitM(){
+  const nameEl = document.getElementById('mName');
+  const phoneEl = document.getElementById('mPhone');
+  if(!nameEl||!phoneEl) return;
+  if(!nameEl.value.trim() || phoneEl.value.length<10){ alert('Пожалуйста, заполните имя и телефон'); return; }
+  closeM();
+  showNotif('✓ Заявка принята! Свяжемся в течение часа.');
+}
+function subEmail(){
+  const el = document.getElementById('footerEmail');
+  if(!el||!el.value.trim()) return;
+  showNotif('✓ Подписка оформлена!');
+  el.value='';
+}
+function showNotif(msg){
+  const t = document.createElement('div');
+  t.className='notif'; t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 4000);
+}
+
+/* ── HERO VIDEO PAUSE ── */
+function toggleHeroAnim(){
+  const v = document.getElementById('heroVideo');
+  if(!v) return;
+  const btn = document.getElementById('heroPauseBtn');
+  if(v.paused){ v.play(); if(btn) btn.textContent='⏸'; }
+  else { v.pause(); if(btn) btn.textContent='▶'; }
+}
+
+/* ── CALENDAR ── */
+function selDay(el){
+  document.querySelectorAll('.cal-day').forEach(d=>d.classList.remove('active'));
+  el.classList.add('active');
+}
+function selTime(el){
+  document.querySelectorAll('.cal-time').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ── TICKER ── */
+let tickPaused = false;
+function toggleTicker(){
+  tickPaused = !tickPaused;
+  ['trow1','trow2'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.style.animationPlayState = tickPaused?'paused':'running';
+  });
+  const btn = document.getElementById('tickPauseBtn');
+  if(btn) btn.textContent = tickPaused ? '▶  ЗАПУСТИТЬ ДВИЖЕНИЕ' : '⏸  ОСТАНОВИТЬ ДВИЖЕНИЕ';
+}
+
+/* ── FAQ ── */
+function tFaq(btn){
+  const a = btn.nextElementSibling;
+  const arrow = btn.querySelector('span');
+  const isOpen = a.style.display==='block';
+  a.style.display = isOpen ? 'none' : 'block';
+  if(arrow) arrow.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+/* ── COUNTER util ── */
+function animCount(el, target, duration){
+  if(!el) return;
+  const start = performance.now();
+  const isFloat = String(target).includes('.');
+  function step(now){
+    const p = Math.min((now-start)/duration, 1);
+    const ease = 1 - Math.pow(1-p, 4);
+    el.textContent = isFloat ? (target*ease).toFixed(1) : Math.floor(target*ease);
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ── FADE-UP util ── */
+function fadeUp(el, delayMs, durMs){
+  if(!el) return;
+  durMs = durMs||420; delayMs = delayMs||0;
+  el.style.cssText += `;opacity:0;transform:translateY(18px);transition:none`;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    el.style.transition = `opacity ${durMs}ms ${delayMs}ms ease, transform ${durMs}ms ${delayMs}ms cubic-bezier(.34,1.2,.64,1)`;
+    el.style.opacity='1'; el.style.transform='translateY(0)';
+  }));
+}
+
+/* ── SCROLL-REVEAL — skip on mobile (CSS handles it) ── */
+if(window.__isMobile) {
+  // On mobile: everything already visible via CSS is-mobile rules
+  // Nothing to do — CSS .is-mobile .r { opacity:1 } handles it
+} else {
+  const revealObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('vis'); revealObs.unobserve(e.target); }
+    });
+  },{threshold:0, rootMargin:'0px 0px -20px 0px'});
+  document.querySelectorAll('.r').forEach(el=>revealObs.observe(el));
+  // Reveal elements in viewport on load
+  function revealVisible(){
+    document.querySelectorAll('.r:not(.vis)').forEach(el=>{
+      const rect = el.getBoundingClientRect();
+      if(rect.top < window.innerHeight + 50) el.classList.add('vis');
+    });
+  }
+  revealVisible();
+  setTimeout(revealVisible, 100);
+  setTimeout(revealVisible, 400);
+}
+// Hard fallback regardless
+setTimeout(()=>{
+  document.querySelectorAll('.r:not(.vis)').forEach(el=>el.classList.add('vis'));
+}, 1200);
+
+
+
+/* ── NAV SHADOW ON SCROLL ── */
+window.addEventListener('scroll', ()=>{
+  const ni = document.getElementById('navInner');
+  if(!ni) return;
+  if(window.scrollY>80){
+    ni.style.boxShadow='0 4px 24px rgba(0,0,0,.12)';
+    ni.style.background='rgba(255,255,255,.98)';
+  } else {
+    ni.style.boxShadow='0 2px 20px rgba(0,0,0,.08)';
+    ni.style.background='rgba(255,255,255,.94)';
+  }
+},{passive:true});
+
+/* ── HIW STICKY NAV ── */
+function updateHiwNav(){
+  const mob = window.innerWidth<600;
+  const annH = mob?36:40, navH = mob?56:64, barH = mob?36:41;
+  const threshold = annH+navH+barH+20;
+  let active = 0;
+  [1,2,3,4].forEach(n=>{
+    const el = document.getElementById('hiw-step'+n);
+    if(el && el.getBoundingClientRect().top <= threshold) active=n;
+  });
+  document.querySelectorAll('.hiw-step-link').forEach(a=>{
+    a.classList.toggle('active', parseInt(a.dataset.step)===active);
+  });
+}
+window.addEventListener('scroll', updateHiwNav, {passive:true});
+
+/* ════════════════════════════════════════
+   RUSSIA MAP DOTS — uniform, no animation
+════════════════════════════════════════ */
+(function(){
+  const c = document.getElementById('moscowDots');
+  if(!c) return;
+  c.innerHTML='';
+  c.style.cssText='position:relative;width:200px;height:110px;margin:0 auto';
+  const shape=[
+    [.08,.55],[.09,.47],[.11,.40],[.10,.33],[.13,.26],[.16,.20],[.20,.16],
+    [.25,.13],[.32,.09],[.40,.07],[.47,.05],[.54,.04],[.61,.06],[.66,.07],
+    [.70,.04],[.74,.06],[.78,.07],[.82,.09],[.86,.07],[.90,.09],[.94,.12],
+    [.97,.17],[.96,.24],[.94,.31],[.96,.37],[.95,.44],[.93,.50],[.90,.54],
+    [.87,.58],[.84,.62],[.81,.65],[.76,.68],[.70,.70],[.64,.67],[.58,.65],
+    [.53,.68],[.48,.70],[.43,.67],[.38,.64],[.33,.61],[.28,.59],[.23,.57],
+    [.18,.59],[.14,.57],[.11,.56],[.08,.55]
+  ];
+  function ptIn(nx,ny){
+    let inside=false, n=shape.length;
+    for(let i=0,j=n-1;i<n;j=i++){
+      const xi=shape[i][0],yi=shape[i][1],xj=shape[j][0],yj=shape[j][1];
+      if(((yi>ny)!==(yj>ny))&&(nx<(xj-xi)*(ny-yi)/(yj-yi)+xi)) inside=!inside;
+    }
+    return inside;
+  }
+  const cols=26, rows=14;
+  for(let row=0;row<rows;row++) for(let col=0;col<cols;col++){
+    const nx=(col+.5)/cols, ny=(row+.5)/rows;
+    if(!ptIn(nx,ny)) continue;
+    const d=document.createElement('div');
+    d.style.cssText=`position:absolute;width:5px;height:5px;border-radius:50%;background:var(--rust);opacity:.55;left:${col/cols*196+2}px;top:${row/rows*106+2}px`;
+    c.appendChild(d);
+  }
+})();
+
+/* ════════════════════════════════════════
+   GOLD BARS
+════════════════════════════════════════ */
+(function(){
+  const c = document.getElementById('goldBars');
+  if(!c) return;
+  const heights=[15,20,18,25,22,30,28,35,38,42,46,50,48,55,60,65,62,72,78,85];
+  heights.forEach((h,i)=>{
+    const b=document.createElement('div');
+    b.className='gbar'+(h>50?' hi':h>35?' med':'');
+    b.style.height=h+'%';
+    b.style.transitionDelay=(i*0.04)+'s';
+    c.appendChild(b);
+  });
+})();
+
+/* ════════════════════════════════════════
+   EASY CARD 1 — calendar sequence (desktop only)
+════════════════════════════════════════ */
+if(!window.__isMobile) (function(){
+  let done=false;
+  const obs = new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting||done) return;
+    done=true; obs.disconnect();
+    // Days spring up from below
+    document.querySelectorAll('#calDates .cal-day').forEach((d,i)=>{
+      d.style.opacity='0'; d.style.transform='translateY(28px) scale(.9)'; d.style.transition='none';
+      setTimeout(()=>{
+        d.style.transition=`opacity .42s ease, transform .5s cubic-bezier(.34,1.4,.64,1)`;
+        d.style.opacity='1'; d.style.transform='translateY(0) scale(1)';
+      }, 120+i*80);
+    });
+    // Active day pulse
+    setTimeout(()=>{
+      const a=document.querySelector('#calDates .cal-day.active');
+      if(a){ a.style.transition='transform .18s ease'; a.style.transform='scale(1.1)';
+        setTimeout(()=>a.style.transform='scale(1)',200); }
+    }, 120+2*80+450);
+    // Times slide up
+    document.querySelectorAll('#calTimes .cal-time').forEach((t,i)=>{
+      t.style.opacity='0'; t.style.transform='translateY(16px)'; t.style.transition='none';
+      setTimeout(()=>{
+        t.style.transition=`opacity .38s ease, transform .42s cubic-bezier(.34,1.2,.64,1)`;
+        t.style.opacity='1'; t.style.transform='translateY(0)';
+      }, 680+i*65);
+    });
+    // Active time pulse
+    setTimeout(()=>{
+      const a=document.querySelector('#calTimes .cal-time.active');
+      if(a){ a.style.transition='transform .15s ease'; a.style.transform='scale(1.08)';
+        setTimeout(()=>a.style.transform='scale(1)',180); }
+    }, 680+65+380);
+  },{threshold:.3});
+  const cw=document.getElementById('calWidget');
+  if(cw) obs.observe(cw);
+})();
+
+/* ════════════════════════════════════════
+   EASY CARD 2 — chart dots (desktop only)
+════════════════════════════════════════ */
+if(!window.__isMobile) (function(){
+  let done=false;
+  const obs = new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting||done) return;
+    done=true; obs.disconnect();
+    const widget=entries[0].target;
+    // Zone labels fade
+    widget.querySelectorAll('.chart-zone > span').forEach((z,i)=>fadeUp(z,100+i*110,380));
+    // Dots drop from above
+    widget.querySelectorAll('.chart-dot').forEach((d,i)=>{
+      d.style.opacity='0'; d.style.transform='translateY(calc(-50% - 28px)) scale(0)'; d.style.transition='none';
+      setTimeout(()=>{
+        d.style.transition=`opacity .38s ease, transform .52s cubic-bezier(.34,1.5,.64,1)`;
+        d.style.opacity='1'; d.style.transform='translateY(-50%) scale(1)';
+      }, 350+i*210);
+    });
+    // Connector grows
+    const conn=widget.querySelector('.chart-connector');
+    if(conn){ conn.style.width='0';
+      setTimeout(()=>{ conn.style.transition='width .62s ease'; conn.style.width='45%'; }, 950); }
+    // Values pop
+    widget.querySelectorAll('.chart-val').forEach((v,i)=>{
+      v.style.opacity='0'; v.style.transform='scale(.4)'; v.style.transition='none';
+      setTimeout(()=>{
+        v.style.transition=`opacity .3s ease, transform .32s cubic-bezier(.34,1.6,.64,1)`;
+        v.style.opacity='1'; v.style.transform='scale(1)';
+      }, 450+i*220);
+    });
+  },{threshold:.3});
+  const cw=document.querySelector('.chart-widget');
+  if(cw) obs.observe(cw);
+})();
+
+/* ════════════════════════════════════════
+   EASY CARD 3 — protocol items (desktop only)
+════════════════════════════════════════ */
+if(!window.__isMobile) (function(){
+  let done=false;
+  const obs = new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting||done) return;
+    done=true; obs.disconnect();
+    entries[0].target.querySelectorAll('.proto-item').forEach((item,i)=>{
+      item.style.opacity='0'; item.style.transform='translateX(24px)'; item.style.transition='none';
+      setTimeout(()=>{
+        item.style.transition=`opacity .48s ease, transform .52s cubic-bezier(.25,.46,.45,.94)`;
+        item.style.opacity='1'; item.style.transform='translateX(0)';
+        setTimeout(()=>{
+          item.style.background='rgba(196,98,45,.07)';
+          setTimeout(()=>{ item.style.transition='background .4s ease'; item.style.background=''; },220);
+        }, 540);
+      }, 180+i*150);
+    });
+  },{threshold:.3});
+  const pi=document.querySelector('.proto-items');
+  if(pi) obs.observe(pi);
+})();
+
+/* ════════════════════════════════════════
+   HIW STEP 2 (desktop only)
+════════════════════════════════════════ */
+if(!window.__isMobile) (function(){
+  let done=false;
+  const obs = new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting||done) return;
+    done=true; obs.disconnect();
+    setTimeout(()=>{ const ag=document.getElementById('hiwArcG'); if(ag) ag.style.strokeDasharray='251 314'; },150);
+    setTimeout(()=>{ const ar=document.getElementById('hiwArcR'); if(ar){ ar.style.strokeDasharray='45 314'; ar.style.strokeDashoffset='-251'; } },400);
+    setTimeout(()=>animCount(document.getElementById('hiwRingN'),104,1000),150);
+    setTimeout(()=>animCount(document.getElementById('hiwOk'),86,900),400);
+    setTimeout(()=>animCount(document.getElementById('hiwOut'),18,700),600);
+    setTimeout(()=>{
+      document.querySelectorAll('.hiw-bar').forEach((b,i)=>{
+        setTimeout(()=>{ b.style.transition=`width .75s cubic-bezier(.25,.46,.45,.94)`; b.style.width=b.dataset.w||'60%'; },i*130);
+      });
+    },500);
+  },{threshold:.3});
+  const hr=document.getElementById('hiwRing');
+  if(hr) obs.observe(hr);
+})();
+
+/* ════════════════════════════════════════
+   DATA SECTION (desktop only)
+════════════════════════════════════════ */
+if(!window.__isMobile) (function(){
+  let done=false;
+  const obs = new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting||done) return;
+    done=true; obs.disconnect();
+    // Ring arcs
+    setTimeout(()=>{ const ag=document.getElementById('bmArcGreen'); if(ag) ag.style.strokeDasharray='292 364'; },200);
+    setTimeout(()=>{ const ar=document.getElementById('bmArcRust'); if(ar){ ar.style.strokeDasharray='52 364'; ar.style.strokeDashoffset='-292'; } },500);
+    // Counters
+    setTimeout(()=>animCount(document.getElementById('bmCount'),116,1100),200);
+    setTimeout(()=>animCount(document.getElementById('bmOk'),97,900),500);
+    setTimeout(()=>animCount(document.getElementById('bmOut'),19,700),700);
+    // Category bars
+    document.querySelectorAll('.bm-cat').forEach((cat,i)=>{
+      cat.style.opacity='0'; cat.style.transform='translateY(10px)'; cat.style.transition='none';
+      setTimeout(()=>{
+        cat.style.transition='opacity .38s ease, transform .38s ease';
+        cat.style.opacity='1'; cat.style.transform='translateY(0)';
+        const ok=cat.querySelector('.bm-cat-ok'), warn=cat.querySelector('.bm-cat-warn');
+        const okW=ok?.style.width||'28px', warnW=warn?.style.width||'12px';
+        if(ok){ ok.style.width='0'; setTimeout(()=>{ ok.style.transition='width .68s ease'; ok.style.width=okW; },80); }
+        if(warn){ warn.style.width='0'; setTimeout(()=>{ warn.style.transition='width .48s ease'; warn.style.width=warnW; },380); }
+      }, 850+i*140);
+    });
+    // Action items
+    document.querySelectorAll('.action-item').forEach((item,i)=>fadeUp(item,280+i*140,420));
+    // Bio-age count
+    setTimeout(()=>{
+      document.querySelectorAll('.data-card').forEach(card=>{
+        card.querySelectorAll('div').forEach(d=>{
+          if(d.textContent.trim()==='33.4'&&!d.children.length) animCount(d,33.4,900);
+        });
+      });
+    },800);
+    // Wearable stat counters
+    setTimeout(()=>animCount(document.getElementById('stepValN'),4787,1000),350);
+    setTimeout(()=>animCount(document.getElementById('sleepValN'),7.5,800),500);
+    setTimeout(()=>animCount(document.getElementById('hrValN'),64,700),650);
+  },{threshold:.15});
+  const ds=document.querySelector('.data-sec');
+  if(ds) obs.observe(ds);
+})();
+
+/* ════════════════════════════════════════
+   WEARABLES (desktop only)
+════════════════════════════════════════ */
+if(!window.__isMobile) (function(){
+  let done=false;
+  function build(){
+    if(done) return; done=true;
+    const stepData=[55,70,40,80,65,90,75,50,85,60,70,80,55,45];
+    const sleepData=[75,80,70,85,78,82,90,75,68,80,85,72,78,88];
+    function makeBars(containerId, data, color){
+      const c=document.getElementById(containerId);
+      if(!c) return;
+      data.forEach((h,i)=>{
+        const b=document.createElement('div');
+        b.style.cssText=`flex:1;border-radius:2px 2px 0 0;background:${color};height:0;transition:height .52s ${i*.04}s cubic-bezier(.34,1.2,.64,1);max-height:32px`;
+        c.appendChild(b);
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{ b.style.height=Math.round(h/100*32)+'px'; }));
+      });
+    }
+    makeBars('stepBars', stepData, '#7B8BD4');
+    makeBars('sleepBars', sleepData, '#A78BD4');
+    // HR line dots
+    const hrC=document.getElementById('hrLine');
+    if(hrC){
+      const hrData=[60,62,58,65,64,61,63,66,64,62,68,64,60,64];
+      const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.setAttribute('viewBox','0 0 100 32'); svg.setAttribute('width','100%'); svg.setAttribute('height','32');
+      hrData.forEach((v,i)=>{
+        const x=(i/(hrData.length-1))*96+2, y=32-((v-55)/20*28)-2;
+        const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        dot.setAttribute('cx',x); dot.setAttribute('cy',y); dot.setAttribute('r','2.5');
+        dot.setAttribute('fill','#C4622D'); dot.style.opacity='0';
+        svg.appendChild(dot);
+        setTimeout(()=>{ dot.style.transition='opacity .22s ease'; dot.style.opacity='1'; },180+i*50);
+      });
+      hrC.appendChild(svg);
+    }
+  }
+  const obs=new IntersectionObserver(e=>{ if(e[0].isIntersecting){obs.disconnect();build();} },{threshold:.15});
+  const wc=document.getElementById('wearCard');
+  if(wc) obs.observe(wc);
+})();
+
+</script>
+
+</body>
+</html>
