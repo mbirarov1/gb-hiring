@@ -2566,17 +2566,44 @@ footer{
 
 /* ── VIDEO FALLBACK — skip on mobile, show gradient ── */
 (function(){
-  if(window.__isMobile) return; // Mobile uses CSS gradient — no video needed
   const v = document.getElementById('heroVideo');
   if(!v) return;
-  v.style.opacity='0';
-  v.style.transition='opacity 1.2s ease';
-  const playPromise = v.play();
-  if(playPromise !== undefined){
-    playPromise.catch(()=>{ v.style.display='none'; });
-  }
-  v.addEventListener('canplay', ()=>{ v.style.opacity='1'; });
-  v.addEventListener('error', ()=>{ v.style.display='none'; });
+
+  v.style.opacity = '0';
+  v.style.transition = 'opacity 1.2s ease';
+
+  const showVideo = () => {
+    v.style.display = 'block';
+    v.style.opacity = '1';
+  };
+
+  const hideVideo = () => {
+    v.style.display = 'none';
+  };
+
+  // Показываем видео, когда оно реально готово
+  v.addEventListener('loadeddata', showVideo);
+  v.addEventListener('canplay', showVideo);
+
+  // Прячем только если сам файл битый/не загрузился
+  v.addEventListener('error', hideVideo);
+
+  // Не скрываем видео, если autoplay просто заблокирован
+  const tryPlay = () => {
+    const p = v.play();
+    if (p && typeof p.catch === 'function') {
+      p.catch(() => {
+        // Ничего не делаем: на мобильных autoplay может быть заблокирован
+        // Видео остаётся на месте и сможет стартовать после взаимодействия
+      });
+    }
+  };
+
+  tryPlay();
+
+  // После первого касания пробуем ещё раз
+  document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+  document.addEventListener('click', tryPlay, { once: true });
 })();
 
 /* ── MODAL ── */
