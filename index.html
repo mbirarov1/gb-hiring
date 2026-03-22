@@ -1649,6 +1649,32 @@ footer{
   margin-bottom:0;margin-top:4px;
 }
 
+
+/* ── Lab logo SVGs — sizing ── */
+.lab-logo-svg{
+  height:28px;width:auto;display:block;
+}
+.lab-logo-svg--sm{
+  height:22px;width:auto;
+}
+.hiw-lab-logos--svgs{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:2px;
+}
+.hiw-lab-svg-item{
+  display:inline-flex;align-items:center;opacity:.8;
+}
+.hiw-lab-svg-item:hover{opacity:1}
+
+/* ── Logo options for nav (see below) ── */
+
+
+/* ── Logo variant 3: geometric Ч ── */
+.nav-logo-text{
+  font-family:'DM Sans',sans-serif;
+  font-size:19px;font-weight:600;
+  color:var(--text);letter-spacing:-0.5px;
+}
+
 </style>
 </head>
 <body>
@@ -1678,12 +1704,14 @@ footer{
 <div class="nav-outer" id="navOuter">
   <div class="nav-inner" id="navInner">
     <a class="nav-logo" href="#">
-      <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-        <path d="M16 28 C16 28 3 20 3 11.5 C3 7.4 6.4 4 10.5 4 C12.9 4 15.1 5.1 16 7 C16.9 5.1 19.1 4 21.5 4 C25.6 4 29 7.4 29 11.5 C29 20 16 28 16 28Z" fill="#C4622D" opacity=".18" stroke="#C4622D" stroke-width="1.8" stroke-linejoin="round"/>
-        <polyline points="10,16 14,20 22,11" stroke="#C4622D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      </svg>
-      Чекапи
-    </a>
+        <svg class="nav-logo-icon" width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <!-- Geometric Ч -->
+          <rect x="3" y="3" width="8" height="22" rx="2.5" fill="#C4622D"/>
+          <rect x="3" y="3" width="20" height="9" rx="2.5" fill="#C4622D"/>
+          <rect x="15" y="12" width="8" height="14" rx="2.5" fill="#C4622D" opacity=".55"/>
+        </svg>
+        <span class="nav-logo-text">чекапи</span>
+      </a>
     <ul class="nav-links">
       <li><a href="#how">Как работает</a></li>
       <li><a href="#tests">Что проверяем</a></li>
@@ -1712,7 +1740,7 @@ footer{
   </video>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <h1 class="hero-h1">Ваши анализы —<br><em>наконец понятны.</em></h1>
+    <h1 class="hero-h1">Проверь своё<br><em>здоровье.</em></h1>
     <p class="hero-sub">160+ показателей крови, гормонов и биомаркеров с понятной расшифровкой от врачей. Один раз в год — и вы знаете, что происходит.</p>
     <button class="hero-cta" onclick="openM()">Начать тестирование</button>
     <div class="hero-stats">
@@ -1886,12 +1914,16 @@ footer{
         <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>400+ точек сдачи по России</span></div>
         <div class="hiw-feat hiw-feat-logos">
           <div class="hiw-feat-ck">✓</div>
-          <div class="hiw-lab-logos">
-            <span class="hiw-lab-name">Инвитро</span>
-            <span class="hiw-lab-sep">·</span>
-            <span class="hiw-lab-name">Хеликс</span>
-            <span class="hiw-lab-sep">·</span>
-            <span class="hiw-lab-name">KDL</span>
+          <div class="hiw-lab-logos hiw-lab-logos--svgs">
+            <span class="hiw-lab-svg-item">
+              <svg viewBox="0 0 110 32" class="lab-logo-svg lab-logo-svg--sm" aria-label="Инвитро" role="img" fill="none"><text x="2" y="24" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="700" font-style="italic" fill="#00A8B4" letter-spacing="-0.5">INVITRO</text></svg>
+            </span>
+            <span class="hiw-lab-svg-item">
+              <svg viewBox="0 0 90 32" class="lab-logo-svg lab-logo-svg--sm" aria-label="Хеликс" role="img" fill="none"><path d="M6 4 C10 8,10 14,6 18 C10 22,10 28,6 32" stroke="#7BC8F0" stroke-width="3" stroke-linecap="round"/><path d="M14 4 C10 8,10 14,14 18 C10 22,10 28,14 32" stroke="#9B7ED4" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="11" x2="14" y2="11" stroke="#9B7ED4" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="21" x2="14" y2="21" stroke="#7BC8F0" stroke-width="2" stroke-linecap="round"/><text x="20" y="23" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" fill="#2C2C3E">Helix</text></svg>
+            </span>
+            <span class="hiw-lab-svg-item">
+              <svg viewBox="0 0 72 32" class="lab-logo-svg lab-logo-svg--sm" aria-label="KDL" role="img" fill="none"><circle cx="13" cy="16" r="11" stroke="#5C3B8C" stroke-width="1.5" fill="white" opacity="0.9"/><path d="M5 10 Q13 14,21 10" stroke="#5C3B8C" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M4 16 Q13 20,22 16" stroke="#E8921A" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M5 22 Q13 18,21 22" stroke="#5C3B8C" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M13 5 Q18 12,13 16 Q8 20,13 27" stroke="#E8921A" stroke-width="1.5" fill="none"/><text x="28" y="23" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="800" fill="#2C2C2C" letter-spacing="0.5">KDL</text></svg>
+            </span>
           </div>
         </div>
         <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Вызов медсестры на дом</span></div>
@@ -1923,7 +1955,7 @@ footer{
   <div class="hiw-block">
     <div>
       <div class="hiw-eyebrow">ШАГ 02 · Понять результаты</div>
-      <h2 class="hiw-h">Получите <em>глубокую расшифровку</em><br>результатов</h2>
+      <h2 class="hiw-h">Получите <em>расшифровку</em><br>результатов</h2>
       <p class="hiw-body">Живой специалист смотрит ваши показатели в контексте: что важно сейчас, что нужно отслеживать, а что в норме.</p>
       <div class="hiw-feats">
         <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Глубже обычной диспансеризации</span></div>
@@ -2098,7 +2130,7 @@ footer{
 <!-- DATA / WEARABLES (image 10) -->
 <div class="data-sec">
   <div class="data-inner">
-    <h2 class="data-h r">Ваши данные — <em>в одном месте и понятны</em></h2>
+    <h2 class="data-h r">Ваше здоровье — <em>в одном месте</em></h2>
     <p class="data-sub r d1">Видите картину целиком — и понимаете, что делать дальше.</p>
     <div class="data-grid">
       <!-- Big biomarker card -->
@@ -2412,7 +2444,7 @@ footer{
 <!-- THE NEW STANDARD — bento -->
 <div class="standard-sec">
   <div class="standard-inner">
-    <h2 class="standard-h r">Те, кто уже <em>сдал чекап</em></h2>
+    <h2 class="standard-h r">Уже пользуются <em>Чекапи</em></h2>
     <p class="standard-sub r d1">Реальные отзывы людей, которые разобрались в своих анализах</p>
     <div class="bento r d2">
       <!-- Large testimonial — man -->
@@ -2495,24 +2527,35 @@ footer{
         </h2>
         <p class="gold-sub">Работаем только с аккредитованными лабораториями — Инвитро, Хеликс, KDL. Без сомнительных партнёров и домашних наборов.</p>
         <div class="lab-logos">
-          <!-- TODO: замените src на реальные логотипы лабораторий -->
           <div class="lab-logo-item" title="Инвитро">
-            <svg viewBox="0 0 80 24" class="lab-logo-svg" aria-label="Инвитро" role="img">
-              <rect x="0" y="10" width="8" height="14" rx="1" fill="#C4622D" opacity=".7"/>
-              <rect x="2" y="6" width="4" height="4" rx="1" fill="#C4622D" opacity=".5"/>
-              <text x="13" y="20" font-family="DM Sans,sans-serif" font-size="13" font-weight="700" fill="currentColor">Инвитро</text>
+            <svg viewBox="0 0 110 32" class="lab-logo-svg" aria-label="Инвитро" role="img" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <text x="4" y="24" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="700" font-style="italic" fill="#00A8B4" letter-spacing="-0.5">INVITRO</text>
             </svg>
           </div>
           <div class="lab-logo-item" title="Хеликс">
-            <svg viewBox="0 0 70 24" class="lab-logo-svg" aria-label="Хеликс" role="img">
-              <path d="M4 4 L12 20 M12 4 L4 20" stroke="#C4622D" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
-              <text x="18" y="20" font-family="DM Sans,sans-serif" font-size="13" font-weight="700" fill="currentColor">Хеликс</text>
+            <svg viewBox="0 0 90 32" class="lab-logo-svg" aria-label="Хеликс" role="img" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- DNA ribbon left -->
+              <path d="M6 4 C10 8, 10 14, 6 18 C10 22, 10 28, 6 32" stroke="#7BC8F0" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <path d="M14 4 C10 8, 10 14, 14 18 C10 22, 10 28, 14 32" stroke="#9B7ED4" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <!-- Cross bars -->
+              <line x1="6" y1="11" x2="14" y2="11" stroke="#9B7ED4" stroke-width="2" stroke-linecap="round"/>
+              <line x1="6" y1="21" x2="14" y2="21" stroke="#7BC8F0" stroke-width="2" stroke-linecap="round"/>
+              <!-- Helix text -->
+              <text x="20" y="23" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" fill="#2C2C3E">Helix</text>
             </svg>
           </div>
           <div class="lab-logo-item" title="KDL">
-            <svg viewBox="0 0 52 24" class="lab-logo-svg" aria-label="KDL" role="img">
-              <rect x="0" y="2" width="10" height="20" rx="2" fill="none" stroke="#C4622D" stroke-width="1.8" opacity=".7"/>
-              <text x="14" y="20" font-family="DM Sans,sans-serif" font-size="13" font-weight="700" fill="currentColor">KDL</text>
+            <svg viewBox="0 0 72 32" class="lab-logo-svg" aria-label="KDL" role="img" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Globe circle -->
+              <circle cx="13" cy="16" r="11" stroke="#5C3B8C" stroke-width="1.5" fill="white" opacity="0.9"/>
+              <!-- Globe stripes - purple diagonal -->
+              <path d="M5 10 Q13 14, 21 10" stroke="#5C3B8C" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <path d="M4 16 Q13 20, 22 16" stroke="#E8921A" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <path d="M5 22 Q13 18, 21 22" stroke="#5C3B8C" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <!-- Vertical globe lines -->
+              <path d="M13 5 Q18 12, 13 16 Q8 20, 13 27" stroke="#E8921A" stroke-width="1.5" fill="none"/>
+              <!-- KDL text -->
+              <text x="28" y="23" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="800" fill="#2C2C2C" letter-spacing="0.5">KDL</text>
             </svg>
           </div>
         </div>
@@ -2542,7 +2585,7 @@ footer{
 <!-- COMPARISON TABLE -->
 <div class="compare-sec">
   <div class="compare-inner">
-    <h2 class="compare-h r"><em>Глубже, чем</em> диспансеризация</h2>
+    <h2 class="compare-h r"><em>Больше,</em> чем просто проверка</h2>
     <div class="ctable r d1">
       <div class="ctable-head">
         <div class="cth-empty"></div>
@@ -2626,7 +2669,7 @@ footer{
 <!-- PRICING -->
 <div id="pricing" class="pricing-sec">
   <div class="pricing-inner">
-    <h2 class="pricing-h r">Полный чекап — за <em class="ok">30 940 ₽</em></h2>
+    <h2 class="pricing-h r">То, что стоит <em>300 000 ₽</em>, — за <em class="ok">30 940 ₽</em></h2>
     <p class="pricing-sub r d1">160+ анализов, расшифровка от врача и личный кабинет с динамикой — всё включено. Без скрытых платежей.</p>
     <div class="pricing-card r d2">
       <div class="pc-left">
@@ -2704,8 +2747,8 @@ footer{
 <!-- FINAL CTA -->
 <div class="final-cta-sec">
   <div style="max-width:800px;margin:0 auto">
-    <h2 class="r" style="font-family:'Instrument Serif',serif;font-size:clamp(36px,6vw,80px);letter-spacing:-.04em;line-height:.98;margin-bottom:8px">Разобраться в анализах — <em style="font-style:italic;color:var(--rust)">непросто?</em></h2>
-    <h2 class="r d1" style="font-family:'Instrument Serif',serif;font-size:clamp(36px,6vw,80px);letter-spacing:-.04em;line-height:.98;margin-bottom:28px">Именно для этого мы и сделали Чекапи.</h2>
+    <h2 class="r" style="font-family:'Instrument Serif',serif;font-size:clamp(36px,6vw,80px);letter-spacing:-.04em;line-height:.98;margin-bottom:8px">Следить за здоровьем <em style="font-style:italic;color:var(--rust)">сложно?</em></h2>
+    <h2 class="r d1" style="font-family:'Instrument Serif',serif;font-size:clamp(36px,6vw,80px);letter-spacing:-.04em;line-height:.98;margin-bottom:28px">Мы не согласны.</h2>
     <p class="r d2" style="font-size:clamp(15px,1.5vw,18px);color:var(--mid);max-width:440px;margin:0 auto 40px;line-height:1.65">Начните следить за здоровьем сегодня. Первый чекап меняет всё.</p>
     <div class="r d3" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <button class="btn-rust" onclick="openM()">Начать тестирование</button>
@@ -2719,9 +2762,10 @@ footer{
   <div class="footer-main footer-main--two-col">
     <div>
       <a class="footer-logo" href="#">
-        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-          <path d="M16 28 C16 28 3 20 3 11.5 C3 7.4 6.4 4 10.5 4 C12.9 4 15.1 5.1 16 7 C16.9 5.1 19.1 4 21.5 4 C25.6 4 29 7.4 29 11.5 C29 20 16 28 16 28Z" fill="#C4622D" opacity=".2" stroke="#C4622D" stroke-width="1.8" stroke-linejoin="round"/>
-          <polyline points="10,16 14,20 22,11" stroke="#C4622D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+          <rect x="3" y="3" width="8" height="22" rx="2.5" fill="#C4622D"/>
+          <rect x="3" y="3" width="20" height="9" rx="2.5" fill="#C4622D"/>
+          <rect x="15" y="12" width="8" height="14" rx="2.5" fill="#C4622D" opacity=".55"/>
         </svg>
         Чекапи
       </a>
