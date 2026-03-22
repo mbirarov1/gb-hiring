@@ -1629,6 +1629,26 @@ footer{
   .hiw-stack-block:nth-child(4){ box-shadow: 0 -10px 32px rgba(0,0,0,.1) }
 }
 
+
+/* ── HIW lab logos inline ── */
+.hiw-feat-logos .hiw-feat-ck{margin-top:2px}
+.hiw-lab-logos{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.hiw-lab-name{
+  font-size:13px;font-weight:700;color:var(--text);
+  background:rgba(196,98,45,.1);border-radius:6px;
+  padding:2px 8px;letter-spacing:.01em;
+}
+.hiw-lab-sep{color:var(--light);font-size:12px}
+
+/* ── Tcat desktop: count in header not body ── */
+.tcat-count{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--rust);font-weight:500;
+  margin-bottom:0;margin-top:4px;
+}
+
 </style>
 </head>
 <body>
@@ -1688,7 +1708,7 @@ footer{
     disableRemotePlayback
     preload="metadata"
     style="background:transparent">
-    <source src="hero-final.mp4" type="video/mp4">
+    <source src="hero.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -1716,13 +1736,13 @@ footer{
 <!-- TESTING IS EASY -->
 <div id="how" class="easy-section">
   <div class="easy-inner">
-    <h2 class="easy-title r">Проверить здоровье — <em>проще, чем кажется</em></h2>
+    <h2 class="easy-title r">Быть на чеку <em>просто</em></h2>
     <div class="easy-grid">
       <!-- Card 1 -->
       <div class="easy-card r d1">
         <div class="easy-num">01</div>
         <h3 class="easy-card-title">160+ показателей</h3>
-        <p class="easy-card-sub">Запись в ближайшую лабораторию — сами выбираете день и время</p>
+        <p class="easy-card-sub">Запись в 400+ лабораторий</p>
         <div class="cal-widget" id="calWidget">
           <div class="cal-dates" id="calDates">
             <div class="cal-day" data-day="ВТ" data-num="5" onclick="selDay(this)"><div class="cal-day-name">ВТ</div><div class="cal-day-n">5</div></div>
@@ -1743,8 +1763,8 @@ footer{
       <!-- Card 2 -->
       <div class="easy-card r d2">
         <div class="easy-num">02</div>
-        <h3 class="easy-card-title">Результаты на русском</h3>
-        <p class="easy-card-sub">Никаких таблиц с непонятными цифрами — только ясные выводы от врачей</p>
+        <h3 class="easy-card-title">Понятные результаты</h3>
+        <p class="easy-card-sub">Аналитика от ведущих врачей по результатам сотен часов исследований</p>
         <div class="chart-widget" id="chartWidget2">
           <div class="chart-svg-wrap">
             <svg id="animChart" viewBox="0 0 280 140" preserveAspectRatio="xMidYMid meet">
@@ -1776,8 +1796,8 @@ footer{
       <!-- Card 3 -->
       <div class="easy-card r d3">
         <div class="easy-num">03</div>
-        <h3 class="easy-card-title">Понятный план действий</h3>
-        <p class="easy-card-sub">Что изменить в питании, какие добавки принять, когда сдать повторно</p>
+        <h3 class="easy-card-title">Простые шаги</h3>
+        <p class="easy-card-sub">Действуйте. Тестируйте снова.</p>
         <div class="proto-items">
           <div class="proto-item">
             <div class="proto-icon">
@@ -1858,13 +1878,23 @@ footer{
   <div class="hiw-block">
     <div>
       <div class="hiw-eyebrow">ШАГ 01 · Запланировать анализы</div>
-      <h2 class="hiw-h">Сдайте 160+ анализов —<br><em>одним визитом, раз в год</em></h2>
+      <h2 class="hiw-h">Сдайте 160+ анализов —<br><em>одним визитом</em></h2>
       <p class="hiw-body">Гормоны, сердце, почки, печень, щитовидная, иммунитет, биовозраст — всё за один визит в ближайшую лабораторию.</p>
       <div class="hiw-feats">
         <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>160+ показателей в одном пакете</span></div>
         <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Один визит в лабораторию — 15 минут</span></div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>400+ точек сдачи по России — Инвитро, Хеликс, KDL</span></div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Можно вызвать медсестру домой</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>400+ точек сдачи по России</span></div>
+        <div class="hiw-feat hiw-feat-logos">
+          <div class="hiw-feat-ck">✓</div>
+          <div class="hiw-lab-logos">
+            <span class="hiw-lab-name">Инвитро</span>
+            <span class="hiw-lab-sep">·</span>
+            <span class="hiw-lab-name">Хеликс</span>
+            <span class="hiw-lab-sep">·</span>
+            <span class="hiw-lab-name">KDL</span>
+          </div>
+        </div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Вызов медсестры на дом</span></div>
       </div>
       <button class="btn-rust" onclick="openM()">Записаться →</button>
     </div>
@@ -1893,7 +1923,7 @@ footer{
   <div class="hiw-block">
     <div>
       <div class="hiw-eyebrow">ШАГ 02 · Понять результаты</div>
-      <h2 class="hiw-h">Получите <em>расшифровку</em><br>от врача, а не от алгоритма</h2>
+      <h2 class="hiw-h">Получите <em>глубокую расшифровку</em><br>результатов</h2>
       <p class="hiw-body">Живой специалист смотрит ваши показатели в контексте: что важно сейчас, что нужно отслеживать, а что в норме.</p>
       <div class="hiw-feats">
         <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Глубже обычной диспансеризации</span></div>
@@ -1934,7 +1964,7 @@ footer{
         <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Видите, как меняются показатели</span></div>
         <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Добавьте нужные тесты к базовому пакету</span></div>
       </div>
-      <button class="btn-rust" onclick="openM()">Начать протокол →</button>
+      <button class="btn-rust" onclick="openM()">Начать тестирование →</button>
     </div>
     <div class="hiw-visual">
       <div class="app-mock">
@@ -2240,112 +2270,141 @@ footer{
       </div>
     </div>
     <div class="tests-grid r d2">
-      <!-- Cat 1 -->
-      <div class="tcat" aria-expanded="false" data-cat-id="cat-8295">
-    <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-controls="cat-8295-body">
-      <div class="tcat-btn-inner">
-        <div>
-          <div class="tcat-title">Гормоны<br>и щитовидная</div>
-          <div class="tcat-count">
-            
-          <div class="tcat-count-bar"><span></span><span></span><span></span>
+
+      <!-- Cat 1: Гормоны -->
+      <div class="tcat" aria-expanded="false">
+        <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-label="Раскрыть: Гормоны и щитовидная">
+          <div class="tcat-btn-inner">
+            <div>
+              <div class="tcat-title">Гормоны<br>и щитовидная</div>
+              <div class="tcat-count"><div class="tcat-count-bar"><span></span><span></span><span></span></div>16 показателей</div>
+            </div>
+            <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+          </div>
+        </button>
+        <div class="tcat-body" role="region">
+          <div class="tcat-body-inner">
+            <div class="tcat-item-full">Т4 свободный</div>
+            <div class="tcat-item-full">ТТГ</div>
+            <div class="tcat-item-full">АТ к тиреоглобулину</div>
+            <div class="tcat-item-full">АТ к ТПО</div>
+            <div class="tcat-item-full">Тестостерон общий</div>
+            <div class="tcat-item-full">Тестостерон свободный</div>
+            <div class="tcat-item-full">АМГ</div>
+            <div class="tcat-item-full faded">Эстрадиол</div>
+            <div class="tcat-item-full faded">ЛГ, ФСГ</div>
+            <div class="tcat-item-full faded">Пролактин</div>
           </div>
         </div>
-        <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
       </div>
-    </button>
-    <div class="tcat-body" id="cat-8295-body" role="region">
-      <div class="tcat-body-inner">
-        
-          <div class="tcat-item-full">Т4 свободный
-      </div>
-    </div>
-  </div><!-- Cat 2 -->
-      <div class="tcat" aria-expanded="false" data-cat-id="cat-2195">
-    <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-controls="cat-2195-body">
-      <div class="tcat-btn-inner">
-        <div>
-          <div class="tcat-title">Онкомаркеры<br>и скрытые риски</div>
-          <div class="tcat-count">
-            
-          <div class="tcat-count-bar"><span></span><span></span><span></span>
+
+      <!-- Cat 2: Онкомаркеры -->
+      <div class="tcat" aria-expanded="false">
+        <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-label="Раскрыть: Онкомаркеры и скрытые риски">
+          <div class="tcat-btn-inner">
+            <div>
+              <div class="tcat-title">Онкомаркеры<br>и скрытые риски</div>
+              <div class="tcat-count"><div class="tcat-count-bar"><span></span><span></span><span></span></div>34 показателя</div>
+            </div>
+            <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+          </div>
+        </button>
+        <div class="tcat-body" role="region">
+          <div class="tcat-body-inner">
+            <div class="tcat-item-full">ПСА общий</div>
+            <div class="tcat-item-full">CA-125</div>
+            <div class="tcat-item-full">CA 19-9</div>
+            <div class="tcat-item-full">Ревматоидный фактор</div>
+            <div class="tcat-item-full">АНА (антинуклеарные АТ)</div>
+            <div class="tcat-item-full faded">Ртуть</div>
+            <div class="tcat-item-full faded">Свинец</div>
+            <div class="tcat-item-full faded">Мышьяк</div>
           </div>
         </div>
-        <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
       </div>
-    </button>
-    <div class="tcat-body" id="cat-2195-body" role="region">
-      <div class="tcat-body-inner">
-        
-          <div class="tcat-item-full">ПСА общий
-      </div>
-    </div>
-  </div><!-- Cat 3 -->
-      <div class="tcat" aria-expanded="false" data-cat-id="cat-8528">
-    <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-controls="cat-8528-body">
-      <div class="tcat-btn-inner">
-        <div>
-          <div class="tcat-title">Сердце<br>и метаболизм</div>
-          <div class="tcat-count">
-            
-          <div class="tcat-count-bar"><span></span><span></span><span></span>
+
+      <!-- Cat 3: Сердце -->
+      <div class="tcat" aria-expanded="false">
+        <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-label="Раскрыть: Сердце и метаболизм">
+          <div class="tcat-btn-inner">
+            <div>
+              <div class="tcat-title">Сердце<br>и метаболизм</div>
+              <div class="tcat-count"><div class="tcat-count-bar"><span></span><span></span><span></span></div>18 показателей</div>
+            </div>
+            <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+          </div>
+        </button>
+        <div class="tcat-body" role="region">
+          <div class="tcat-body-inner">
+            <div class="tcat-item-full">ЛПНП мелкие частицы</div>
+            <div class="tcat-item-full">Липопротеин (а)</div>
+            <div class="tcat-item-full">Аполипопротеин B</div>
+            <div class="tcat-item-full">Аполипопротеин A1</div>
+            <div class="tcat-item-full">Инсулин</div>
+            <div class="tcat-item-full faded">Омега-3 общий</div>
+            <div class="tcat-item-full faded">Глюкоза натощак</div>
+            <div class="tcat-item-full faded">HbA1c</div>
           </div>
         </div>
-        <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
       </div>
-    </button>
-    <div class="tcat-body" id="cat-8528-body" role="region">
-      <div class="tcat-body-inner">
-        
-          <div class="tcat-item-full">ЛПНП мелкие частицы
-      </div>
-    </div>
-  </div><!-- Cat 4 -->
-      <div class="tcat" aria-expanded="false" data-cat-id="cat-2040">
-    <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-controls="cat-2040-body">
-      <div class="tcat-btn-inner">
-        <div>
-          <div class="tcat-title">Долголетие<br>и биовозраст</div>
-          <div class="tcat-count">
-            
-          <div class="tcat-count-bar"><span></span><span></span><span></span>
+
+      <!-- Cat 4: Долголетие -->
+      <div class="tcat" aria-expanded="false">
+        <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-label="Раскрыть: Долголетие и биовозраст">
+          <div class="tcat-btn-inner">
+            <div>
+              <div class="tcat-title">Долголетие<br>и биовозраст</div>
+              <div class="tcat-count"><div class="tcat-count-bar"><span></span><span></span><span></span></div>26 показателей</div>
+            </div>
+            <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+          </div>
+        </button>
+        <div class="tcat-body" role="region">
+          <div class="tcat-body-inner">
+            <div class="tcat-item-full">ГСПГ</div>
+            <div class="tcat-item-full">ДГЭА-С</div>
+            <div class="tcat-item-full">ИФР-1 (СТГ-прокси)</div>
+            <div class="tcat-item-full">Гомоцистеин</div>
+            <div class="tcat-item-full">Витамин D</div>
+            <div class="tcat-item-full faded">Витамин B12</div>
+            <div class="tcat-item-full faded">Ферритин</div>
+            <div class="tcat-item-full faded">Мочевая кислота</div>
           </div>
         </div>
-        <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
       </div>
-    </button>
-    <div class="tcat-body" id="cat-2040-body" role="region">
-      <div class="tcat-body-inner">
-        
-          <div class="tcat-item-full">ГСПГ
-      </div>
-    </div>
-  </div><!-- Cat 5 -->
-      <div class="tcat" aria-expanded="false" data-cat-id="cat-6346">
-    <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-controls="cat-6346-body">
-      <div class="tcat-btn-inner">
-        <div>
-          <div class="tcat-title">Психика<br>и фокус</div>
-          <div class="tcat-count">
-            
-          <div class="tcat-count-bar"><span></span><span></span><span></span>
+
+      <!-- Cat 5: Психика -->
+      <div class="tcat" aria-expanded="false">
+        <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-label="Раскрыть: Психика и фокус">
+          <div class="tcat-btn-inner">
+            <div>
+              <div class="tcat-title">Психика<br>и фокус</div>
+              <div class="tcat-count"><div class="tcat-count-bar"><span></span><span></span><span></span></div>36 показателей</div>
+            </div>
+            <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+          </div>
+        </button>
+        <div class="tcat-body" role="region">
+          <div class="tcat-body-inner">
+            <div class="tcat-item-full">Кортизол</div>
+            <div class="tcat-item-full">СРБ высокочувствительный</div>
+            <div class="tcat-item-full">Железо</div>
+            <div class="tcat-item-full">Ферритин</div>
+            <div class="tcat-item-full">Магний</div>
+            <div class="tcat-item-full faded">Метилмалоновая кислота</div>
+            <div class="tcat-item-full faded">Цинк</div>
+            <div class="tcat-item-full faded">Медь</div>
           </div>
         </div>
-        <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
       </div>
-    </button>
-    <div class="tcat-body" id="cat-6346-body" role="region">
-      <div class="tcat-body-inner">
-        
-          <div class="tcat-item-full">Кортизол
-      </div>
-    </div>
-  </div><!-- More -->
+
+      <!-- More -->
       <div class="tcat-more r" onclick="openM()">
         <div class="tcat-more-plus">+Ещё</div>
         <div class="tcat-more-text">Всё<br>в одном</div>
         <button class="tcat-more-btn">Смотреть все</button>
       </div>
+
     </div>
   </div>
 </div>
@@ -2697,27 +2756,35 @@ footer{
    ЧЕКАПИ — main.js
 ═══════════════════════════════════════════════════ */
 
-/* ── VIDEO — опциональное улучшение поверх CSS-анимации ── */
+/* ── VIDEO hero.mp4 ── */
 (function(){
   const v = document.getElementById('heroVideo');
   if(!v) return;
+  // Start invisible — CSS gradient shows underneath
+  v.style.opacity = '0';
+  v.style.transition = 'opacity 1.4s ease';
 
-  const showVideo = () => { v.style.opacity = '1'; };
-  const hideVideo = () => { v.style.opacity = '0'; };
+  function show(){ v.style.opacity = '1'; }
+  function hide(){ v.style.display = 'none'; }
 
-  v.addEventListener('loadeddata', showVideo);
-  v.addEventListener('canplay', showVideo);
-  v.addEventListener('error', hideVideo);
+  // Show when ready
+  v.addEventListener('canplay', show, { once: true });
+  v.addEventListener('loadeddata', show, { once: true });
+  // Hide only on hard error (file not found)
+  v.addEventListener('error', hide, { once: true });
 
-  const tryPlay = () => {
+  // Try autoplay
+  function tryPlay(){
     const p = v.play();
-    if(p && typeof p.catch === 'function'){
-      p.catch(()=>{}); // autoplay заблокирован — CSS анимация продолжает работать
-    }
-  };
+    if(p) p.catch(function(){
+      // Autoplay blocked — CSS animation keeps hero alive
+      // Will play on first user interaction
+    });
+  }
   tryPlay();
+  // iOS Safari: try again after user gesture
   document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
-  document.addEventListener('click', tryPlay, { once: true });
+  document.addEventListener('click',      tryPlay, { once: true });
 })();
 
 /* ── MODAL ── */
