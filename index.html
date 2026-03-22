@@ -437,34 +437,9 @@ img,video{max-width:100%}
 .cal-time:hover:not(.active){background:var(--cream-d)}
 
 /* Card 2: results chart */
-.chart-widget{margin-top:auto;background:var(--cream);border-radius:12px;padding:20px}
-.chart-zones{display:flex;flex-direction:column;gap:0;position:relative;min-height:120px}
-.chart-zone{
-  display:flex;align-items:center;gap:12px;
-  font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--light);padding:16px 0;
-  border-bottom:1px solid var(--border);
-}
-.chart-zone:last-child{border-bottom:none}
-.chart-line{
-  flex:1;position:relative;height:40px;
-}
-.chart-dot{
-  width:10px;height:10px;border-radius:50%;
-  position:absolute;top:50%;transform:translateY(-50%);
-  box-shadow:0 0 0 3px rgba(196,98,45,.15);
-}
-.chart-dot.ok{background:var(--rust)}
-.chart-dot.warn{background:#E8A87C}
-.chart-val{
-  position:absolute;top:-16px;
-  font-size:12px;font-weight:600;color:var(--text);
-  transform:translateX(-50%);
-}
-.chart-connector{
-  position:absolute;top:50%;height:1.5px;
-  background:var(--rust);opacity:.4;transform:translateY(-50%);
-}
+.chart-widget{margin-top:auto;background:var(--cream);border-radius:12px;padding:16px}
+.chart-svg-wrap{width:100%;overflow:visible}
+.chart-svg-wrap svg{width:100%;height:auto;display:block;min-height:100px}
 
 /* Card 3: protocol items */
 .proto-items{margin-top:auto;display:flex;flex-direction:column;gap:8px}
@@ -619,7 +594,7 @@ img,video{max-width:100%}
   }
 }
 .tcat{
-  padding:32px 28px;border-bottom:1px solid var(--border);
+  padding:0;border-bottom:1px solid var(--border);
   transition:background .2s;
 }
 @media(min-width:768px){
@@ -630,6 +605,47 @@ img,video{max-width:100%}
   .tcat:nth-child(6){border-top:1px solid var(--border);border-right:none}
 }
 .tcat:hover{background:var(--cream-d)}
+/* Accordion header */
+.tcat-btn{
+  display:block;width:100%;text-align:left;
+  padding:28px 28px 24px;
+  background:none;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  transition:background .2s;
+}
+.tcat-btn:hover{background:rgba(0,0,0,.03)}
+.tcat-btn:focus-visible{outline:2px solid var(--rust);outline-offset:-2px;border-radius:4px}
+.tcat-btn-inner{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.tcat-chevron{
+  flex-shrink:0;width:18px;height:18px;margin-top:2px;
+  color:var(--light);transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+.tcat[aria-expanded="true"] .tcat-chevron{transform:rotate(180deg)}
+/* Expandable content */
+.tcat-body{
+  overflow:hidden;
+  max-height:0;
+  transition:max-height .35s cubic-bezier(.4,0,.2,1), opacity .25s ease;
+  opacity:0;
+}
+.tcat[aria-expanded="true"] .tcat-body{
+  max-height:600px;
+  opacity:1;
+}
+.tcat-body-inner{
+  padding:0 28px 24px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.tcat-item-full{
+  font-size:13px;color:var(--mid);padding:3px 0;
+  border-bottom:1px solid var(--cream-d);
+}
+.tcat-item-full:last-child{border-bottom:none}
+.tcat-item-full.faded{color:var(--light)}
+@media(max-width:599px){
+  .tcat-btn{padding:18px 14px 14px}
+  .tcat-body-inner{padding:0 14px 16px}
+}
 .tcat-title{
   font-family:'Instrument Serif',serif;
   font-size:clamp(20px,2.5vw,28px);letter-spacing:-.01em;
@@ -1582,6 +1598,37 @@ footer{
   background:var(--cream);border:1px solid var(--border);
   border-radius:6px;padding:4px 10px;
 }
+
+/* ── Lab logos ── */
+.lab-logos{
+  display:flex;gap:24px;align-items:center;flex-wrap:wrap;
+  margin-top:4px;
+}
+.lab-logo-item{
+  opacity:.65;transition:opacity .2s;
+  /* TODO: при наличии реальных PNG/SVG логотипов — заменить inline SVG на <img> */
+}
+.lab-logo-item:hover{opacity:1}
+/* ── Animated SVG chart ── */
+.chart-widget{margin-top:auto;background:var(--cream);border-radius:12px;padding:16px}
+.chart-svg-wrap{width:100%;overflow:visible}
+.chart-svg-wrap svg{width:100%;height:auto;display:block}
+
+/* ── HIW stacking — shadow + slight scale ── */
+.hiw-stack-block{
+  transition: box-shadow .3s ease;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+}
+.hiw-stack-block + .hiw-stack-block{
+  border-top: 1px solid var(--border);
+}
+/* Desktop: nice overlap visual */
+@media(min-width:900px){
+  .hiw-stack-block:nth-child(2){ box-shadow: 0 -6px 24px rgba(0,0,0,.06) }
+  .hiw-stack-block:nth-child(3){ box-shadow: 0 -8px 28px rgba(0,0,0,.08) }
+  .hiw-stack-block:nth-child(4){ box-shadow: 0 -10px 32px rgba(0,0,0,.1) }
+}
+
 </style>
 </head>
 <body>
@@ -1603,7 +1650,7 @@ footer{
 
 <!-- ANN BAR -->
 <div class="ann">
-  <span>Первые 100 мест — по специальной цене.</span>
+  <span>Первые 100 мест — по закрытой цене.</span>
   <a onclick="openM();return false">Записаться →</a>
 </div>
 
@@ -1625,7 +1672,7 @@ footer{
     </ul>
     <div class="nav-right">
       <a class="nav-login" href="#">Войти</a>
-      <button class="nav-cta" onclick="openM()">Начать тестирование</button>
+      <button class="nav-cta" onclick="openM()">Записаться на чекап</button>
     </div>
   </div>
 </div>
@@ -1645,8 +1692,8 @@ footer{
   </video>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <h1 class="hero-h1">Быть на чеку<br><em>просто.</em></h1>
-    <p class="hero-sub">Каждый год. Начиная со 160+ анализов, выявляющих 1000+ состояний. Меньше 85 ₽ в день.</p>
+    <h1 class="hero-h1">Ваши анализы —<br><em>наконец понятны.</em></h1>
+    <p class="hero-sub">160+ показателей крови, гормонов и биомаркеров с понятной расшифровкой от врачей. Один раз в год — и вы знаете, что происходит.</p>
     <button class="hero-cta" onclick="openM()">Начать тестирование</button>
     <div class="hero-stats">
       <div class="hero-stat">
@@ -1669,13 +1716,13 @@ footer{
 <!-- TESTING IS EASY -->
 <div id="how" class="easy-section">
   <div class="easy-inner">
-    <h2 class="easy-title r">Быть на чеку <em>просто</em></h2>
+    <h2 class="easy-title r">Проверить здоровье — <em>проще, чем кажется</em></h2>
     <div class="easy-grid">
       <!-- Card 1 -->
       <div class="easy-card r d1">
         <div class="easy-num">01</div>
-        <h3 class="easy-card-title">160+ анализов</h3>
-        <p class="easy-card-sub">Запись в 400+ лабораторий Москвы</p>
+        <h3 class="easy-card-title">160+ показателей</h3>
+        <p class="easy-card-sub">Запись в ближайшую лабораторию — сами выбираете день и время</p>
         <div class="cal-widget" id="calWidget">
           <div class="cal-dates" id="calDates">
             <div class="cal-day" data-day="ВТ" data-num="5" onclick="selDay(this)"><div class="cal-day-name">ВТ</div><div class="cal-day-n">5</div></div>
@@ -1696,36 +1743,41 @@ footer{
       <!-- Card 2 -->
       <div class="easy-card r d2">
         <div class="easy-num">02</div>
-        <h3 class="easy-card-title">Понятные результаты</h3>
-        <p class="easy-card-sub">Аналитика ведущих врачей и сотен часов исследований</p>
-        <div class="chart-widget">
-          <div class="chart-zones">
-            <div class="chart-zone">
-              <span>Выше нормы</span>
-              <div class="chart-line">
-                <div class="chart-dot ok" style="left:60%"><span class="chart-val">16.7</span></div>
-              </div>
-            </div>
-            <div class="chart-zone" style="border-bottom:none">
-              <span>В норме</span>
-              <div class="chart-line" style="position:relative;height:40px">
-                <div class="chart-dot ok" style="left:20%"><span class="chart-val">10.0</span></div>
-                <div class="chart-dot ok" style="left:65%"><span class="chart-val">12.5</span></div>
-                <div class="chart-connector" style="left:20%;width:45%"></div>
-              </div>
-            </div>
-            <div class="chart-zone">
-              <span>Ниже нормы</span>
-              <div class="chart-line"></div>
-            </div>
+        <h3 class="easy-card-title">Результаты на русском</h3>
+        <p class="easy-card-sub">Никаких таблиц с непонятными цифрами — только ясные выводы от врачей</p>
+        <div class="chart-widget" id="chartWidget2">
+          <div class="chart-svg-wrap">
+            <svg id="animChart" viewBox="0 0 280 140" preserveAspectRatio="xMidYMid meet">
+              <!-- Zone backgrounds -->
+              <rect x="0" y="0"  width="280" height="44" fill="rgba(196,98,45,.06)" rx="4"/>
+              <rect x="0" y="48" width="280" height="44" fill="rgba(76,175,80,.07)" rx="4"/>
+              <rect x="0" y="96" width="280" height="44" fill="rgba(0,0,0,.03)" rx="4"/>
+              <!-- Zone labels -->
+              <text x="8" y="26"  font-family="DM Sans,sans-serif" font-size="9" font-weight="700" letter-spacing=".06em" fill="#B8997E">ВЫШЕ НОРМЫ</text>
+              <text x="8" y="74"  font-family="DM Sans,sans-serif" font-size="9" font-weight="700" letter-spacing=".06em" fill="#B8997E">В НОРМЕ</text>
+              <text x="8" y="118" font-family="DM Sans,sans-serif" font-size="9" font-weight="700" letter-spacing=".06em" fill="#B8997E">НИЖЕ НОРМЫ</text>
+              <!-- Connecting line (drawn via JS on viewport entry) -->
+              <path id="chartPath" d="M70,70 L155,62 L235,24"
+                fill="none" stroke="#C4622D" stroke-width="1.8"
+                stroke-dasharray="0 400" stroke-linecap="round"
+                style="transition:stroke-dasharray 0.9s 0.6s ease"/>
+              <!-- Dots (fade in sequentially) -->
+              <circle id="dot1" cx="70"  cy="70" r="5.5" fill="#4CAF50" style="opacity:0;transition:opacity .35s .1s ease"/>
+              <circle id="dot2" cx="155" cy="62" r="5.5" fill="#4CAF50" style="opacity:0;transition:opacity .35s .4s ease"/>
+              <circle id="dot3" cx="235" cy="24" r="5.5" fill="#C4622D" style="opacity:0;transition:opacity .35s 1.4s ease"/>
+              <!-- Value labels -->
+              <text id="val1" x="70"  y="90" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#2C1A10" style="opacity:0;transition:opacity .3s .15s ease">10.0</text>
+              <text id="val2" x="155" y="82" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#2C1A10" style="opacity:0;transition:opacity .3s .45s ease">12.5</text>
+              <text id="val3" x="235" y="14" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#C4622D" style="opacity:0;transition:opacity .3s 1.45s ease">16.7</text>
+            </svg>
           </div>
         </div>
       </div>
       <!-- Card 3 -->
       <div class="easy-card r d3">
         <div class="easy-num">03</div>
-        <h3 class="easy-card-title">Простые шаги</h3>
-        <p class="easy-card-sub">Действуйте. Тестируйте снова.</p>
+        <h3 class="easy-card-title">Понятный план действий</h3>
+        <p class="easy-card-sub">Что изменить в питании, какие добавки принять, когда сдать повторно</p>
         <div class="proto-items">
           <div class="proto-item">
             <div class="proto-icon">
@@ -1806,13 +1858,13 @@ footer{
   <div class="hiw-block">
     <div>
       <div class="hiw-eyebrow">ШАГ 01 · Запланировать анализы</div>
-      <h2 class="hiw-h">Начните со 160+<br>анализов <em>каждый год</em></h2>
-      <p class="hiw-body">Охватывает сердце, гормоны, почки, печень, щитовидную железу и многое другое.</p>
+      <h2 class="hiw-h">Сдайте 160+ анализов —<br><em>одним визитом, раз в год</em></h2>
+      <p class="hiw-body">Гормоны, сердце, почки, печень, щитовидная, иммунитет, биовозраст — всё за один визит в ближайшую лабораторию.</p>
       <div class="hiw-feats">
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>160+ анализов включены в пакет</span></div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Полное исследование за один визит 15 минут</span></div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>400+ точек Инвитро, Хеликс, KDL по всей России</span></div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Выезд медсестры домой — в день заказа</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>160+ показателей в одном пакете</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Один визит в лабораторию — 15 минут</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>400+ точек сдачи по России — Инвитро, Хеликс, KDL</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Можно вызвать медсестру домой</span></div>
       </div>
       <button class="btn-rust" onclick="openM()">Записаться →</button>
     </div>
@@ -1841,13 +1893,13 @@ footer{
   <div class="hiw-block">
     <div>
       <div class="hiw-eyebrow">ШАГ 02 · Понять результаты</div>
-      <h2 class="hiw-h">Изучите <em>результаты</em><br>с нашими врачами</h2>
-      <p class="hiw-body">Врачи проверяют ваши данные с учётом истории здоровья и выделяют главное.</p>
+      <h2 class="hiw-h">Получите <em>расшифровку</em><br>от врача, а не от алгоритма</h2>
+      <p class="hiw-body">Живой специалист смотрит ваши показатели в контексте: что важно сейчас, что нужно отслеживать, а что в норме.</p>
       <div class="hiw-feats">
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Глубже, чем обычный медосмотр</span></div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Персональные гиды по питанию и добавкам</span></div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Скачайте и поделитесь с любым врачом</span></div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Соответствует медицинским стандартам конфиденциальности</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Глубже обычной диспансеризации</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Конкретные советы по питанию и добавкам</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Результаты в PDF — можно показать любому врачу</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Данные хранятся защищённо, только у вас</span></div>
       </div>
       <button class="btn-rust" onclick="openM()">Открыть результаты →</button>
     </div>
@@ -1875,12 +1927,12 @@ footer{
   <div class="hiw-block">
     <div>
       <div class="hiw-eyebrow">ШАГ 03 · Действовать</div>
-      <h2 class="hiw-h">Сдайте снова.<br><em>Здоровье — это паттерн.</em></h2>
-      <p class="hiw-body">Здоровье — это не один тест, а динамика. Сдайте повторно через 3–6 месяцев.</p>
+      <h2 class="hiw-h">Сдайте повторно.<br><em>Динамика важнее разового теста.</em></h2>
+      <p class="hiw-body">Один анализ — это снимок. Сравнение за год — это понимание, куда движется ваш организм.</p>
       <div class="hiw-feats">
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>60+ анализов в середине года</span></div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Видите как меняется тело</span></div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Добавьте тесты по любым отклонениям</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>60+ анализов в середине года — чтобы видеть динамику</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Видите, как меняются показатели</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Добавьте нужные тесты к базовому пакету</span></div>
       </div>
       <button class="btn-rust" onclick="openM()">Начать протокол →</button>
     </div>
@@ -1912,12 +1964,12 @@ footer{
   <div class="hiw-block">
     <div>
       <div class="hiw-eyebrow">ШАГ 04 · Наблюдение всю жизнь</div>
-      <h2 class="hiw-h">Выявляйте паттерны<br>и <em>тревожные сигналы</em></h2>
-      <p class="hiw-body">Большинство начинает лечиться когда уже поздно. Чекапи отслеживает данные во времени — выявляет признаки болезней до симптомов.</p>
+      <h2 class="hiw-h">Замечайте изменения<br><em>раньше, чем почувствуете симптомы</em></h2>
+      <p class="hiw-body">Большинство узнаёт о проблемах, когда симптомы уже есть. Чекапи строит динамику показателей — и предупреждает заранее.</p>
       <div class="hiw-feats">
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Мониторинг тысяч заболеваний на ранней стадии</span></div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Тренды биомаркеров со временем</span></div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Повторные тесты для отслеживания прогресса</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Ранние маркеры тысяч заболеваний</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Динамика показателей за несколько лет</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Повторные тесты показывают, помогло ли лечение</span></div>
       </div>
       <button class="btn-rust" onclick="openM()">Начать наблюдение →</button>
     </div>
@@ -1950,7 +2002,7 @@ footer{
 <!-- ADD-ONS (image 9) -->
 <div class="addons-sec">
   <div class="addons-inner">
-    <h2 class="addons-h r">Чекапи даёт доступ<br>к <em>дополнительным исследованиям</em></h2>
+    <h2 class="addons-h r">Расширьте чекап<br><em>нужными исследованиями</em></h2>
     <p class="addons-sub r d1">Расширенные тесты выявляют скрытые риски и дают более глубокое понимание для принятия решений о здоровье.</p>
     <div class="addons-grid r d2">
       <div class="addon-item">
@@ -2016,8 +2068,8 @@ footer{
 <!-- DATA / WEARABLES (image 10) -->
 <div class="data-sec">
   <div class="data-inner">
-    <h2 class="data-h r">Данные, которые <em>приводят здоровье в движение</em></h2>
-    <p class="data-sub r d1">Узнайте где вы сейчас. Решите куда двигаться.</p>
+    <h2 class="data-h r">Ваши данные — <em>в одном месте и понятны</em></h2>
+    <p class="data-sub r d1">Видите картину целиком — и понимаете, что делать дальше.</p>
     <div class="data-grid">
       <!-- Big biomarker card -->
       <div class="data-card tall r d1" style="background:linear-gradient(135deg,#5C2E1A,#2C1408);color:#fff">
@@ -2125,7 +2177,7 @@ footer{
 <!-- DISEASE TICKER -->
 <div class="ticker-sec">
   <div class="ticker-head">
-    <h2 class="ticker-h r">Мониторинг ранних признаков <em>тысяч заболеваний</em></h2>
+    <h2 class="ticker-h r">Выявляет ранние признаки <em>тысяч состояний</em></h2>
     <div class="ticker-checks r d1">
       <span class="ticker-check">Установите долгосрочный базовый уровень</span>
       <span class="ticker-check">Отслеживается всю жизнь</span>
@@ -2179,7 +2231,7 @@ footer{
 <!-- 160+ LAB TESTS -->
 <div id="tests" class="tests-sec">
   <div class="tests-inner">
-    <h2 class="tests-h r">160+ анализов <em>отобранных врачами</em></h2>
+    <h2 class="tests-h r">160+ показателей, <em>которые действительно важны</em></h2>
     <div class="tests-doctor r d1">
       <div class="tests-doctor-q">«Самый мощный подход к диагностике за всю мою карьеру. Бескомпромиссная глубина — без сокращений.»</div>
       <div class="tests-doctor-info">
@@ -2189,81 +2241,106 @@ footer{
     </div>
     <div class="tests-grid r d2">
       <!-- Cat 1 -->
-      <div class="tcat">
-        <div class="tcat-title">Гормоны<br>и щитовидная</div>
-        <div class="tcat-count">
-          <div class="tcat-count-bar"><span></span><span></span><span></span></div>
-          16 показателей
+      <div class="tcat" aria-expanded="false" data-cat-id="cat-8295">
+    <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-controls="cat-8295-body">
+      <div class="tcat-btn-inner">
+        <div>
+          <div class="tcat-title">Гормоны<br>и щитовидная</div>
+          <div class="tcat-count">
+            
+          <div class="tcat-count-bar"><span></span><span></span><span></span>
+          </div>
         </div>
-        <div class="tcat-items">
-          <div class="tcat-item">Т4 свободный</div>
-          <div class="tcat-item">АТ к тиреоглобулину</div>
-          <div class="tcat-item">Тестостерон общий</div>
-          <div class="tcat-item">АМГ</div>
-          <div class="tcat-item faded">Эстрадиол</div>
-        </div>
+        <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
       </div>
-      <!-- Cat 2 -->
-      <div class="tcat">
-        <div class="tcat-title">Онкомаркеры<br>и скрытые риски</div>
-        <div class="tcat-count">
-          <div class="tcat-count-bar"><span></span><span></span><span></span></div>
-          34 показателя
-        </div>
-        <div class="tcat-items">
-          <div class="tcat-item">ПСА общий</div>
-          <div class="tcat-item">CA-125, CA 19-9</div>
-          <div class="tcat-item">Ревматоидный фактор</div>
-          <div class="tcat-item faded">Ртуть</div>
-          <div class="tcat-item faded">Свинец</div>
-        </div>
+    </button>
+    <div class="tcat-body" id="cat-8295-body" role="region">
+      <div class="tcat-body-inner">
+        
+          <div class="tcat-item-full">Т4 свободный
       </div>
-      <!-- Cat 3 -->
-      <div class="tcat">
-        <div class="tcat-title">Сердце<br>и метаболизм</div>
-        <div class="tcat-count">
-          <div class="tcat-count-bar"><span></span><span></span><span></span></div>
-          18 показателей
+    </div>
+  </div><!-- Cat 2 -->
+      <div class="tcat" aria-expanded="false" data-cat-id="cat-2195">
+    <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-controls="cat-2195-body">
+      <div class="tcat-btn-inner">
+        <div>
+          <div class="tcat-title">Онкомаркеры<br>и скрытые риски</div>
+          <div class="tcat-count">
+            
+          <div class="tcat-count-bar"><span></span><span></span><span></span>
+          </div>
         </div>
-        <div class="tcat-items">
-          <div class="tcat-item">ЛПНП мелкие частицы</div>
-          <div class="tcat-item">Липопротеин (а)</div>
-          <div class="tcat-item">Аполипопротеин B</div>
-          <div class="tcat-item faded">Омега-3 общий</div>
-          <div class="tcat-item faded">Инсулин</div>
-        </div>
+        <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
       </div>
-      <!-- Cat 4 -->
-      <div class="tcat">
-        <div class="tcat-title">Долголетие<br>и биовозраст</div>
-        <div class="tcat-count">
-          <div class="tcat-count-bar"><span></span><span></span><span></span></div>
-          26 показателей
-        </div>
-        <div class="tcat-items">
-          <div class="tcat-item">ГСПГ</div>
-          <div class="tcat-item">ДГЭА-С</div>
-          <div class="tcat-item">ИФР-1 (СТГ-прокси)</div>
-          <div class="tcat-item faded">Гомоцистеин</div>
-          <div class="tcat-item faded">Витамин D</div>
-        </div>
+    </button>
+    <div class="tcat-body" id="cat-2195-body" role="region">
+      <div class="tcat-body-inner">
+        
+          <div class="tcat-item-full">ПСА общий
       </div>
-      <!-- Cat 5 -->
-      <div class="tcat">
-        <div class="tcat-title">Психика<br>и фокус</div>
-        <div class="tcat-count">
-          <div class="tcat-count-bar"><span></span><span></span><span></span></div>
-          36 показателей
+    </div>
+  </div><!-- Cat 3 -->
+      <div class="tcat" aria-expanded="false" data-cat-id="cat-8528">
+    <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-controls="cat-8528-body">
+      <div class="tcat-btn-inner">
+        <div>
+          <div class="tcat-title">Сердце<br>и метаболизм</div>
+          <div class="tcat-count">
+            
+          <div class="tcat-count-bar"><span></span><span></span><span></span>
+          </div>
         </div>
-        <div class="tcat-items">
-          <div class="tcat-item">Кортизол</div>
-          <div class="tcat-item">СРБ высокочувствительный</div>
-          <div class="tcat-item">Железо</div>
-          <div class="tcat-item faded">Ферритин</div>
-          <div class="tcat-item faded">Метилмалоновая кислота</div>
-        </div>
+        <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
       </div>
-      <!-- More -->
+    </button>
+    <div class="tcat-body" id="cat-8528-body" role="region">
+      <div class="tcat-body-inner">
+        
+          <div class="tcat-item-full">ЛПНП мелкие частицы
+      </div>
+    </div>
+  </div><!-- Cat 4 -->
+      <div class="tcat" aria-expanded="false" data-cat-id="cat-2040">
+    <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-controls="cat-2040-body">
+      <div class="tcat-btn-inner">
+        <div>
+          <div class="tcat-title">Долголетие<br>и биовозраст</div>
+          <div class="tcat-count">
+            
+          <div class="tcat-count-bar"><span></span><span></span><span></span>
+          </div>
+        </div>
+        <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+    </button>
+    <div class="tcat-body" id="cat-2040-body" role="region">
+      <div class="tcat-body-inner">
+        
+          <div class="tcat-item-full">ГСПГ
+      </div>
+    </div>
+  </div><!-- Cat 5 -->
+      <div class="tcat" aria-expanded="false" data-cat-id="cat-6346">
+    <button class="tcat-btn" onclick="toggleCat(this.closest('.tcat'))" aria-controls="cat-6346-body">
+      <div class="tcat-btn-inner">
+        <div>
+          <div class="tcat-title">Психика<br>и фокус</div>
+          <div class="tcat-count">
+            
+          <div class="tcat-count-bar"><span></span><span></span><span></span>
+          </div>
+        </div>
+        <svg class="tcat-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+      </div>
+    </button>
+    <div class="tcat-body" id="cat-6346-body" role="region">
+      <div class="tcat-body-inner">
+        
+          <div class="tcat-item-full">Кортизол
+      </div>
+    </div>
+  </div><!-- More -->
       <div class="tcat-more r" onclick="openM()">
         <div class="tcat-more-plus">+Ещё</div>
         <div class="tcat-more-text">Всё<br>в одном</div>
@@ -2276,15 +2353,15 @@ footer{
 <!-- THE NEW STANDARD — bento -->
 <div class="standard-sec">
   <div class="standard-inner">
-    <h2 class="standard-h r">Контроль здоровья <em>с Чекапи</em></h2>
-    <p class="standard-sub r d1">Здоровье для нового, требовательного поколения</p>
+    <h2 class="standard-h r">Те, кто уже <em>сдал чекап</em></h2>
+    <p class="standard-sub r d1">Реальные отзывы людей, которые разобрались в своих анализах</p>
     <div class="bento r d2">
       <!-- Large testimonial — man -->
       <div class="bento-card bc-large">
         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop&crop=face" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top">
         <div class="bento-overlay"></div>
         <div class="bento-text">
-          <div class="bento-quote">«Наконец-то нашёл причину хронической усталости — ферритин был критически низким. Без Чекапи не узнал бы ещё год.»</div>
+          <div class="bento-quote">«Несколько лет чувствовал постоянную усталость. Оказалось — ферритин на нуле. Чекапи нашёл это за один визит.»</div>
           <div class="bento-name">Дмитрий К.</div>
           <div class="bento-role">Москва · IT-директор</div>
         </div>
@@ -2294,9 +2371,9 @@ footer{
         <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top">
         <div class="bento-overlay"></div>
         <div class="bento-text">
-          <div class="bento-quote">«Чекапи помог понять свою биологию — теперь знаю что и зачем принимать.»</div>
+          <div class="bento-quote">«Раньше принимала добавки наугад. После чекапа поняла, что реально нужно организму, а что — лишнее.»</div>
           <div class="bento-name">Мария В.</div>
-          <div class="bento-role">Нутрициолог</div>
+          <div class="bento-role">34 года, Санкт-Петербург</div>
         </div>
       </div>
       <!-- Stat card -->
@@ -2309,9 +2386,9 @@ footer{
         <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top">
         <div class="bento-overlay"></div>
         <div class="bento-text">
-          <div class="bento-quote">«Глубоко верю в то, что делает Чекапи. Это меняет подход к здоровью.»</div>
+          <div class="bento-quote">«Наконец нашёл врача, который объяснил результаты по-человечески. Не "в норме" — а что конкретно это значит.»</div>
           <div class="bento-name">Игорь С.</div>
-          <div class="bento-role">Предприниматель</div>
+          <div class="bento-role">42 года, Екатеринбург</div>
         </div>
       </div>
       <!-- Stat card 2 -->
@@ -2324,9 +2401,9 @@ footer{
         <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&crop=face" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top">
         <div class="bento-overlay"></div>
         <div class="bento-text">
-          <div class="bento-quote">«Помогло выявить дисбаланс гормонов. Теперь живу в ресурсе.»</div>
+          <div class="bento-quote">«После чекапа стало понятно, почему не получалось похудеть. Это был не вопрос силы воли.»</div>
           <div class="bento-name">Екатерина Л.</div>
-          <div class="bento-role">Москва</div>
+          <div class="bento-role">31 год, Москва</div>
         </div>
       </div>
       <!-- Stat card 3 -->
@@ -2339,9 +2416,9 @@ footer{
         <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top">
         <div class="bento-overlay"></div>
         <div class="bento-text">
-          <div class="bento-quote">«Впервые увидел динамику показателей за год — это меняет всё.»</div>
+          <div class="bento-quote">«Второй год подряд сдаю. Теперь вижу, что мои усилия реально что-то дают — в цифрах.»</div>
           <div class="bento-name">Алексей Р.</div>
-          <div class="bento-role">Руководитель</div>
+          <div class="bento-role">45 лет, Новосибирск</div>
         </div>
       </div>
     </div>
@@ -2354,14 +2431,31 @@ footer{
     <div class="gold-layout">
       <div class="gold-left r">
         <h2 class="gold-h">
-          <em>Золотой стандарт</em>
-          для диагностики
+          <em>Только проверенные</em>
+          лаборатории
         </h2>
-        <p class="gold-sub">Лаборатории, которым доверяет медицинское сообщество. Никаких непроверенных партнёров.</p>
-        <div class="gold-partners">
-          <div class="gold-partner"><div class="gold-partner-dot"></div>Инвитро</div>
-          <div class="gold-partner"><div class="gold-partner-dot"></div>Хеликс</div>
-          <div class="gold-partner"><div class="gold-partner-dot"></div>KDL</div>
+        <p class="gold-sub">Работаем только с аккредитованными лабораториями — Инвитро, Хеликс, KDL. Без сомнительных партнёров и домашних наборов.</p>
+        <div class="lab-logos">
+          <!-- TODO: замените src на реальные логотипы лабораторий -->
+          <div class="lab-logo-item" title="Инвитро">
+            <svg viewBox="0 0 80 24" class="lab-logo-svg" aria-label="Инвитро" role="img">
+              <rect x="0" y="10" width="8" height="14" rx="1" fill="#C4622D" opacity=".7"/>
+              <rect x="2" y="6" width="4" height="4" rx="1" fill="#C4622D" opacity=".5"/>
+              <text x="13" y="20" font-family="DM Sans,sans-serif" font-size="13" font-weight="700" fill="currentColor">Инвитро</text>
+            </svg>
+          </div>
+          <div class="lab-logo-item" title="Хеликс">
+            <svg viewBox="0 0 70 24" class="lab-logo-svg" aria-label="Хеликс" role="img">
+              <path d="M4 4 L12 20 M12 4 L4 20" stroke="#C4622D" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
+              <text x="18" y="20" font-family="DM Sans,sans-serif" font-size="13" font-weight="700" fill="currentColor">Хеликс</text>
+            </svg>
+          </div>
+          <div class="lab-logo-item" title="KDL">
+            <svg viewBox="0 0 52 24" class="lab-logo-svg" aria-label="KDL" role="img">
+              <rect x="0" y="2" width="10" height="20" rx="2" fill="none" stroke="#C4622D" stroke-width="1.8" opacity=".7"/>
+              <text x="14" y="20" font-family="DM Sans,sans-serif" font-size="13" font-weight="700" fill="currentColor">KDL</text>
+            </svg>
+          </div>
         </div>
       </div>
       <div class="gold-right r d1">
@@ -2389,7 +2483,7 @@ footer{
 <!-- COMPARISON TABLE -->
 <div class="compare-sec">
   <div class="compare-inner">
-    <h2 class="compare-h r"><em>Больше чем обычный</em> осмотр</h2>
+    <h2 class="compare-h r"><em>Глубже, чем</em> диспансеризация</h2>
     <div class="ctable r d1">
       <div class="ctable-head">
         <div class="cth-empty"></div>
@@ -2423,8 +2517,8 @@ footer{
 <!-- DOCTORS -->
 <div class="docs-sec">
   <div class="docs-inner">
-    <h2 class="docs-h r">Создано с <em>ведущими врачами</em></h2>
-    <p class="docs-sub r d1">Научно-медицинский совет Чекапи</p>
+    <h2 class="docs-h r">Разработано вместе<br>с <em>практикующими врачами</em></h2>
+    <p class="docs-sub r d1">Анализы, интерпретации и протоколы — проверяют специалисты с реальной практикой</p>
     <div class="docs-grid">
       <div class="doc r d1">
         <div class="doc-img di-1"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop&crop=face" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></div>
@@ -2434,12 +2528,12 @@ footer{
       <div class="doc r d2">
         <div class="doc-img di-2"><img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=300&h=300&fit=crop&crop=face" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></div>
         <div class="doc-name">Марат Ахметов</div>
-        <div class="doc-role">CEO Чекапи. Serial entrepreneur в HealthTech.</div>
+        <div class="doc-role">Основатель Чекапи. Медицинский предприниматель.</div>
       </div>
       <div class="doc r d3">
         <div class="doc-img di-3"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></div>
         <div class="doc-name">Дмитрий Соколов</div>
-        <div class="doc-role">COO Чекапи. Операционное масштабирование и партнёрства.</div>
+        <div class="doc-role">Операционный директор. Развитие сети лабораторий.</div>
       </div>
       <div class="doc r d4">
         <div class="doc-img di-4"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=300&fit=crop&crop=face" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px"></div>
@@ -2473,17 +2567,17 @@ footer{
 <!-- PRICING -->
 <div id="pricing" class="pricing-sec">
   <div class="pricing-inner">
-    <h2 class="pricing-h r">То, что стоит <em>300 000 ₽</em>, — это <em class="ok">30 940 ₽</em></h2>
-    <p class="pricing-sub r d1">Прозрачные цены. Без направлений и очередей.</p>
+    <h2 class="pricing-h r">Полный чекап — за <em class="ok">30 940 ₽</em></h2>
+    <p class="pricing-sub r d1">160+ анализов, расшифровка от врача и личный кабинет с динамикой — всё включено. Без скрытых платежей.</p>
     <div class="pricing-card r d2">
       <div class="pc-left">
-        <div class="pc-title">Чекапи</div>
+        <div class="pc-title">Годовой чекап</div>
         <div class="pc-price">
           <div class="pc-price-big">85</div>
           <div class="pc-price-unit">₽</div>
           <div class="pc-price-period">/день</div>
         </div>
-        <div class="pc-period-note">Оплата раз в год.</div>
+        <div class="pc-period-note">85 ₽ в день. Один раз в год — и вы под контролем.</div>
         <button class="pc-cta" onclick="openM()">Записаться в Чекапи</button>
       </div>
       <div class="pc-right">
@@ -2551,8 +2645,8 @@ footer{
 <!-- FINAL CTA -->
 <div class="final-cta-sec">
   <div style="max-width:800px;margin:0 auto">
-    <h2 class="r" style="font-family:'Instrument Serif',serif;font-size:clamp(36px,6vw,80px);letter-spacing:-.04em;line-height:.98;margin-bottom:8px">Следить за здоровьем <em style="font-style:italic;color:var(--rust)">сложно?</em></h2>
-    <h2 class="r d1" style="font-family:'Instrument Serif',serif;font-size:clamp(36px,6vw,80px);letter-spacing:-.04em;line-height:.98;margin-bottom:28px">Мы не согласны.</h2>
+    <h2 class="r" style="font-family:'Instrument Serif',serif;font-size:clamp(36px,6vw,80px);letter-spacing:-.04em;line-height:.98;margin-bottom:8px">Разобраться в анализах — <em style="font-style:italic;color:var(--rust)">непросто?</em></h2>
+    <h2 class="r d1" style="font-family:'Instrument Serif',serif;font-size:clamp(36px,6vw,80px);letter-spacing:-.04em;line-height:.98;margin-bottom:28px">Именно для этого мы и сделали Чекапи.</h2>
     <p class="r d2" style="font-size:clamp(15px,1.5vw,18px);color:var(--mid);max-width:440px;margin:0 auto 40px;line-height:1.65">Начните следить за здоровьем сегодня. Первый чекап меняет всё.</p>
     <div class="r d3" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
       <button class="btn-rust" onclick="openM()">Начать тестирование</button>
@@ -2708,6 +2802,36 @@ function toggleTicker(){
 }
 
 /* ── FAQ ── */
+/* ── ACCORDION: analysis categories ── */
+function toggleCat(catEl){
+  const isOpen = catEl.getAttribute('aria-expanded') === 'true';
+  // Optionally close others first
+  document.querySelectorAll('.tcat[aria-expanded="true"]').forEach(t=>{
+    if(t !== catEl) t.setAttribute('aria-expanded','false');
+  });
+  catEl.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+}
+
+/* ── SVG CHART ANIMATION ── */
+(function(){
+  let done = false;
+  const obs = new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting || done) return;
+    done = true; obs.disconnect();
+    const path = document.getElementById('chartPath');
+    if(path){
+      const len = path.getTotalLength ? path.getTotalLength() : 220;
+      path.style.strokeDasharray = `${len} ${len+10}`;
+    }
+    ['dot1','dot2','dot3','val1','val2','val3'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.style.opacity = '1';
+    });
+  },{threshold:0.25});
+  const cw = document.getElementById('chartWidget2');
+  if(cw) obs.observe(cw);
+})();
+
 function tFaq(btn){
   const a = btn.nextElementSibling;
   const arrow = btn.querySelector('span');
@@ -2886,40 +3010,8 @@ window.addEventListener('scroll', updateHiwNav, {passive:true});
 })();
 
 /* ════════════════════════════════════════
-   EASY CARD 2 — chart dots
+   EASY CARD 2 — SVG chart handled separately above
 ════════════════════════════════════════ */
-(function(){
-  let done=false;
-  const obs = new IntersectionObserver(entries=>{
-    if(!entries[0].isIntersecting||done) return;
-    done=true; obs.disconnect();
-    const widget=entries[0].target;
-    // Zone labels fade
-    widget.querySelectorAll('.chart-zone > span').forEach((z,i)=>fadeUp(z,100+i*110,380));
-    // Dots drop from above
-    widget.querySelectorAll('.chart-dot').forEach((d,i)=>{
-      d.style.opacity='0'; d.style.transform='translateY(calc(-50% - 28px)) scale(0)'; d.style.transition='none';
-      setTimeout(()=>{
-        d.style.transition=`opacity .38s ease, transform .52s cubic-bezier(.34,1.5,.64,1)`;
-        d.style.opacity='1'; d.style.transform='translateY(-50%) scale(1)';
-      }, 350+i*210);
-    });
-    // Connector grows
-    const conn=widget.querySelector('.chart-connector');
-    if(conn){ conn.style.width='0';
-      setTimeout(()=>{ conn.style.transition='width .62s ease'; conn.style.width='45%'; }, 950); }
-    // Values pop
-    widget.querySelectorAll('.chart-val').forEach((v,i)=>{
-      v.style.opacity='0'; v.style.transform='scale(.4)'; v.style.transition='none';
-      setTimeout(()=>{
-        v.style.transition=`opacity .3s ease, transform .32s cubic-bezier(.34,1.6,.64,1)`;
-        v.style.opacity='1'; v.style.transform='scale(1)';
-      }, 450+i*220);
-    });
-  },{threshold:.3});
-  const cw=document.querySelector('.chart-widget');
-  if(cw) obs.observe(cw);
-})();
 
 /* ════════════════════════════════════════
    EASY CARD 3 — protocol items
