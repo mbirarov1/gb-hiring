@@ -1675,6 +1675,148 @@ footer{
   color:var(--text);letter-spacing:-0.5px;
 }
 
+/* ══════════════════════════════════════════
+   LAB PARTNER LOGOS — new standalone block
+══════════════════════════════════════════ */
+.lab-partner-row{
+  margin-top:16px;margin-bottom:24px;
+}
+.lab-partner-caption{
+  font-size:12px;color:var(--light);letter-spacing:.03em;
+  margin-bottom:10px;
+}
+.lab-partner-logos{
+  display:flex;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.lab-partner-logo{
+  font-size:15px;font-weight:700;letter-spacing:.01em;
+  color:var(--mid);opacity:.7;
+  pointer-events:none;user-select:none;
+  filter:grayscale(1);
+}
+
+/* ══════════════════════════════════════════
+   BASIC CHECKUP CATEGORIES — 6 cards
+══════════════════════════════════════════ */
+.basic-checkup-sec{
+  background:var(--cream);padding:80px 24px;
+  border-top:1px solid var(--border);
+}
+@media(min-width:768px){.basic-checkup-sec{padding:100px 48px}}
+.basic-checkup-inner{max-width:1200px;margin:0 auto}
+.basic-checkup-h{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(28px,4vw,52px);letter-spacing:-.02em;
+  margin-bottom:8px;
+}
+.basic-checkup-h em{font-style:italic;color:var(--rust)}
+.basic-checkup-sub{font-size:15px;color:var(--mid);margin-bottom:40px}
+.basic-cat-grid{
+  display:grid;gap:12px;
+  grid-template-columns:repeat(3,1fr);
+}
+@media(max-width:768px){.basic-cat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.basic-cat-grid{grid-template-columns:1fr}}
+.basic-cat-card{
+  background:var(--cream-d);border:1px solid var(--border);
+  border-radius:16px;padding:20px;
+}
+.basic-cat-title{
+  font-size:14px;font-weight:700;color:var(--text);
+  margin-bottom:10px;display:flex;align-items:center;gap:6px;
+}
+.basic-cat-list{list-style:none;padding:0;margin:0}
+.basic-cat-list li{
+  font-size:13px;color:var(--mid);
+  padding:3px 0;border-bottom:1px solid var(--cream);
+  line-height:1.5;
+}
+.basic-cat-list li:last-child{border-bottom:none}
+
+/* ══════════════════════════════════════════
+   ADDITIONAL PACKAGES — accordion
+══════════════════════════════════════════ */
+.packages-sec{
+  background:var(--cream);padding:0 24px 80px;
+}
+@media(min-width:768px){.packages-sec{padding:0 48px 80px}}
+.packages-inner{max-width:1200px;margin:0 auto}
+.packages-h{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(22px,3vw,36px);letter-spacing:-.02em;
+  margin-bottom:4px;padding-top:0;
+}
+.packages-sub{font-size:14px;color:var(--mid);margin-bottom:28px}
+
+.pkg-list{
+  border:1px solid var(--border);border-radius:16px;overflow:hidden;
+}
+.pkg-item{border-bottom:1px solid var(--border)}
+.pkg-item:last-child{border-bottom:none}
+.pkg-btn{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:18px 24px;background:transparent;border:none;cursor:pointer;
+  text-align:left;font-family:'DM Sans',sans-serif;
+  font-size:15px;font-weight:600;color:var(--text);
+  transition:background .2s;gap:12px;
+}
+.pkg-btn:hover{background:rgba(0,0,0,.025)}
+.pkg-chevron{
+  flex-shrink:0;width:18px;height:18px;color:var(--rust);
+  transition:transform 250ms ease;
+}
+.pkg-item.is-open .pkg-chevron{transform:rotate(180deg)}
+.pkg-body{
+  max-height:0;overflow:hidden;
+  transition:max-height 250ms ease;
+}
+.pkg-body-inner{padding:0 24px 20px}
+.pkg-price{
+  font-size:14px;font-weight:700;color:var(--rust);
+  margin-bottom:12px;
+}
+.pkg-analyses{list-style:none;padding:0;margin:0}
+.pkg-analyses li{
+  font-size:13px;color:var(--mid);line-height:1.9;
+  padding-left:12px;position:relative;
+}
+.pkg-analyses li::before{content:'·';position:absolute;left:0;color:var(--rust)}
+
+/* ══════════════════════════════════════════
+   APOB ANIMATED BARS
+══════════════════════════════════════════ */
+.apob-bar-row{
+  display:flex;align-items:center;gap:8px;margin-bottom:6px;
+}
+.apob-bar-label{
+  font-size:9px;letter-spacing:.07em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);min-width:72px;
+}
+.apob-bar-track{
+  flex:1;height:2px;background:rgba(255,255,255,.12);
+  border-radius:1px;overflow:hidden;
+}
+.apob-bar-fill{height:100%;border-radius:1px;width:0%}
+.apob-bar-fill.green{background:#4CAF50}
+.apob-bar-fill.orange{background:var(--rust)}
+.apob-bar-value{
+  font-size:11px;font-weight:700;
+  color:rgba(255,255,255,.9);min-width:24px;text-align:right;
+}
+
+/* ══════════════════════════════════════════
+   SVG CHART LINE
+══════════════════════════════════════════ */
+.anim-chart-line{
+  fill:none;stroke:#4CAF50;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+.anim-chart-dot{
+  fill:#4CAF50;
+  transform-origin:center;transform-box:fill-box;
+  opacity:0;transform:scale(0);
+}
+
 </style>
 </head>
 <body>
@@ -1911,29 +2053,23 @@ footer{
       <div class="hiw-feats">
         <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>160+ показателей в одном пакете</span></div>
         <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Один визит в лабораторию — 15 минут</span></div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>400+ точек сдачи по России</span></div>
-        <div class="hiw-feat hiw-feat-logos">
-          <div class="hiw-feat-ck">✓</div>
-          <div class="hiw-lab-logos hiw-lab-logos--svgs">
-            <span class="hiw-lab-svg-item">
-              <svg viewBox="0 0 110 32" class="lab-logo-svg lab-logo-svg--sm" aria-label="Инвитро" role="img" fill="none"><text x="2" y="24" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="700" font-style="italic" fill="#00A8B4" letter-spacing="-0.5">INVITRO</text></svg>
-            </span>
-            <span class="hiw-lab-svg-item">
-              <svg viewBox="0 0 90 32" class="lab-logo-svg lab-logo-svg--sm" aria-label="Хеликс" role="img" fill="none"><path d="M6 4 C10 8,10 14,6 18 C10 22,10 28,6 32" stroke="#7BC8F0" stroke-width="3" stroke-linecap="round"/><path d="M14 4 C10 8,10 14,14 18 C10 22,10 28,14 32" stroke="#9B7ED4" stroke-width="3" stroke-linecap="round"/><line x1="6" y1="11" x2="14" y2="11" stroke="#9B7ED4" stroke-width="2" stroke-linecap="round"/><line x1="6" y1="21" x2="14" y2="21" stroke="#7BC8F0" stroke-width="2" stroke-linecap="round"/><text x="20" y="23" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" fill="#2C2C3E">Helix</text></svg>
-            </span>
-            <span class="hiw-lab-svg-item">
-              <svg viewBox="0 0 72 32" class="lab-logo-svg lab-logo-svg--sm" aria-label="KDL" role="img" fill="none"><circle cx="13" cy="16" r="11" stroke="#5C3B8C" stroke-width="1.5" fill="white" opacity="0.9"/><path d="M5 10 Q13 14,21 10" stroke="#5C3B8C" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M4 16 Q13 20,22 16" stroke="#E8921A" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M5 22 Q13 18,21 22" stroke="#5C3B8C" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M13 5 Q18 12,13 16 Q8 20,13 27" stroke="#E8921A" stroke-width="1.5" fill="none"/><text x="28" y="23" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="800" fill="#2C2C2C" letter-spacing="0.5">KDL</text></svg>
-            </span>
-          </div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>400+ точек сдачи</span></div>
+        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Выезд медсестры на дом</span></div>
+      </div>
+      <div class="lab-partner-row">
+        <div class="lab-partner-caption">Сдача анализов в партнерских лабораториях</div>
+        <div class="lab-partner-logos">
+          <span class="lab-partner-logo">INVITRO</span>
+          <span class="lab-partner-logo">Helix</span>
+          <span class="lab-partner-logo">KDL</span>
         </div>
-        <div class="hiw-feat"><div class="hiw-feat-ck">✓</div><span>Вызов медсестры на дом</span></div>
       </div>
       <button class="btn-rust" onclick="openM()">Записаться →</button>
     </div>
     <div class="hiw-visual">
       <div class="app-mock">
         <div class="app-mock-title">160+ анализов</div>
-        <div class="app-mock-big">160<span style="font-size:28px;opacity:.6">+</span></div>
+        <div class="app-mock-big" id="counter160"><span id="counter160val">160</span><span style="font-size:28px;opacity:.6">+</span></div>
         <div class="app-mock-sub">Анализов ежегодно</div>
         <div style="margin-top:20px;height:1px;background:rgba(255,255,255,.1)"></div>
         <div style="margin-top:16px;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">Месяц 1</div>
@@ -1999,23 +2135,34 @@ footer{
       <button class="btn-rust" onclick="openM()">Начать тестирование →</button>
     </div>
     <div class="hiw-visual">
-      <div class="app-mock">
+      <div class="app-mock" id="chartStep3">
         <div class="app-mock-title">60+ анализов</div>
-        <div class="app-mock-big">60<span style="font-size:28px;opacity:.6">+</span></div>
+        <div class="app-mock-big"><span id="counter60val">60</span><span style="font-size:28px;opacity:.6">+</span></div>
         <div class="app-mock-sub">Анализов в середине года</div>
         <div style="margin-top:16px;height:1px;background:rgba(255,255,255,.1)"></div>
-        <div style="margin-top:14px;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Месяц 6</div>
-        <div style="display:flex;gap:16px;margin-top:12px">
-          <div style="text-align:center">
-            <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);margin:0 auto 6px"></div>
-            <div style="font-size:10px;color:rgba(255,255,255,.4)">Май</div>
-          </div>
-          <div style="flex:1;height:1px;background:rgba(255,255,255,.15);margin-top:4px;align-self:flex-start;margin-top:7px"></div>
-          <div style="text-align:center">
-            <div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4);margin:0 auto 6px"></div>
-            <div style="font-size:10px;color:rgba(255,255,255,.4)">Нояб</div>
-          </div>
-        </div>
+        <div style="margin-top:14px;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">Динамика показателей</div>
+        <!-- Animated SVG line chart May → Nov -->
+        <svg id="animLineChart" viewBox="0 0 260 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible">
+          <!-- Smooth improving curve: starts low, ends high (values improving) -->
+          <path class="anim-chart-line" id="trendLine"
+            d="M10,62 C30,60 36,56 52,52 C68,48 76,46 92,42 C108,38 116,35 132,30 C148,25 156,22 172,18 C188,14 196,12 212,10 C228,8 236,8 250,7"/>
+          <!-- Dots for each month -->
+          <circle class="anim-chart-dot" id="tdot0" cx="10"  cy="62" r="4"/>
+          <circle class="anim-chart-dot" id="tdot1" cx="52"  cy="52" r="4"/>
+          <circle class="anim-chart-dot" id="tdot2" cx="92"  cy="42" r="4"/>
+          <circle class="anim-chart-dot" id="tdot3" cx="132" cy="30" r="4"/>
+          <circle class="anim-chart-dot" id="tdot4" cx="172" cy="18" r="4"/>
+          <circle class="anim-chart-dot" id="tdot5" cx="212" cy="10" r="4"/>
+          <circle class="anim-chart-dot" id="tdot6" cx="250" cy="7"  r="4"/>
+          <!-- Month labels -->
+          <text x="10"  y="76" fill="rgba(255,255,255,0.35)" font-family="DM Sans,sans-serif" font-size="8" text-anchor="middle">May</text>
+          <text x="52"  y="76" fill="rgba(255,255,255,0.35)" font-family="DM Sans,sans-serif" font-size="8" text-anchor="middle">Jun</text>
+          <text x="92"  y="76" fill="rgba(255,255,255,0.35)" font-family="DM Sans,sans-serif" font-size="8" text-anchor="middle">Jul</text>
+          <text x="132" y="76" fill="rgba(255,255,255,0.35)" font-family="DM Sans,sans-serif" font-size="8" text-anchor="middle">Aug</text>
+          <text x="172" y="76" fill="rgba(255,255,255,0.35)" font-family="DM Sans,sans-serif" font-size="8" text-anchor="middle">Sep</text>
+          <text x="212" y="76" fill="rgba(255,255,255,0.35)" font-family="DM Sans,sans-serif" font-size="8" text-anchor="middle">Oct</text>
+          <text x="250" y="76" fill="rgba(255,255,255,0.35)" font-family="DM Sans,sans-serif" font-size="8" text-anchor="middle">Nov</text>
+        </svg>
       </div>
     </div>
   </div>
@@ -2036,16 +2183,25 @@ footer{
       <button class="btn-rust" onclick="openM()">Начать наблюдение →</button>
     </div>
     <div class="hiw-visual">
-      <div class="app-mock">
-        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:4px">(АпоB)</div>
-        <div style="font-size:14px;font-weight:700;color:#4CAF50;margin-bottom:12px">В норме 84 мг/дл</div>
-        <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.5;margin-bottom:16px">Переносит липиды в кровотоке. Мощный маркер риска сердечно-сосудистых заболеваний.</div>
-        <div style="display:flex;flex-direction:column;gap:4px">
-          <div style="display:flex;align-items:center;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px"><span>Выше нормы</span><span style="color:var(--rust);font-size:11px;font-weight:700">93</span></div>
-          <div style="height:2px;background:var(--rust);border-radius:1px;margin-bottom:8px"></div>
-          <div style="font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">В норме</div>
-          <div style="height:2px;background:#4CAF50;border-radius:1px;margin-bottom:8px"></div>
-          <div style="font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase">Ниже нормы</div>
+      <div class="app-mock" id="apobCard">
+        <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:4px">(АпоB)</div>
+        <div style="font-size:15px;font-weight:700;color:#4CAF50;margin-bottom:10px">В норме <span id="apobGreenVal">84</span> мг/дл</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.5;margin-bottom:16px">Переносит липиды в кровотоке. Мощный маркер риска сердечно‑сосудистых заболеваний.</div>
+        <!-- Animated bars -->
+        <div class="apob-bar-row">
+          <span class="apob-bar-label">Выше нормы</span>
+          <div class="apob-bar-track"><div class="apob-bar-fill orange" id="apobBarOrange"></div></div>
+          <span class="apob-bar-value" style="color:var(--rust)"><span id="apobOrangeVal">93</span></span>
+        </div>
+        <div class="apob-bar-row">
+          <span class="apob-bar-label">В норме</span>
+          <div class="apob-bar-track"><div class="apob-bar-fill green" id="apobBarGreen"></div></div>
+          <span class="apob-bar-value" style="visibility:hidden">—</span>
+        </div>
+        <div class="apob-bar-row">
+          <span class="apob-bar-label">Ниже нормы</span>
+          <div class="apob-bar-track"></div>
+          <span class="apob-bar-value" style="visibility:hidden">—</span>
         </div>
         <div style="margin-top:16px;background:rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px">
           <div style="width:28px;height:28px;border-radius:8px;background:var(--rust);display:flex;align-items:center;justify-content:center;flex-shrink:0">
@@ -2060,6 +2216,223 @@ footer{
   </div><!-- end hiw-stack-wrapper -->
 
 </div><!-- end hiw-section -->
+
+<!-- BASIC CHECKUP CATEGORIES -->
+<div class="basic-checkup-sec">
+  <div class="basic-checkup-inner">
+    <h2 class="basic-checkup-h r">Что входит в <em>базовый чекап</em></h2>
+    <p class="basic-checkup-sub r d1">Шесть систем организма — один визит в лабораторию.</p>
+    <div class="basic-cat-grid r d2">
+
+      <div class="basic-cat-card">
+        <div class="basic-cat-title">🩸 Кровь и воспаление</div>
+        <ul class="basic-cat-list">
+          <li>Общий анализ крови</li>
+          <li>С-реактивный белок</li>
+          <li>Ферритин</li>
+        </ul>
+      </div>
+
+      <div class="basic-cat-card">
+        <div class="basic-cat-title">🟤 Печень</div>
+        <ul class="basic-cat-list">
+          <li>АЛТ</li>
+          <li>АСТ</li>
+          <li>Билирубин</li>
+          <li>ГГТ</li>
+        </ul>
+      </div>
+
+      <div class="basic-cat-card">
+        <div class="basic-cat-title">💧 Почки</div>
+        <ul class="basic-cat-list">
+          <li>Креатинин</li>
+          <li>Альбумин/креатинин</li>
+        </ul>
+      </div>
+
+      <div class="basic-cat-card">
+        <div class="basic-cat-title">🦋 Щитовидная железа</div>
+        <ul class="basic-cat-list">
+          <li>ТТГ</li>
+          <li>Т4</li>
+        </ul>
+      </div>
+
+      <div class="basic-cat-card">
+        <div class="basic-cat-title">❤️ Сердце и сосуды</div>
+        <ul class="basic-cat-list">
+          <li>Холестерин</li>
+          <li>ЛПНП</li>
+          <li>ЛПВП</li>
+          <li>Триглицериды</li>
+        </ul>
+      </div>
+
+      <div class="basic-cat-card">
+        <div class="basic-cat-title">🍬 Углеводный обмен</div>
+        <ul class="basic-cat-list">
+          <li>Глюкоза</li>
+          <li>HbA1c</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ADDITIONAL PACKAGES — accordion -->
+<div class="packages-sec">
+  <div class="packages-inner">
+    <h3 class="packages-h r">Расширьте базовый чекап</h3>
+    <p class="packages-sub r d1">Выберите дополнительные пакеты — сдаётся за один визит.</p>
+    <div class="pkg-list r d2">
+
+      <!-- 1 -->
+      <div class="pkg-item">
+        <button class="pkg-btn" onclick="togglePkg(this.closest('.pkg-item'))">
+          Гормональный статус (жен)
+          <svg class="pkg-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+        </button>
+        <div class="pkg-body">
+          <div class="pkg-body-inner">
+            <div class="pkg-price">5 850 – 7 500 ₽</div>
+            <ul class="pkg-analyses">
+              <li>Лютеинизирующий гормон (ЛГ)</li>
+              <li>Фолликулостимулирующий гормон (ФСГ)</li>
+              <li>Пролактин</li>
+              <li>Эстрадиол</li>
+              <li>ДГА-S</li>
+              <li>Тестостерон</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="pkg-item">
+        <button class="pkg-btn" onclick="togglePkg(this.closest('.pkg-item'))">
+          Гормональный статус (муж)
+          <svg class="pkg-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+        </button>
+        <div class="pkg-body">
+          <div class="pkg-body-inner">
+            <div class="pkg-price">6 000 – 7 500 ₽</div>
+            <ul class="pkg-analyses">
+              <li>Тестостерон</li>
+              <li>ГСПГ</li>
+              <li>ДГЭА-S</li>
+              <li>Лютеинизирующий гормон (ЛГ)</li>
+              <li>Фолликулостимулирующий гормон (ФСГ)</li>
+              <li>Пролактин</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="pkg-item">
+        <button class="pkg-btn" onclick="togglePkg(this.closest('.pkg-item'))">
+          Скрининг инфекций
+          <svg class="pkg-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+        </button>
+        <div class="pkg-body">
+          <div class="pkg-body-inner">
+            <div class="pkg-price">9 000 – 11 250 ₽</div>
+            <ul class="pkg-analyses">
+              <li>Корь Ig G</li>
+              <li>Краснуха Ig G</li>
+              <li>Гепатит B, Ig G</li>
+              <li>Гепатит C, anti-HCV</li>
+              <li>АТ к ВИЧ 1/2 и АГ p24</li>
+              <li>ВПЧ 12 типов (с определением генотипа)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="pkg-item">
+        <button class="pkg-btn" onclick="togglePkg(this.closest('.pkg-item'))">
+          Онкомаркеры (жен)
+          <svg class="pkg-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+        </button>
+        <div class="pkg-body">
+          <div class="pkg-body-inner">
+            <div class="pkg-price">6 000 – 9 000 ₽</div>
+            <ul class="pkg-analyses">
+              <li>SCC (карцинома шейки матки)</li>
+              <li>РЭА (толстая и прямая кишка)</li>
+              <li>CA 15-3 (молочные железы)</li>
+              <li>CA 125 (яичники)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="pkg-item">
+        <button class="pkg-btn" onclick="togglePkg(this.closest('.pkg-item'))">
+          Онкомаркеры (муж)
+          <svg class="pkg-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+        </button>
+        <div class="pkg-body">
+          <div class="pkg-body-inner">
+            <div class="pkg-price">7 500 – 10 500 ₽</div>
+            <ul class="pkg-analyses">
+              <li>Альфа-фетопротеин (печень)</li>
+              <li>Общий ПСА</li>
+              <li>Свободный ПСА (предстательная железа)</li>
+              <li>РЭА (толстая и прямая кишка)</li>
+              <li>CA 19-9 (поджелудочная железа)</li>
+              <li>CA 72-4 (желудок)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="pkg-item">
+        <button class="pkg-btn" onclick="togglePkg(this.closest('.pkg-item'))">
+          Витаминный ресурс
+          <svg class="pkg-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+        </button>
+        <div class="pkg-body">
+          <div class="pkg-body-inner">
+            <div class="pkg-price">9 750 – 11 250 ₽</div>
+            <ul class="pkg-analyses">
+              <li>Витамин D</li>
+              <li>Витамин B1, B2, B12, B9</li>
+              <li>Кальций, Магний, Цинк</li>
+              <li>Железо, Фосфор, Йод</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="pkg-item">
+        <button class="pkg-btn" onclick="togglePkg(this.closest('.pkg-item'))">
+          Метаболизм
+          <svg class="pkg-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>
+        </button>
+        <div class="pkg-body">
+          <div class="pkg-body-inner">
+            <div class="pkg-price">3 750 – 5 250 ₽</div>
+            <ul class="pkg-analyses">
+              <li>Липопротеин (а)</li>
+              <li>Инсулин</li>
+              <li>С-пептид</li>
+              <li>Т3</li>
+              <li>Лептин</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- ADD-ONS (image 9) -->
 <div class="addons-sec">
@@ -3260,7 +3633,139 @@ window.addEventListener('scroll', updateHiwNav, {passive:true});
   if(wc) obs.observe(wc);
 })();
 
-</script>
+/* ════════════════════════════════════════
+   PACKAGES ACCORDION
+════════════════════════════════════════ */
+function togglePkg(item){
+  const isOpen = item.classList.contains('is-open');
+  // Close all
+  document.querySelectorAll('.pkg-item.is-open').forEach(i=>{
+    i.classList.remove('is-open');
+    const b = i.querySelector('.pkg-body');
+    if(b) b.style.maxHeight='0';
+  });
+  if(!isOpen){
+    item.classList.add('is-open');
+    const b = item.querySelector('.pkg-body');
+    if(b) b.style.maxHeight = b.scrollHeight+'px';
+  }
+}
 
-</body>
+/* ════════════════════════════════════════
+   COUNTER ANIMATION utility (easeOutCubic)
+════════════════════════════════════════ */
+function easeCount(el, target, duration, suffix){
+  if(!el) return;
+  const start = performance.now();
+  suffix = suffix||'';
+  el.textContent = '0'+suffix;
+  function step(now){
+    const p = Math.min((now-start)/duration, 1);
+    const ease = 1-Math.pow(1-p,3);
+    const val = Math.round(ease*target);
+    el.textContent = val + (p>=1 ? suffix : '');
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ════════════════════════════════════════
+   160+ COUNTER — Step 1 card
+════════════════════════════════════════ */
+(function(){
+  let done=false;
+  const obs=new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting||done) return;
+    done=true; obs.disconnect();
+    easeCount(document.getElementById('counter160val'),160,1200,'');
+  },{threshold:0.4});
+  const el=document.getElementById('counter160');
+  if(el) obs.observe(el);
+})();
+
+/* ════════════════════════════════════════
+   60+ COUNTER — Step 3 card
+════════════════════════════════════════ */
+(function(){
+  let done=false;
+  const obs=new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting||done) return;
+    done=true; obs.disconnect();
+    easeCount(document.getElementById('counter60val'),60,1200,'');
+  },{threshold:0.4});
+  const el=document.getElementById('chartStep3');
+  if(el) obs.observe(el);
+})();
+
+/* ════════════════════════════════════════
+   SVG LINE CHART ANIMATION — Step 3
+════════════════════════════════════════ */
+(function(){
+  let done=false;
+  const obs=new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting||done) return;
+    done=true; obs.disconnect();
+    const line = document.getElementById('trendLine');
+    if(line){
+      const len = line.getTotalLength ? line.getTotalLength() : 300;
+      line.style.strokeDasharray = len+' '+len;
+      line.style.strokeDashoffset = len;
+      line.style.transition = 'none';
+      line.getBoundingClientRect();
+      line.style.transition = 'stroke-dashoffset 1.4s ease-out';
+      line.style.strokeDashoffset = '0';
+    }
+    // Dots appear with delay
+    for(let i=0;i<7;i++){
+      const dot = document.getElementById('tdot'+i);
+      if(!dot) continue;
+      (function(d,delay){
+        d.style.opacity='0';
+        d.style.transform='scale(0)';
+        d.style.transition='none';
+        setTimeout(()=>{
+          d.style.transition='opacity 0.3s ease, transform 0.35s cubic-bezier(.34,1.4,.64,1)';
+          d.style.opacity='1';
+          d.style.transform='scale(1)';
+        }, delay);
+      })(dot, 250+i*180);
+    }
+  },{threshold:0.3});
+  const el=document.getElementById('animLineChart');
+  if(el) obs.observe(el);
+})();
+
+/* ════════════════════════════════════════
+   APOB BARS + COUNTERS — Step 4
+════════════════════════════════════════ */
+(function(){
+  let done=false;
+  const obs=new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting||done) return;
+    done=true; obs.disconnect();
+    const barGreen  = document.getElementById('apobBarGreen');
+    const barOrange = document.getElementById('apobBarOrange');
+    const valGreen  = document.getElementById('apobGreenVal');
+    const valOrange = document.getElementById('apobOrangeVal');
+    // Reset values
+    if(valGreen)  valGreen.textContent  = '0';
+    if(valOrange) valOrange.textContent = '0';
+    // Phase 1: fill bars
+    if(barGreen){
+      barGreen.style.width='0%';
+      setTimeout(()=>{ barGreen.style.transition='width 1.2s ease-out'; barGreen.style.width='100%'; },50);
+    }
+    if(barOrange){
+      barOrange.style.width='0%';
+      setTimeout(()=>{ barOrange.style.transition='width 1.1s ease-out'; barOrange.style.width='62%'; },150);
+    }
+    // Phase 2: count up numbers after bars mostly filled
+    setTimeout(()=>easeCount(valGreen,  84, 900, ''), 750);
+    setTimeout(()=>easeCount(valOrange, 93, 800, ''), 850);
+  },{threshold:0.3});
+  const card=document.getElementById('apobCard');
+  if(card) obs.observe(card);
+})();
+
+</script>
 </html>
